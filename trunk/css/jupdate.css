@@ -1,0 +1,92 @@
+#jc_button {
+	text-align: center;
+}
+
+#status {
+	border: 1px solid #000;
+}
+
+a.button {
+    background: transparent url('../images/bg_button_a.gif') no-repeat scroll top right;
+    color: #444;
+    display: block;
+    //float: left;
+    font: normal 12px arial, sans-serif;
+    height: 24px;
+    margin-right: 6px;
+		margin-top: 6px;
+    padding-right: 18px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('../images/bg_button_span.gif') no-repeat;
+    display: block;
+    line-height: 14px;
+    padding: 5px 0 5px 18px;
+} 
+
+/* standard form style table */
+table.cpanel {
+	background-color: #F7F8F9;
+	//border: solid 1px #d5d5d5;
+	border: solid 1px #000;
+	width: 100%;
+	padding: 10px;
+	border-collapse: collapse;
+}
+
+table.cpanel th {
+	font-size: 15px;
+	font-weight:normal;
+	font-variant:small-caps;
+	padding-top: 6px;
+	padding-bottom: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	text-align: left;
+	height: 25px;
+	color: #666666;
+	background: url(../images/background.gif);
+	background-repeat: repeat;
+}
+
+div#update {
+	width: 400px;
+	padding: 3px;
+	text-align: center;
+	border: 1px;
+	border-style:solid;
+	border-bottom-color:#EFEFEF;
+	border-right-color:#EFEFEF;
+	border-left-color:#EFEFEF;
+	border-top-color:#EFEFEF;	
+}
+
+div#update:hover {
+	background-color: #B5CDE8;
+	border:	1px solid #30559C;
+}
+
+table.cpanel_icon {
+	background-color: #F7F8F9;
+	border: solid 4px #d5d5d5;
+border: solid 1px #000;
+	width: 100%;
+	padding: 5px;
+	text-align: center;
+}
+table.cpanel_icon div {
+	padding: 5px;
+	text-align: center;
+	border: 1x;
+	border-style: solid;
+	border-bottom-color:#EFEFEF;
+	border-right-color:#EFEFEF;
+	border-left-color:#EFEFEF;
+	border-top-color:#EFEFEF;
+}
+.cpanel div:hover {
+	background-color: #B5CDE8;
+	border:	1px solid #30559C;
+}
