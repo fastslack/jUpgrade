@@ -8,19 +8,15 @@
  * @license     GNU/GPL
  */
 
+//$file = "http://localhost/joomla16.zip";
+$file = "http://matware.com.ar/joomla16.zip";
+
 //sleep(5);
 // Create a curl connection
 $chGetSize = curl_init();
 
-// Set the url we’re requesting
-
-//curl_setopt($chGetSize, CURLOPT_URL, "http://downloads.joomlacode.org/frsrelease/4/5/2/45251/Joomla_1.6.0-Alpha2-Full-Package.tar.gz");
-//curl_setopt($chGetSize, CURLOPT_URL, "http://localhost/joomla16.zip");
-curl_setopt($chGetSize, CURLOPT_URL, "http://matware.com.ar/joomla16.zip");
-
-
 // Set a valid user agent
-
+curl_setopt($chGetSize, CURLOPT_URL, $file);
 //curl_setopt($chGetSize, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11");
 //curl_setopt($chGetSize, CURLOPT_FILE, $out);
 curl_setopt($chGetSize, CURLOPT_RETURNTRANSFER, true);
@@ -60,12 +56,7 @@ if ($out == FALSE){
 // Create a curl connection
 $chGetFile = curl_init();
 
-// Set the url we’re requesting
-//curl_setopt($chGetFile, CURLOPT_URL, "http://downloads.joomlacode.org/frsrelease/4/5/2/45251/Joomla_1.6.0-Alpha2-Full-Package.tar.gz");
-//curl_setopt($chGetFile, CURLOPT_URL, "http://localhost/joomla16.zip");
-curl_setopt($chGetFile, CURLOPT_URL, "http://matware.com.ar/joomla16.zip");
-
-
+curl_setopt($chGetFile, CURLOPT_URL, $file);
 curl_setopt($chGetFile, CURLOPT_TIMEOUT, 150);
 curl_setopt($chGetFile, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($chGetFile, CURLOPT_HEADER, false);
