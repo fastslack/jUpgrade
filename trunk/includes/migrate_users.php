@@ -21,7 +21,7 @@ function insertObjectList( $db, $table, &$object, $keyName = NULL ) {
 
 	$ret = $db->getErrorNum();
 
-	print_r($db);
+	//print_r($db);
 
 	if($ret = 0) {
 		return true;
@@ -104,16 +104,19 @@ for($i=0;$i<count($gids);$i++) {
 
 //print_r($newgids);
 
-
 $query = "SELECT u.id AS user_id, u.usertype AS group_id"
 ." FROM {$config['prefix']}users AS u";
 $db->setQuery( $query );
+//echo $query;
+
 $user_usergroup_map = $db->loadObjectList();
 for($i=0;$i<count($user_usergroup_map);$i++) {
+	if ($user_usergroup_map[$i]->group_id == "Super Administrator") {
+		$user_usergroup_map[$i]->group_id = "Super Users";
+	}
 	$user_usergroup_map[$i]->group_id = $newgids[$user_usergroup_map[$i]->group_id];
 }
 //print_r($user_usergroup_map);
 $ret = insertObjectList($db_new, '#__user_usergroup_map', $user_usergroup_map);	
-
 
 ?>
