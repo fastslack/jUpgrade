@@ -34,12 +34,12 @@ for($i=0;$i<count($parts)-4;$i++){
 //Defines
 define( 'JPATH_ROOT',			implode( DS, $newparts ) );
 
-define( 'JPATH_SITE',			JPATH_ROOT );
+define( 'JPATH_SITE',			JPATH_ROOT.DS.'jupgrade' );
 define( 'JPATH_CONFIGURATION', 	JPATH_ROOT.DS.'jupgrade' );
-define( 'JPATH_ADMINISTRATOR', 	JPATH_ROOT.DS.'administrator' );
-define( 'JPATH_XMLRPC', 		JPATH_ROOT.DS.'xmlrpc' );
-define( 'JPATH_LIBRARIES',	 	JPATH_ROOT.DS.'libraries' );
-define( 'JPATH_PLUGINS',		JPATH_ROOT.DS.'plugins'   );
-define( 'JPATH_INSTALLATION',	JPATH_ROOT.DS.'installation' );
-define( 'JPATH_THEMES'	   ,	JPATH_BASE.DS.'templates' );
-define( 'JPATH_CACHE',			JPATH_BASE.DS.'cache');
+define( 'JPATH_ADMINISTRATOR', 	JPATH_ROOT.DS.'jupgrade'.DS.'administrator' );
+define( 'JPATH_XMLRPC', 		JPATH_ROOT.DS.'jupgrade'.DS.'xmlrpc' );
+define( 'JPATH_LIBRARIES',	 	JPATH_ROOT.DS.'jupgrade'.DS.'libraries' );
+define( 'JPATH_PLUGINS',		JPATH_ROOT.DS.'jupgrade'.DS.'plugins'   );
+define( 'JPATH_INSTALLATION',	JPATH_ROOT.DS.'jupgrade'.DS.'installation' );
+define( 'JPATH_THEMES'	   ,	JPATH_BASE.DS.'jupgrade'.DS.'templates' );
+define( 'JPATH_CACHE',			JPATH_BASE.DS.'jupgrade'.DS.'cache');

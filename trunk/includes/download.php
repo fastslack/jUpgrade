@@ -9,7 +9,7 @@
  */
 
 //$file = "http://localhost/joomla16.zip";
-$file = "http://matware.com.ar/joomla16.zip";
+$file = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla16.zip";
 
 //sleep(5);
 // Create a curl connection
@@ -21,6 +21,8 @@ curl_setopt($chGetSize, CURLOPT_URL, $file);
 //curl_setopt($chGetSize, CURLOPT_FILE, $out);
 curl_setopt($chGetSize, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($chGetSize, CURLOPT_HEADER, false);
+//curl_setopt($chGetSize, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
+//curl_setopt($chGetSize, CURLOPT_USERPWD, '[anonymous]:[]');
 
 // Don’t download the body content
 curl_setopt($chGetSize, CURLOPT_NOBODY, true);
@@ -62,13 +64,18 @@ curl_setopt($chGetFile, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($chGetFile, CURLOPT_HEADER, false);
 curl_setopt($chGetFile, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($chGetFile, CURLOPT_FILE, $out);
+//curl_setopt($chGetFile, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
+//curl_setopt($chGetFile, CURLOPT_USERPWD, '[anonymous]:[]');
+
 
 $chGetFileStore = curl_exec($chGetFile);
 $chGetFileError = curl_error($chGetFile);
-//$chGetSizeInfo = curl_getinfo($chGetSize);
+$chGetFileInfo = curl_getinfo($chGetFile);
+
+//print_r($chGetFileInfo);
 
 curl_close($chGetFile);
 fclose($out);
-echo 11;
+//echo 11;
 
 ?>

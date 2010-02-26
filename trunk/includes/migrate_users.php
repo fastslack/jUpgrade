@@ -47,6 +47,8 @@ require(JPATH_ROOT.DS."configuration.php");
 
 $jconfig = new JConfig();
 
+print_r($jconfig);
+
 $config = array();
 $config['driver']   = 'mysql';
 $config['host']     = $jconfig->host;
@@ -118,5 +120,7 @@ for($i=0;$i<count($user_usergroup_map);$i++) {
 }
 //print_r($user_usergroup_map);
 $ret = insertObjectList($db_new, '#__user_usergroup_map', $user_usergroup_map);	
+
+sleep(1);
 
 ?>
