@@ -12,6 +12,11 @@ defined('_JEXEC') or die('Restricted access');
 
 $version = "v{$this->version}";
 
+$document = &JFactory::getDocument();
+$document->addScript('components/com_jupgrade/js/jquery-1.4.2.min.js' );
+$document->addScript('components/com_jupgrade/js/jquery.progressbar.js' );
+$document->addScript('components/com_jupgrade/js/jquery.timers-1.2.js' );
+//$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
 ?>
 <link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
 <script type="text/javascript" src="components/com_jupgrade/js/functions.js"></script>
@@ -76,16 +81,17 @@ function showResponse(request){
 </script>
 -->
 
-
+<!--
 <script type="text/javascript" src="components/com_jupgrade/js/jquery.js"></script>
 <script type="text/javascript" src="components/com_jupgrade/js/jquery.progressbar.js"></script>
 <script type="text/javascript" src="components/com_jupgrade/js/jquery.timers-1.2.js"></script>
+-->
 
 <script type="text/javascript">
 	$(document).ready(function(){
 		//jQuery.noConflict();
 
-		$("#progress").hide("fast");
+		$("#download").hide("fast");
 		$("#decompress").hide("fast");
 		$("#migration").hide("fast");
 		$("#install").hide("fast");
@@ -96,22 +102,26 @@ function showResponse(request){
 
 	function progress(event) {
 
-		$("#test").everyTime(10,function(i) {
+		$("#test").everyTime('1s',function(i) {
 			$.ajax({
 				type: "GET",
 				url: "components/com_jupgrade/includes/getfilesize.php",
 				success: function(msg){
 					var ex = explode(',', msg);
-					//alert(ex[0]);
+					$('#currBytes').html(ex[1]);
+					$('#totalBytes').html(ex[2]);
+					//alert(msg);
 					if(ex[1] < ex[2]){
 						//alert(msg);
 						$('#pb1').progressBar(ex[0]);
 					}else if(ex[1] == ex[2]){
+						$('#pb1').progressBar(ex[0]);
 						$('#test').stopTime("hide");
 						return false;
 					}
 				}
 			});
+
 		});
 
 		//event.preventDefault();
@@ -122,7 +132,7 @@ function showResponse(request){
 		$("#pb1").progressBar();
 
 		$("#update").slideToggle("slow");
-		$("#progress").slideToggle("slow");
+		$("#download").slideToggle("slow");
 
 		$.ajax({
 			type: "GET",
@@ -132,6 +142,7 @@ function showResponse(request){
 				progress();
 			},
 			success: function(msg){
+				//alert(msg);
 				decompress();
 			}
 		});
@@ -162,13 +173,14 @@ function showResponse(request){
 		$("#install").slideToggle("slow");
 		//$('#status').html('Installing database');
 
-		$.get("components/com_jupgrade/includes/install_db.php", { root: "<?php echo JPATH_SITE; ?>"},
+		$.get("components/com_jupgrade/includes/install_config.php", { root: "<?php echo JPATH_SITE; ?>"},
 			function(data){
 				//alert(data);
 				$('#pb3').progressBar(50);
 				//$('#status').html('Creating configuration');
-				$.get("components/com_jupgrade/includes/install_config.php", { root: "<?php echo JPATH_SITE; ?>"},
+				$.get("components/com_jupgrade/includes/install_db.php", { root: "<?php echo JPATH_SITE; ?>"},
 					function(data){
+						//alert(data);
 						$('#pb3').progressBar(100);
 						migration();
 				});
@@ -185,14 +197,64 @@ function showResponse(request){
 		
 		$.get("components/com_jupgrade/includes/migrate_users.php", { root: "<?php echo JPATH_SITE; ?>"},
 			function(data){
-				$('#pb4').progressBar(11);
+			//alert(data);
+			$('#status').html('Migrating Modules...');
+			$('#pb4').progressBar(10);
+			$.get("components/com_jupgrade/includes/migrate_modules.php", { root: "<?php echo JPATH_SITE; ?>"},
+				function(data){
+				//alert(data);
+				$('#status').html('Migrating Categories...');
+				$('#pb4').progressBar(20);
 				$.get("components/com_jupgrade/includes/migrate_categories.php", { root: "<?php echo JPATH_SITE; ?>"},
 					function(data){
+					alert(data);
+					$('#status').html('Migrating Content...');
+					$('#pb4').progressBar(30);
+					$.get("components/com_jupgrade/includes/migrate_content.php", { root: "<?php echo JPATH_SITE; ?>"},
+						function(data){
 						//alert(data);
-						$('#pb4').progressBar(22);
-						done();
+						$('#status').html('Migrating Menus...');
+						$('#pb4').progressBar(40);
+						$.get("components/com_jupgrade/includes/migrate_menus.php", { root: "<?php echo JPATH_SITE; ?>"},
+							function(data){
+							//alert(data);
+							$('#status').html('Migrating Banners...');
+							$('#pb4').progressBar(50);
+							$.get("components/com_jupgrade/includes/migrate_banners.php", { root: "<?php echo JPATH_SITE; ?>"},
+								function(data){
+								//alert(data);
+								$('#status').html('Migrating Contacts...');
+								$('#pb4').progressBar(60);
+								$.get("components/com_jupgrade/includes/migrate_contacts.php", { root: "<?php echo JPATH_SITE; ?>"},
+									function(data){
+									//alert(data);
+									$('#status').html('Migrating News Feeds...');
+									$('#pb4').progressBar(70);
+									$.get("components/com_jupgrade/includes/migrate_newsfeeds.php", { root: "<?php echo JPATH_SITE; ?>"},
+										function(data){
+										//alert(data);
+										$('#status').html('Migrating Polls...');
+										$('#pb4').progressBar(80);
+										$.get("components/com_jupgrade/includes/migrate_polls.php", { root: "<?php echo JPATH_SITE; ?>"},
+											function(data){
+											//alert(data);
+											$('#status').html('Migrating WebLinks...');
+											$('#pb4').progressBar(90);
+											$.get("components/com_jupgrade/includes/migrate_weblinks.php", { root: "<?php echo JPATH_SITE; ?>"},
+												function(data){
+												//alert(data);
+												$('#status').html('Done');
+												$('#pb4').progressBar(100);
+												done();
+											});
+										});
+									});
+								});
+							});
+						});
+					});
 				});
-
+			});
 		});
 		
 		//event.preventDefault();
@@ -210,29 +272,30 @@ function showResponse(request){
 			<img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
 			<h2><?php echo JText::_( 'START UPGRADE' ); ?></h2>
 		</div>
-		<div id="progress">
-			<p><?php echo JText::_( 'Downloading Joomla 1.6...' ); ?></p>
+		<div id="download">
+			<p class="text"><?php echo JText::_( 'Downloading Joomla 1.6...' ); ?></p>
 			<span id="pb1" class="progressBar"></span>
+			<div><i><small><b><span id="currBytes">0</span></b> bytes / <b><span id="totalBytes">0</span></b> bytes</small></i></div>
 		</div>
 		<div id="decompress">
-			<p><?php echo JText::_( 'Decompressing package...' ); ?></p>
+			<p class="text"><?php echo JText::_( 'Decompressing package...' ); ?></p>
 			<span id="pb2" class="progressBar"></span>
 		</div>
 		<div id="install">
-			<p><?php echo JText::_( 'Installing Joomla 1.6...' ); ?></p>
+			<p class="text"><?php echo JText::_( 'Installing Joomla 1.6...' ); ?></p>
 			<span id="pb3" class="progressBar"></span>
 		</div>
 		<div id="migration">
-			<p><?php echo JText::_( 'Migration progress...' ); ?></p>
+			<p class="text"><?php echo JText::_( 'Upgrade progress...' ); ?></p>
 			<span id="pb4" class="progressBar"></span>
-			<span id="status"></span>
+			<div><i><small><span id="status"><?php echo JText::_( 'Migrating Users...' ); ?></span></i></small></div>
 		</div>
 		<div id="done">
 			<h2><?php echo JText::_( 'Joomla 1.6 Upgrade Finished!' ); ?></h2>
-			<p>
+			<p class="text">
 				<?php echo JText::_( 'You can check your new site here: ' ); ?>
-				<a href="<?php echo JURI::root(); ?>jupgrade/"><?php echo JText::_( 'Site' ); ?></a> and 
-				<a href="<?php echo JURI::root(); ?>jupgrade/administrator/"><?php echo JText::_( 'Administrator' ); ?></a>
+				<a href="<?php echo JURI::root(); ?>jupgrade/" target="_blank"><?php echo JText::_( 'Site' ); ?></a> and 
+				<a href="<?php echo JURI::root(); ?>jupgrade/administrator/" target="_blank"><?php echo JText::_( 'Administrator' ); ?></a>
 			</p>
 		</div>
 		<div id="test"></div>
