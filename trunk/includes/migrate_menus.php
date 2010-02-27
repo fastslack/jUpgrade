@@ -21,7 +21,8 @@ require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'base'.DS.'object.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'database.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'tablenested.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'banner.php' );
+require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'menu.php' );
+require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'menutype.php' );
 require(JPATH_ROOT.DS."configuration.php");
 
 $jconfig = new JConfig();
@@ -43,43 +44,60 @@ $db = JDatabase::getInstance( $config );
 $db_new = JDatabase::getInstance( $config_new );
 //print_r($db_new);
 
-$query = "SELECT `bid`,`cid`,`type`,`name`,`alias`,`imptotal`,`impmade`,`clicks`,`imageurl`,`clickurl`,`date`,
-`showBanner`,`checked_out`,`checked_out_time`,`editor`,`custombannercode`,`catid`,`description`,`sticky`,
-`ordering`,`publish_up`,`publish_down`,`tags`,`params`"
-." FROM {$config['prefix']}banner"
-." ORDER BY bid ASC";
-
+$query = "SELECT *"
+." FROM {$config['prefix']}menu"
+." ORDER BY id ASC";
 $db->setQuery( $query );
-$banners = $db->loadObjectList();
+$menu = $db->loadObjectList();
 //echo $db->errorMsg();
-
 //print_r($content[0]);
 
-for($i=0;$i<count($banners);$i++) {
+for($i=0;$i<count($menu);$i++) {
 	//echo $sections[$i]->id . "<br>";
 
-	$new = new JTableBanner($db_new);
-	print_r($new);
-	$new->id = $banners[$i]->bid;
-	$new->cid = $banners[$i]->cid;
-	$new->type = $banners[$i]->type;
-	$new->name = $banners[$i]->name;
-	$new->imptotal = $banners[$i]->imptotal;
-	$new->impmade = $banners[$i]->impmade;
-	$new->clicks = $banners[$i]->clicks;
-	$new->clickurl = $banners[$i]->clickurl;
-	$new->catid = $banners[$i]->catid;
-	$new->description = $banners[$i]->description;
-	$new->sticky = $banners[$i]->sticky;
-	$new->ordering = $banners[$i]->ordering;
-	$new->checked_out = $banners[$i]->checked_out;
-	$new->checked_out_time = $banners[$i]->checked_out_time;
-	$new->publish_up = $banners[$i]->publish_up;
-	$new->publish_down = $banners[$i]->publish_down;
-	//$new->setRules('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}');
+	$new = new JTableMenu($db_new);
+	//print_r($new);
+	//$new->id = $menu[$i]->
+	$new->menutype = $menu[$i]->menutype;
+	$new->title = $menu[$i]->name;
+	$new->alias = $menu[$i]->alias;
+	$new->link = $menu[$i]->link;
+	$new->type = $menu[$i]->type;
+	$new->published = $menu[$i]->published;
+	$new->parent_id = $menu[$i]->parent;
+	$new->level = $menu[$i]->sublevel;
+	$new->component_id = $menu[$i]->componentid;
+	$new->ordering = $menu[$i]->ordering;
+	$new->checked_out = $menu[$i]->checked_out;
+	$new->checked_out_time = $menu[$i]->checked_out_time;
+	$new->browserNav = $menu[$i]->browserNav;
+	$new->access = $menu[$i]->access+1;
+	$new->params = $menu[$i]->params;
+	$new->lft = $menu[$i]->lft;
+	$new->rgt = $menu[$i]->rgt;
 	$new->store();
 
 }
+
+$query = "SELECT *"
+." FROM {$config['prefix']}menu_types"
+." WHERE id > 1";
+$db->setQuery( $query );
+$menutype = $db->loadObjectList();
+//echo $db->errorMsg();
+
+for($i=0;$i<count($menutype);$i++) {
+	//echo $sections[$i]->id . "<br>";
+
+	$new = new JTableMenuType($db_new);
+	//print_r($new);
+	$new->menutype = $menutype[$i]->menutype;
+	$new->title = $menutype[$i]->title;
+	$new->description = $menutype[$i]->description;
+	$new->store();
+
+}
+
 
 sleep(1);
 ?>
