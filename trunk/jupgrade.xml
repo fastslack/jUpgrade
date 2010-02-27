@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+	<name>jUpgrade</name>
+	<creationDate>2009-11-20</creationDate>
+  <author>Matias Aguirre</author>
+  <authorEmail>maguirre@matware.com.ar</authorEmail>
+  <authorUrl>http://www.matware.com.ar</authorUrl>
+  <copyright>Copyleft 2007 2008 2009</copyright>
+  <license>GNU</license>
+	<version>0.1.0</version>
+	<description/>
+	<files folder="site">
+		<filename>index.html</filename>
+	</files>
+	<administration>
+		<menu>jUpgrade</menu>
+		<files folder="admin">
+			<filename>index.html</filename>
+			<filename>admin.jupgrade.php</filename>
+			<filename>controller.php</filename>
+			<filename>controllers/cpanel.php</filename>
+			<filename>controllers/index.html</filename>
+			<folder>css</folder>
+			<folder>images</folder>
+			<folder>includes</folder>
+			<filename>index.html</filename>
+			<folder>js</folder>
+			<folder>views</folder>
+		</files>
+	</administration>
+</install>
+
