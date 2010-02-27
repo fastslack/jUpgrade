@@ -12,7 +12,6 @@ define( '_JEXEC', 1 );
 define( 'JPATH_BASE', dirname(__FILE__) );
 define( 'DS', DIRECTORY_SEPARATOR );
 require_once ( JPATH_BASE .DS.'defines.php' );
-
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'methods.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'factory.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'import.php' );
@@ -21,8 +20,25 @@ require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'base'.DS.'object.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'database.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'tablenested.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'banner.php' );
 require(JPATH_ROOT.DS."configuration.php");
+
+/**
+ * Banner table
+ *
+ * @package		Joomla.Framework
+ * @subpackage	Table
+ * @since		1.0
+ */
+class JTableBanner extends JTable
+{
+	/**
+	* @param database A database connector object
+	*/
+	function __construct(&$db)
+	{
+		parent::__construct('#__banners', 'id', $db);
+	}
+}
 
 $jconfig = new JConfig();
 //print_r($jconfig);
@@ -59,8 +75,8 @@ for($i=0;$i<count($banners);$i++) {
 	//echo $sections[$i]->id . "<br>";
 
 	$new = new JTableBanner($db_new);
-	print_r($new);
-	$new->id = $banners[$i]->bid;
+	//print_r($new);
+	//$new->id = $banners[$i]->bid;
 	$new->cid = $banners[$i]->cid;
 	$new->type = $banners[$i]->type;
 	$new->name = $banners[$i]->name;
@@ -68,6 +84,7 @@ for($i=0;$i<count($banners);$i++) {
 	$new->impmade = $banners[$i]->impmade;
 	$new->clicks = $banners[$i]->clicks;
 	$new->clickurl = $banners[$i]->clickurl;
+	$new->state = $banners[$i]->showBanner;
 	$new->catid = $banners[$i]->catid;
 	$new->description = $banners[$i]->description;
 	$new->sticky = $banners[$i]->sticky;
@@ -77,9 +94,9 @@ for($i=0;$i<count($banners);$i++) {
 	$new->publish_up = $banners[$i]->publish_up;
 	$new->publish_down = $banners[$i]->publish_down;
 	//$new->setRules('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}');
-	//$new->store();
-
+	$new->store();
+	//print_r($new);
 }
 
-sleep(1);
+//sleep(1);
 ?>
