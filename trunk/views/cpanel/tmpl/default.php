@@ -15,7 +15,7 @@ $version = "v{$this->version}";
 $document = &JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/jquery-1.4.2.min.js' );
 $document->addScript('components/com_jupgrade/js/jquery.progressbar.js' );
-$document->addScript('components/com_jupgrade/js/jquery.timers-1.2.js' );
+$document->addScript('components/com_jupgrade/js/jquery.cron.js' );
 //$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
 ?>
 <link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
@@ -91,6 +91,7 @@ function showResponse(request){
 	$(document).ready(function(){
 		//jQuery.noConflict();
 
+		$.cron();
 		$("#download").hide("fast");
 		$("#decompress").hide("fast");
 		$("#migration").hide("fast");
@@ -101,27 +102,22 @@ function showResponse(request){
 	});
 
 	function progress(event) {
-
-		$("#test").everyTime('1s',function(i) {
-			$.ajax({
-				type: "GET",
-				url: "components/com_jupgrade/includes/getfilesize.php",
-				success: function(msg){
-					var ex = explode(',', msg);
-					$('#currBytes').html(ex[1]);
-					$('#totalBytes').html(ex[2]);
-					//alert(msg);
-					if(ex[1] < ex[2]){
-						//alert(msg);
-						$('#pb1').progressBar(ex[0]);
-					}else if(ex[1] == ex[2]){
-						$('#pb1').progressBar(ex[0]);
-						$('#test').stopTime("hide");
-						return false;
-					}
+		$.ajax({
+			type: "GET",
+			url: "components/com_jupgrade/includes/getfilesize.php",
+			success: function(msg){
+				var ex = explode(',', msg);
+				$('#currBytes').html(ex[1]);
+				$('#totalBytes').html(ex[2]);
+				//alert(msg);
+				if(ex[1] < ex[2]){
+					$('#pb1').progressBar(ex[0]);
+				}else if(ex[1] == ex[2]){
+					$('#pb1').progressBar(ex[0]);
+					$.cron.on = false;
+					return false;
 				}
-			});
-
+			}
 		});
 
 		//event.preventDefault();
@@ -135,11 +131,13 @@ function showResponse(request){
 		$("#download").slideToggle("slow");
 
 		$.ajax({
+			timeout: 120000,
 			type: "GET",
 			url: "components/com_jupgrade/includes/download.php",
 			beforeSend: function (XMLHttpRequest) {
 				$("#pb1").progressBar();
-				progress();
+				$.cron.on = true;
+				$.cron.register('1s', progress, 'progress');
 			},
 			success: function(msg){
 				//alert(msg);
