@@ -13,13 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 $version = "v{$this->version}";
 
 $document = &JFactory::getDocument();
+$document->addScript('components/com_jupgrade/js/functions.js' );
 $document->addScript('components/com_jupgrade/js/jquery-1.4.2.min.js' );
 $document->addScript('components/com_jupgrade/js/jquery.progressbar.js' );
 $document->addScript('components/com_jupgrade/js/jquery.cron.js' );
 //$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
 ?>
 <link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
-<script type="text/javascript" src="components/com_jupgrade/js/functions.js"></script>
 <!--
 			MOOTOOLS
 
