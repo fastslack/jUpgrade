@@ -43,40 +43,35 @@ $db = JDatabase::getInstance( $config );
 $db_new = JDatabase::getInstance( $config_new );
 //print_r($db_new);
 
-$query = "SELECT `bid`,`cid`,`type`,`name`,`alias`,`imptotal`,`impmade`,`clicks`,`imageurl`,`clickurl`,`date`,
-`showBanner`,`checked_out`,`checked_out_time`,`editor`,`custombannercode`,`catid`,`description`,`sticky`,
-`ordering`,`publish_up`,`publish_down`,`tags`,`params`"
-." FROM {$config['prefix']}banner"
-." ORDER BY bid ASC";
+$query = "SELECT *"
+." FROM {$config['prefix']}modules"
+." WHERE iscore = 0 AND id > 19"
+." ORDER BY id ASC";
 
 $db->setQuery( $query );
-$banners = $db->loadObjectList();
+$modules = $db->loadObjectList();
 //echo $db->errorMsg();
 
 //print_r($content[0]);
 
-for($i=0;$i<count($banners);$i++) {
+for($i=0;$i<count($modules);$i++) {
 	//echo $sections[$i]->id . "<br>";
 
 	$new = new JTableModule($db_new);
 	print_r($new);
-	$new->id = $banners[$i]->bid;
-	$new->cid = $banners[$i]->cid;
-	$new->type = $banners[$i]->type;
-	$new->name = $banners[$i]->name;
-	$new->imptotal = $banners[$i]->imptotal;
-	$new->impmade = $banners[$i]->impmade;
-	$new->clicks = $banners[$i]->clicks;
-	$new->clickurl = $banners[$i]->clickurl;
-	$new->catid = $banners[$i]->catid;
-	$new->description = $banners[$i]->description;
-	$new->sticky = $banners[$i]->sticky;
-	$new->ordering = $banners[$i]->ordering;
-	$new->checked_out = $banners[$i]->checked_out;
-	$new->checked_out_time = $banners[$i]->checked_out_time;
-	$new->publish_up = $banners[$i]->publish_up;
-	$new->publish_down = $banners[$i]->publish_down;
-	//$new->setRules('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}');
+	//$new->id = $modules[$i]->id;
+	$new->title = $modules[$i]->title;
+	$new->content = $modules[$i]->content;
+	$new->ordering = $modules[$i]->ordering;
+	$new->position = $modules[$i]->position;
+	$new->checked_out = $modules[$i]->checked_out;
+	$new->checked_out_time = $modules[$i]->checked_out_time;
+	$new->published = $modules[$i]->published;
+	$new->module = $modules[$i]->module;
+	$new->access = $modules[$i]->access+1;
+	$new->showtitle = $modules[$i]->showtitle;
+	$new->params = $modules[$i]->params;
+	$new->client_id = $modules[$i]->client;
 	$new->store();
 
 }
