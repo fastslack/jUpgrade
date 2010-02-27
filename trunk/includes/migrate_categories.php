@@ -71,7 +71,7 @@ for($i=0;$i<count($sections);$i++) {
 	$category->published = $sections[$i]->published;
 	$category->checked_out = $sections[$i]->checked_out;
 	$category->checked_out_time = $sections[$i]->checked_out_time;
-	$category->access = $sections[$i]->access;
+	$category->access = $sections[$i]->access+1;
 	$category->params = $sections[$i]->params;
 	$category->level = 1;
 	$category->extension = "com_{$sections[$i]->scope}";
@@ -93,6 +93,12 @@ for($i=0;$i<count($sections);$i++) {
 
 	for($y=0;$y<count($categories);$y++){
 
+		if (is_numeric($categories[$y]->section)) {
+		 $extension = "com_content";
+		} else {
+		 $extension = $categories[$y]->section;
+		}
+
 		//echo $categories[$y]->title."<br>";
 		$child = new JTableCategory($db_new);
 		$child->setLocation($category->id);
@@ -103,16 +109,51 @@ for($i=0;$i<count($sections);$i++) {
 		$child->published = $categories[$y]->published;
 		$child->checked_out = $categories[$y]->checked_out;
 		$child->checked_out_time = $categories[$y]->checked_out_time;
-		$child->access = $categories[$y]->access;
+		$child->access = $categories[$y]->access+1;
 		$child->params = $categories[$y]->params;
-		//$child->extension = $compName[$categories[$y]->section-1]['option'];
+		$child->extension = $extension;
 		$child->setRules('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}');
 		$child->store();
 
 	}
 }
 
+
+/*
+ * OTHER CATEGORIES
+ */
+
+$query = "SELECT *"
+." FROM {$config['prefix']}categories"
+." ORDER BY id ASC";
+$db->setQuery( $query );
+$categories = $db->loadObjectList();
+
+for($y=0;$y<count($categories);$y++){
+
+	if (!is_numeric($categories[$y]->section)) {
+		//echo $categories[$y]->title."<br>";
+		$child = new JTableCategory($db_new);
+		$child->setLocation($category->id);
+		$child->parent_id = 1;
+		$child->title = $categories[$y]->title;
+		$child->alias = $categories[$y]->alias;
+		$child->description = $categories[$y]->description;
+		$child->published = $categories[$y]->published;
+		$child->checked_out = $categories[$y]->checked_out;
+		$child->checked_out_time = $categories[$y]->checked_out_time;
+		$child->access = $categories[$y]->access+1;
+		$child->params = $categories[$y]->params;
+		$child->extension = $categories[$y]->section;
+		$child->setRules('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}');
+		$child->store();
+
+	}
+
+}
+
+
 //echo "\n\n";
 
-sleep(1);
+//sleep(1);
 ?>
