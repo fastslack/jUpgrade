@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# * jUpgrade
+# *
+# * @author      Matias Aguirre
+# * @email       maguirre@matware.com.ar
+# * @url         http://www.matware.com.ar
+# * @license     GNU/GPL
+# 
+
+PROJECT="jupgrade"
+VERSION="0.2.0"
+
+rm com_${PROJECT}-${VERSION}.zip
+
+cp -r ../trunk ${PROJECT}-${VERSION}
+
+mtwRemoveSVNFiles ${PROJECT}-${VERSION}
+
+mv ${PROJECT}-${VERSION}-without-svn/ com_${PROJECT}
+
+#rm com_${PROJECT}/admin/extensions/*.gz
+rm com_${PROJECT}/admin/${PROJECT}_config.php
+rm com_${PROJECT}/admin/com_${PROJECT}.xml
+
+zip -r com_${PROJECT}-${VERSION}.zip com_${PROJECT}/
+
+# Cleanup
+rm -rf com_${PROJECT}/
+rm -rf ${PROJECT}-${VERSION}
+rm -rf com_${PROJECT}-latest.zip
+
+ln -s com_${PROJECT}-${VERSION}.zip com_${PROJECT}-latest.zip
