@@ -195,52 +195,55 @@ function showResponse(request){
 		$("#pb4").progressBar();
 		$("#migration").slideToggle("slow");
 		
-		$.get("components/com_jupgrade/includes/migrate_users.php", { root: "<?php echo JPATH_SITE; ?>"},
+		/* FIX THIS
+			 Make a loop for each stage?
+		 */
+		$.get("components/com_jupgrade/includes/migrate_users.php", { root: ""},
 			function(data){
 			//alert(data);
 			$('#status').html('Migrating Modules...');
 			$('#pb4').progressBar(10);
-			$.get("components/com_jupgrade/includes/migrate_modules.php", { root: "<?php echo JPATH_SITE; ?>"},
+			$.get("components/com_jupgrade/includes/migrate_modules.php", { root: ""},
 				function(data){
 				//alert(data);
 				$('#status').html('Migrating Categories...');
 				$('#pb4').progressBar(20);
-				$.get("components/com_jupgrade/includes/migrate_categories.php", { root: "<?php echo JPATH_SITE; ?>"},
+				$.get("components/com_jupgrade/includes/migrate_categories.php", { root: ""},
 					function(data){
-					alert(data);
+					//alert(data);
 					$('#status').html('Migrating Content...');
 					$('#pb4').progressBar(30);
-					$.get("components/com_jupgrade/includes/migrate_content.php", { root: "<?php echo JPATH_SITE; ?>"},
+					$.get("components/com_jupgrade/includes/migrate_content.php", { root: ""},
 						function(data){
 						//alert(data);
 						$('#status').html('Migrating Menus...');
 						$('#pb4').progressBar(40);
-						$.get("components/com_jupgrade/includes/migrate_menus.php", { root: "<?php echo JPATH_SITE; ?>"},
+						$.get("components/com_jupgrade/includes/migrate_menus.php", { root: ""},
 							function(data){
 							//alert(data);
 							$('#status').html('Migrating Banners...');
 							$('#pb4').progressBar(50);
-							$.get("components/com_jupgrade/includes/migrate_banners.php", { root: "<?php echo JPATH_SITE; ?>"},
+							$.get("components/com_jupgrade/includes/migrate_banners.php", { root: ""},
 								function(data){
 								//alert(data);
 								$('#status').html('Migrating Contacts...');
 								$('#pb4').progressBar(60);
-								$.get("components/com_jupgrade/includes/migrate_contacts.php", { root: "<?php echo JPATH_SITE; ?>"},
+								$.get("components/com_jupgrade/includes/migrate_contacts.php", { root: ""},
 									function(data){
 									//alert(data);
 									$('#status').html('Migrating News Feeds...');
 									$('#pb4').progressBar(70);
-									$.get("components/com_jupgrade/includes/migrate_newsfeeds.php", { root: "<?php echo JPATH_SITE; ?>"},
+									$.get("components/com_jupgrade/includes/migrate_newsfeeds.php", { root: ""},
 										function(data){
 										//alert(data);
 										$('#status').html('Migrating Polls...');
 										$('#pb4').progressBar(80);
-										$.get("components/com_jupgrade/includes/migrate_polls.php", { root: "<?php echo JPATH_SITE; ?>"},
+										$.get("components/com_jupgrade/includes/migrate_polls.php", { root: ""},
 											function(data){
 											//alert(data);
 											$('#status').html('Migrating WebLinks...');
 											$('#pb4').progressBar(90);
-											$.get("components/com_jupgrade/includes/migrate_weblinks.php", { root: "<?php echo JPATH_SITE; ?>"},
+											$.get("components/com_jupgrade/includes/migrate_weblinks.php", { root: ""},
 												function(data){
 												//alert(data);
 												$('#status').html('Done');
