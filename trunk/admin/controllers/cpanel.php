@@ -12,7 +12,7 @@
 defined('_JEXEC') or die();
 
 /**
- * Hello Hello Controller
+ * cPanel Controller
  *
  * @package    Joomla.Tutorials
  * @subpackage Components
@@ -31,13 +31,19 @@ class jupgradeControllerCpanel extends jupgradeController
 		//$this->registerTask( 'add'  , 	'edit' );
 	}
 
-    function display() {
-    
-        JRequest::setVar( 'view', 'cpanel' );
+  function display() {
+  
+    JRequest::setVar( 'view', 'cpanel' );
 
-        parent::display();
-    }
+    parent::display();
+  }
 
+  function back() {
+  
+		$msg = JText::_( 'jUpgrade cancelled' );
+		$link = "index.php";
+		$this->setRedirect($link, $msg);   
+  }
 
 }
 ?>
