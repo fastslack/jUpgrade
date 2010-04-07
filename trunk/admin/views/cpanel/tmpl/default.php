@@ -82,12 +82,6 @@ function showResponse(request){
 </script>
 -->
 
-<!--
-<script type="text/javascript" src="components/com_jupgrade/js/jquery.js"></script>
-<script type="text/javascript" src="components/com_jupgrade/js/jquery.progressbar.js"></script>
-<script type="text/javascript" src="components/com_jupgrade/js/jquery.timers-1.2.js"></script>
--->
-
 <script type="text/javascript">
 	$(document).ready(function(){
 		//jQuery.noConflict();
@@ -143,7 +137,7 @@ function showResponse(request){
 				//$.cron.register('1s', progress, 'progress');
 			},
 			success: function(msg){
-				alert(msg);
+				//alert(msg);
 				decompress();
 			}
 		});
