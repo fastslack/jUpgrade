@@ -8,21 +8,19 @@
  * @license     GNU/GPL
  */
 
-$filename = 'joomla16.zip';
-//print_r($_REQUEST);
-$dir = $_REQUEST['root']."/jupgrade";
-//echo $dir;
-if(!is_dir($dir)){
-	mkdir($dir);
-}
+define( 'DS', DIRECTORY_SEPARATOR );
 
-$zip = new ZipArchive;
-if ($zip->open($filename) === TRUE) {
-    $zip->extractTo($dir);
-    $zip->close();
-    echo 1;
-} else {
-    echo 0;
+require_once('..'.DS.'libraries'.DS.'pclzip.lib.php');
+
+$filename = 'joomla16.zip';
+
+$path = str_replace('&#96;', '\\', $_REQUEST['root']); 
+$dir = $path.DS."jupgrade";
+
+$archive = new PclZip($filename);
+
+if ($archive->extract(PCLZIP_OPT_PATH, $dir) == 0) {
+  die("Error : ".$archive->errorInfo(true));
 }
 
 ?>
