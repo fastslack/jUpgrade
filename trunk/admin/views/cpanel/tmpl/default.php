@@ -116,7 +116,7 @@ function showResponse(request){
 				}else if(ex[1] == ex[2]){
 					$('#pb1').progressBar(ex[0]);
 					//$.cron.on = false;
-					$('#test').stopTime("hide");
+					$('#time').stopTime("hide");
 					return false;
 				}
 			}
@@ -138,12 +138,12 @@ function showResponse(request){
 			url: "components/com_jupgrade/includes/download.php",
 			beforeSend: function (XMLHttpRequest) {
 				$("#pb1").progressBar();
-				$("#test").everyTime('0.5s', progress, 'progress');
+				$("#time").everyTime('0.5s', progress, 'progress');
 				//$.cron.on = true;
 				//$.cron.register('1s', progress, 'progress');
 			},
 			success: function(msg){
-				//alert(msg);
+				alert(msg);
 				decompress();
 			}
 		});
@@ -302,7 +302,7 @@ function showResponse(request){
 				<a href="<?php echo JURI::root(); ?>jupgrade/administrator/" target="_blank"><?php echo JText::_( 'Administrator' ); ?></a>
 			</p>
 		</div>
-		<div id="test"></div>
+		<div id="time"></div>
    </tr>
 </table>
 <form action="index.php" method="post" name="adminForm">
