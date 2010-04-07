@@ -16,7 +16,8 @@ $document = &JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/functions.js' );
 $document->addScript('components/com_jupgrade/js/jquery-1.4.2.min.js' );
 $document->addScript('components/com_jupgrade/js/jquery.progressbar.js' );
-$document->addScript('components/com_jupgrade/js/jquery.cron.js' );
+$document->addScript('components/com_jupgrade/js/jquery.timers-1.2.js' );
+//$document->addScript('components/com_jupgrade/js/jquery.cron.js' );
 //$document->addCustomTag( '<script type="text/javascript">jQuery.noConflict();</script>' );
 ?>
 <link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
@@ -91,7 +92,7 @@ function showResponse(request){
 	$(document).ready(function(){
 		//jQuery.noConflict();
 
-		$.cron();
+		//$.cron();
 		$("#download").hide("fast");
 		$("#decompress").hide("fast");
 		$("#migration").hide("fast");
@@ -114,7 +115,8 @@ function showResponse(request){
 					$('#pb1').progressBar(ex[0]);
 				}else if(ex[1] == ex[2]){
 					$('#pb1').progressBar(ex[0]);
-					$.cron.on = false;
+					//$.cron.on = false;
+					$('#test').stopTime("hide");
 					return false;
 				}
 			}
@@ -136,8 +138,9 @@ function showResponse(request){
 			url: "components/com_jupgrade/includes/download.php",
 			beforeSend: function (XMLHttpRequest) {
 				$("#pb1").progressBar();
-				$.cron.on = true;
-				$.cron.register('1s', progress, 'progress');
+				$("#test").everyTime('0.5s', progress, 'progress');
+				//$.cron.on = true;
+				//$.cron.register('1s', progress, 'progress');
 			},
 			success: function(msg){
 				//alert(msg);
@@ -153,7 +156,7 @@ function showResponse(request){
 		$("#pb2").progressBar();
 		$("#decompress").slideToggle("slow");
 		
-		$.get("components/com_jupgrade/includes/decompress.php", { root: "<?php echo JPATH_SITE; ?>"},
+		$.get("components/com_jupgrade/includes/decompress.php", { root: "<?php echo str_replace('\\', '&#96;', JPATH_SITE); ?>"},
 			function(data){
 				//alert(data);
 				for(i=0;i<=100;i++){
@@ -302,3 +305,7 @@ function showResponse(request){
 		<div id="test"></div>
    </tr>
 </table>
+<form action="index.php" method="post" name="adminForm">
+<input type="hidden" name="option" value="com_cpanel" />
+<input type="hidden" name="task" value="" />
+</form>
