@@ -45,9 +45,7 @@ if ($size == FALSE){
 
 //echo $chGetSizeInfo['download_content_length']."\n";
 fwrite($size, $chGetSizeInfo['download_content_length']);
-
 fclose($size);
-
 
 $out = fopen('joomla16.zip', 'wb');
 if ($out == FALSE){

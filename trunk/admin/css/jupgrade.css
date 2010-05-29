@@ -16,7 +16,7 @@ div#update {
 	border-bottom-color:#EFEFEF;
 	border-right-color:#EFEFEF;
 	border-left-color:#EFEFEF;
-	border-top-color:#EFEFEF;	
+	border-top-color:#EFEFEF;
 }
 
 div#update:hover {
@@ -30,6 +30,7 @@ div#update:hover {
 	background-color: #fafafa;
 	width: 450px;
 	padding-bottom: 10px;
+  height:100px;
 }
 
 .text {
@@ -37,4 +38,19 @@ div#update:hover {
 	font-size: 11pt;
 }
 
+#box {
+  background:url(../images/progress-bar-back.gif) no-repeat scroll right center transparent;
+  width:200px;
+  height:19px;
+}
+
+#perc	{
+  background:url(../images/progress-bar.gif) no-repeat scroll right center transparent;
+  height:19px;
+  float:left;
+}
+
+#downloadtext {
+  display: block;
+}
 

@@ -13,7 +13,8 @@ jimport('joomla.application.component.controller');
 class jupgradeController extends JController {
 
 	function display() {
-	
+		$tpl = "";	
+
 		parent::display($tpl, null);
 	}
 }
