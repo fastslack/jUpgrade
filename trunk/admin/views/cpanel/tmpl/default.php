@@ -72,7 +72,7 @@ function download(event){
   $('download').setStyle('display', 'block');
   mySlideDownload.toggle();
 
-	pb1 = new mtwProgressBar();
+	pb1 = new mtwProgressBar('pb1');
 
   var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
     method: 'get',
@@ -83,7 +83,7 @@ function download(event){
     onComplete: function( response ) {
 			//alert(response);
       //alert('finish');
-			$('perc').setStyle('background-image', 'url(components/com_jupgrade/images/progress-bar-finish.png)');
+			pb1.finish();
       decompress();
     }
   }).request();
@@ -98,16 +98,128 @@ function decompress(event){
   $('decompress').setStyle('display', 'block');
   mySlideDecompress.toggle();
 
+	pb2 = new mtwProgressBar('pb2');
+	pb2.set(50);
+
   var d = new Ajax( 'components/com_jupgrade/includes/decompress.php', {
     method: 'get',
     onComplete: function( response ) {
-       //var resp = Json.evaluate( response );
-       //alert('finish');
-      // Other code to execute when the request completes.
-      //$('ajax-container').removeClass('ajax-loading').setHTML( output );
+      //alert(response);
+			pb2.set(100);
+			pb2.finish();
+      install();
     }
   }).request();
 
+};
+
+function install(event){
+
+  var mySlideInstall = new Fx.Slide('install');
+  mySlideInstall.hide();
+  $('install').setStyle('display', 'block');
+  mySlideInstall.toggle();
+
+	pb3 = new mtwProgressBar('pb3');
+	pb3.set(2);
+
+  var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
+    method: 'get',
+    onComplete: function( response ) {
+     // alert(response);
+			pb3.set(50);
+
+			var d2 = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
+				method: 'get',
+				onComplete: function( response ) {
+				  //alert(response);
+					pb3.set(100);
+					pb3.finish();
+					migrate();
+				}
+			}).request();
+
+    }
+  }).request();
+
+};
+
+function migrate(event){
+
+  var mySlideMigrate = new Fx.Slide('migration');
+  mySlideMigrate.hide();
+  $('migration').setStyle('display', 'block');
+  mySlideMigrate.toggle();
+
+	pb4 = new mtwProgressBar('pb4');
+
+	__doMigration('users', 10);
+	__doMigration('modules', 20);
+	__doMigration('categories', 30);
+	__doMigration('content', 40);
+	__doMigration('menus', 50);
+	__doMigration('banners', 60);
+	__doMigration('contacts', 70);
+	__doMigration('newsfeeds', 80);
+	__doMigration('polls', 90);
+	__doMigration('weblinks', 100);
+
+};
+
+function __doMigration(name, percent){
+
+/*
+ BUG: cannot set async to false.
+*/
+	var myXHR = new XHR({  
+		method: 'get',
+		async: false
+	}).send('components/com_jupgrade/includes/migrate_'+name+'.php', null);  
+
+	//alert(percent);
+	pb4.set(percent);
+	text = document.getElementById('status');
+	text.innerHTML = 'Migrating '+name+'...';
+
+
+/*
+	//alert(name);
+
+  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
+    method: 'get',
+		//async: false,
+    onComplete: function( response ) {
+			//event.stopPropagation();
+      alert(percent);
+			pb4.set(percent);
+			text = document.getElementById('status');
+			text.innerHTML = 'Migrating '+name+'...';
+			
+    }
+  }).request();
+
+	//alert(d);
+
+	var myRequest = new Request({
+		method: 'get', 
+		url: 'components/com_jupgrade/includes/migrate_'+name+'.php',
+		//async: true,
+    onComplete: function( response ) {
+      alert(response);
+			pb4.set(percent);
+			text = document.getElementById('status');
+			text.innerHTML = 'Migrating '+name+'...';
+    }
+	}).send();
+
+	var req = new Request({
+		method: 'get',
+		url: 'components/com_jupgrade/includes/migrate_'+name+'.php',
+		data: { 'do' : '1' },
+		onRequest: function() { alert('Request made. Please wait...'); },
+		onComplete: function(response) { alert('Response: ' + response); }
+	}).send();
+*/
 };
 
 </script>
