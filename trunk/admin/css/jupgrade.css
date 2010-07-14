@@ -38,13 +38,13 @@ div#update:hover {
 	font-size: 11pt;
 }
 
-#box {
+#pb1-box, #pb2-box, #pb3-box, #pb4-box {
   background:url(../images/progress-bar-back.gif) no-repeat scroll right center transparent;
   width:200px;
   height:19px;
 }
 
-#perc	{
+#pb1-perc, #pb2-perc, #pb3-perc, #pb4-perc	{
   background:url(../images/progress-bar.gif) no-repeat scroll right center transparent;
   height:19px;
   float:left;
