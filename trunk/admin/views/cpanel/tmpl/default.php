@@ -74,9 +74,6 @@ function download(event){
 
 	pb1 = new mtwProgressBar('pb1');
 
-decompress();
-
-/*
   var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
     method: 'get',
     onRequest: function( response ) {	
@@ -90,7 +87,7 @@ decompress();
       decompress();
     }
   }).request();
-*/
+
 };
 
 
