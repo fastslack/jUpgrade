@@ -74,6 +74,9 @@ function download(event){
 
 	pb1 = new mtwProgressBar('pb1');
 
+decompress();
+
+/*
   var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
     method: 'get',
     onRequest: function( response ) {	
@@ -87,7 +90,7 @@ function download(event){
       decompress();
     }
   }).request();
-
+*/
 };
 
 
@@ -164,6 +167,11 @@ function migrate(event){
 	__doMigration('polls', 90);
 	__doMigration('weblinks', 100);
 
+  var mySlideDone = new Fx.Slide('done');
+  mySlideDone.hide();
+  $('done').setStyle('display', 'block');
+  mySlideDone.toggle();
+
 };
 
 function __doMigration(name, percent){
@@ -171,9 +179,25 @@ function __doMigration(name, percent){
 /*
  BUG: cannot set async to false.
 */
+
+
+  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
+    method: 'get',
+		//async: false,
+    onComplete: function( response ) {
+      //alert(percent);
+			pb4.set(percent);
+			text = document.getElementById('status');
+			text.innerHTML = 'Migrating '+name+'...';
+			
+    }
+  }).request();
+
+
+/*
 	var myXHR = new XHR({  
 		method: 'get',
-		async: false
+		//async: false
 	}).send('components/com_jupgrade/includes/migrate_'+name+'.php', null);  
 
 	//alert(percent);
@@ -181,15 +205,12 @@ function __doMigration(name, percent){
 	text = document.getElementById('status');
 	text.innerHTML = 'Migrating '+name+'...';
 
-
-/*
 	//alert(name);
 
   var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
     method: 'get',
 		//async: false,
     onComplete: function( response ) {
-			//event.stopPropagation();
       alert(percent);
 			pb4.set(percent);
 			text = document.getElementById('status');
