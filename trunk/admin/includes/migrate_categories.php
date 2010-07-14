@@ -155,5 +155,5 @@ for($y=0;$y<count($categories);$y++){
 
 //echo "\n\n";
 
-//sleep(1);
+sleep(1);
 ?>

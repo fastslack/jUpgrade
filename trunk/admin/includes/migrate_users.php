@@ -47,7 +47,7 @@ require(JPATH_ROOT.DS."configuration.php");
 
 $jconfig = new JConfig();
 
-print_r($jconfig);
+//print_r($jconfig);
 
 $config = array();
 $config['driver']   = 'mysql';
@@ -64,7 +64,7 @@ $config_new['prefix'] = "j16_";
 $db = JDatabase::getInstance( $config );
 $db_new = JDatabase::getInstance( $config_new );
 //print_r($db_new);
-//print_r($db2);
+//print_r($db);
 
 // Migrating Users
 $query = "SELECT `id`, `name`, `username`, `email`, `password`, `usertype`, `block`,"
@@ -76,7 +76,7 @@ $query = "SELECT `id`, `name`, `username`, `email`, `password`, `usertype`, `blo
 $db->setQuery( $query );
 $users = $db->loadObjectList();
 //print_r($users);
-
+//echo $db->getErrorMsg();
 
 for($i=0;$i<count($users);$i++){
 	$p = explode("\n", $users[$i]->params);
@@ -93,7 +93,7 @@ for($i=0;$i<count($users);$i++){
 	//echo $parameter->toString() . "\n";
 }
 
-echo insertObjectList($db_new, '#__users', $users);
+insertObjectList($db_new, '#__users', $users);
 
 // Migrating Groups
 $query = "SELECT id, title FROM #__usergroups";

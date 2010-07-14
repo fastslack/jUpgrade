@@ -90,5 +90,5 @@ for($i=0;$i<count($content);$i++) {
 
 }
 
-sleep(1);
+//sleep(1);
 ?>

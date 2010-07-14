@@ -40,8 +40,8 @@ $jconfig->site_name = $jconfig->sitename;
 //print_r($jconfig);
 
 if (JInstallationModelConfiguration::_createConfiguration($jconfig) > 0 ) {
-	return 0;
+	echo 1;
 }else{
-	return 1;
+	echo 0;
 }
 ?>
