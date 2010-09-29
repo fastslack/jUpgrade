@@ -67,6 +67,10 @@ function insertCategory( $db, $object, $parent) {
 	##
 	## Save old id and new id
 	##
+	$query = "TRUNCATE TABLE `#__jupgrade_categories`";
+	$db->setQuery( $query );
+	$db->query();
+
 	$query = "INSERT INTO #__jupgrade_categories" 
 	." (`old`,`new`)"
 	." VALUES( {$old}, {$new} ) ";
