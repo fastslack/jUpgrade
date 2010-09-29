@@ -31,10 +31,12 @@ require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'factory.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'import.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'error'.DS.'error.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'base'.DS.'object.php' );
+require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'html'.DS.'parameter.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'database.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'tablenested.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'module.php' );
+
 require(JPATH_ROOT.DS."configuration.php");
 
 $jconfig = new JConfig();
@@ -67,31 +69,40 @@ $db->setQuery( $query );
 $modules = $db->loadObjectList();
 //echo $db->errorMsg();
 
-echo insertObjectList($db_new, '#__modules', $modules);
 
-//print_r($content[0]);
-/*
-for($i=0;$i<count($modules);$i++) {
-	//echo $sections[$i]->id . "<br>";
+for($i=0;$i<count($modules);$i++){
 
-	$new = new JTableModule($db_new);
-	//print_r($new);
-	//$new->id = $modules[$i]->id;
-	$new->title = $modules[$i]->title;
-	$new->content = $modules[$i]->content;
-	$new->ordering = $modules[$i]->ordering;
-	$new->position = $modules[$i]->position;
-	$new->checked_out = $modules[$i]->checked_out;
-	$new->checked_out_time = $modules[$i]->checked_out_time;
-	$new->published = $modules[$i]->published;
-	$new->module = $modules[$i]->module;
-	$new->access = $modules[$i]->access+1;
-	$new->showtitle = $modules[$i]->showtitle;
-	$new->params = $modules[$i]->params;
-	$new->client_id = $modules[$i]->client;
-	$new->store();
+	## Parameters
+	$p = explode("\n", $modules[$i]->params);
+	$params = array();
+	for($y=0;$y<count($p);$y++){
+		$ex = explode("=",$p[$y]);
+		if($ex[0] != ""){
+			if ($ex[1] == 0) {
+				$ex[1] = "";
+			}
+			$params[$ex[0]] = $ex[1];
+		}
+	}
+	$parameter = new JParameter($params);
+	$parameter->loadArray($params);
+	$modules[$i]->params = $parameter->toString();
+	//echo $parameter->toString() . "\n";
+
+	## Language
+	$modules[$i]->language = "*";
+	
+	## Module
+	if ($modules[$i]->module == "mod_mainmenu") {
+		$modules[$i]->module = "mod_menu";
+	}
+
+	## Access
+	$modules[$i]->access = $modules[$i]->access+1;
 
 }
-sleep(1);
-*/
+
+echo insertObjectList($db_new, '#__modules', $modules);
+
+
 ?>
