@@ -39,27 +39,41 @@ function insertCategory( $db, $object, $parent) {
 		$db->setQuery( $query );
 		$parent = $db->loadResult();
 		$level = 2;
+		$old = $object->id;
 	}else{
 		$parent = 1;
 		$level = 1;
 		$path = $alias;
+		$old = 0;
 	}
 	
-	/*
-	 * Insert Category
-	 */
+	##
+	## Insert Category
+	##
 	$query = "INSERT INTO #__categories" 
 	." (`parent_id`,`lft`,`rgt`,`level`,`path`,`extension`,`title`,`alias`,`published`, `access`, `language`)"
 	." VALUES( {$parent}, {$lft}, {$rgt}, {$level}, '{$path}', 'com_content', '{$title}', '{$alias}', {$published}, {$access}, '*' ) ";
 	$db->setQuery( $query );
 	$db->query();	echo $db->getError();
-	//echo $query . "<br>";
+	$new = $db->insertid();
+	//echo $query . "\n";
 
-	// Update ROOT rgt
+	## Update ROOT rgt
 	$query = "UPDATE #__categories SET rgt=rgt+2"
 	." WHERE title = 'ROOT' AND extension = 'system'";		
 	$db->setQuery($query);
 	$db->query();	echo $db->getError();
+
+	##
+	## Save old id and new id
+	##
+	$query = "INSERT INTO #__jupgrade_categories" 
+	." (`old`,`new`)"
+	." VALUES( {$old}, {$new} ) ";
+	$db->setQuery( $query );
+	$db->query();
+	//echo $db->getError();
+	//echo $query."\n";
 
  	return true;
 }
@@ -217,8 +231,6 @@ for($i=0;$i<count($sections);$i++) {
 	}
 
 }
-
-echo "dsd";
 
 sleep(1);
 ?>
