@@ -84,6 +84,9 @@ for($i=0;$i<count($users);$i++){
 	for($y=0;$y<count($p);$y++){
 		$ex = explode("=",$p[$y]);
 		if($ex[0] != ""){
+			if ($ex[1] == 0) {
+				$ex[1] = "";
+			}
 			$params[$ex[0]] = $ex[1];
 		}
 	}
