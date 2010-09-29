@@ -68,7 +68,7 @@ $contacts = $db->loadObjectList();
 //echo $db->errorMsg();
 
 //print_r($content[0]);
-
+/*
 for($i=0;$i<count($contacts);$i++) {
 	//echo $sections[$i]->id . "<br>";
 	$new = new JTableContact($db_new);
@@ -104,4 +104,5 @@ for($i=0;$i<count($contacts);$i++) {
 }
 
 sleep(1);
+*/
 ?>

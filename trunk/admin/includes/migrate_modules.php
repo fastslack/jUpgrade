@@ -53,12 +53,12 @@ $modules = $db->loadObjectList();
 //echo $db->errorMsg();
 
 //print_r($content[0]);
-
+/*
 for($i=0;$i<count($modules);$i++) {
 	//echo $sections[$i]->id . "<br>";
 
 	$new = new JTableModule($db_new);
-	print_r($new);
+	//print_r($new);
 	//$new->id = $modules[$i]->id;
 	$new->title = $modules[$i]->title;
 	$new->content = $modules[$i]->content;
@@ -75,6 +75,6 @@ for($i=0;$i<count($modules);$i++) {
 	$new->store();
 
 }
-
 sleep(1);
+*/
 ?>

@@ -54,7 +54,7 @@ $banners = $db->loadObjectList();
 //echo $db->errorMsg();
 
 //print_r($content[0]);
-
+/*
 for($i=0;$i<count($banners);$i++) {
 	//echo $sections[$i]->id . "<br>";
 
@@ -82,4 +82,5 @@ for($i=0;$i<count($banners);$i++) {
 }
 
 sleep(1);
+*/
 ?>
