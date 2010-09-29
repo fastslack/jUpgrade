@@ -58,7 +58,7 @@ $config_new['prefix'] = "j16_";
 $db = JDatabase::getInstance( $config );
 $db_new = JDatabase::getInstance( $config_new );
 //print_r($db_new);
-
+/*
 $query = "SELECT `bid`,`cid`,`type`,`name`,`alias`,`imptotal`,`impmade`,`clicks`,`imageurl`,`clickurl`,`date`,
 `showBanner`,`checked_out`,`checked_out_time`,`editor`,`custombannercode`,`catid`,`description`,`sticky`,
 `ordering`,`publish_up`,`publish_down`,`tags`,`params`"
@@ -94,9 +94,9 @@ for($i=0;$i<count($banners);$i++) {
 	$new->publish_up = $banners[$i]->publish_up;
 	$new->publish_down = $banners[$i]->publish_down;
 	//$new->setRules('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}');
-	$new->store();
+	//$new->store();
 	//print_r($new);
 }
 
-//sleep(1);
+*/
 ?>
