@@ -19,6 +19,7 @@ steps[5] = "banners";
 steps[6] = "contacts";
 steps[7] = "newsfeeds";
 steps[8] = "polls";
+steps[9] = "weblinks";
 
 
 var progress = function(event)  {
@@ -58,7 +59,7 @@ function download(event){
 
 	pb1 = new mtwProgressBar('pb1');
 
-	//decompress();
+	//install();
 
   var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
     method: 'get',
@@ -142,29 +143,32 @@ function migrate(event){
 
 	pb4 = new mtwProgressBar('pb4');
 
-	__doMigration2.periodical(1000)
+	periodical = __doMigration2.periodical(3000)
 
 };
 
 
+var changeText = function(msg) {
+
+	pb4.set(migrate_global*11);
+	text = document.getElementById('status');
+	text.innerHTML = 'Migrating ' + file;
+	migrate_global = migrate_global+1;
+}
+
+
 var __doMigration2 = function(event)  {
 
-	//alert(steps[migrate_global]);
 	file = steps[migrate_global];
+	//alert('INIT==> '+migrate_global+' <=> '+file);
 
-	var changeText = function(json) {
-		pb4.set(migrate_global*11);
-		text = document.getElementById('status');
-		text.innerHTML = 'Migrating ' + file;
-	}
-
-  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+file+'.php', {
-    method: 'get',
+	var myXHR = new XHR({  
+		method: 'get',
 		//async: false,
-    onComplete: changeText 
-  }).request();
+		onSuccess: changeText
+	}).send('components/com_jupgrade/includes/migrate_'+file+'.php', null);  
 
-	if (migrate_global == 8) {
+	if (migrate_global == 9) {
 		pb4.finish();
 
 		var mySlideDone = new Fx.Slide('done');
@@ -172,14 +176,16 @@ var __doMigration2 = function(event)  {
 		$('done').setStyle('display', 'block');
 		mySlideDone.toggle();
 
-		$clear(this);
+		$clear(periodical);
 	}
 
-	migrate_global = migrate_global+1;
 };
 
 
 
+/*
+ * OLD !!
+ */
 function __doMigration_debug(name, percent){
 
   var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
@@ -228,6 +234,12 @@ function __doMigration(name, percent){
 	text.innerHTML = 'Migrating '+name+'...';
 
 	//alert(name);
+
+  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+file+'.php', {
+    method: 'get',
+		//async: false,
+    onComplete: changeText
+  }).request();
 
   var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
     method: 'get',
