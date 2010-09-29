@@ -8,6 +8,18 @@
  * @license     GNU/GPL
  */
 
+function insertObjectList( $db, $table, &$object, $keyName = NULL ) {
+
+	$count = count($object);
+
+	for ($i=0; $i<$count; $i++) {
+		$db->insertObject($table, $object[$i]);
+		$ret = $db->getErrorMsg();
+	}
+
+  return $ret;
+}
+
 define( '_JEXEC', 1 );
 define( 'JPATH_BASE', dirname(__FILE__) );
 define( 'DS', DIRECTORY_SEPARATOR );
@@ -18,6 +30,7 @@ require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'factory.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'import.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'error'.DS.'error.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'base'.DS.'object.php' );
+require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'application'.DS.'application.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'database.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php' );
 require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'tablenested.php' );
@@ -44,7 +57,10 @@ $db = JDatabase::getInstance( $config );
 $db_new = JDatabase::getInstance( $config_new );
 //print_r($db_new);
 
-$query = "SELECT *"
+$query = "SELECT `menutype`,`name` AS title,`alias`,`link`,`type`,"
+." `published`,`parent` AS parent_id, `componentid` AS component_id,"
+." `sublevel` AS level,`ordering`,`checked_out`,`checked_out_time`,`browserNav`,"
+." `access`,`params`,`lft`,`rgt`,`home`"
 ." FROM {$config['prefix']}menu"
 ." ORDER BY id ASC";
 $db->setQuery( $query );
@@ -52,52 +68,16 @@ $menu = $db->loadObjectList();
 //echo $db->errorMsg();
 //print_r($content[0]);
 
-for($i=0;$i<count($menu);$i++) {
-	//echo $sections[$i]->id . "<br>";
+//echo count($menu);
 
-	$new = new JTableMenu($db_new);
-	//print_r($new);
-	//$new->id = $menu[$i]->
-	$new->menutype = $menu[$i]->menutype;
-	$new->title = $menu[$i]->name;
-	$new->alias = $menu[$i]->alias;
-	$new->link = $menu[$i]->link;
-	$new->type = $menu[$i]->type;
-	$new->published = $menu[$i]->published;
-	$new->parent_id = $menu[$i]->parent;
-	$new->level = $menu[$i]->sublevel;
-	$new->component_id = $menu[$i]->componentid;
-	$new->ordering = $menu[$i]->ordering;
-	$new->checked_out = $menu[$i]->checked_out;
-	$new->checked_out_time = $menu[$i]->checked_out_time;
-	$new->browserNav = $menu[$i]->browserNav;
-	$new->access = $menu[$i]->access+1;
-	$new->params = $menu[$i]->params;
-	$new->lft = $menu[$i]->lft;
-	$new->rgt = $menu[$i]->rgt;
-	$new->store();
-
-}
+echo insertObjectList($db_new, '#__menu', $menu);
 
 $query = "SELECT *"
 ." FROM {$config['prefix']}menu_types"
 ." WHERE id > 1";
 $db->setQuery( $query );
-$menutype = $db->loadObjectList();
-//echo $db->errorMsg();
+$menutypes = $db->loadObjectList();
 
-for($i=0;$i<count($menutype);$i++) {
-	//echo $sections[$i]->id . "<br>";
+echo insertObjectList($db_new, '#__menu_types', $menutypes);
 
-	$new = new JTableMenuType($db_new);
-	//print_r($new);
-	$new->menutype = $menutype[$i]->menutype;
-	$new->title = $menutype[$i]->title;
-	$new->description = $menutype[$i]->description;
-	$new->store();
-
-}
-
-
-sleep(1);
 ?>
