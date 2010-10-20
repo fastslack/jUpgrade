@@ -8,63 +8,20 @@
  * @license     GNU/GPL
  */
 
-
-function insertObjectList( $db, $table, &$object, $keyName = NULL ) {
-
-	//print_r($db);
-
-	$count = count($object);
-
-	for ($i=0; $i<$count; $i++) {
-		$db->insertObject($table, $object[$i]);
-	}
-
-	$ret = $db->getErrorNum();
-
-	//print_r($db);
-
-	if($ret = 0) {
-		return true;
-	}else{
-	  return $ret;
-	}
-}
-
 define( '_JEXEC', 1 );
 define( 'JPATH_BASE', dirname(__FILE__) );
 define( 'DS', DIRECTORY_SEPARATOR );
 
 require_once ( JPATH_BASE .DS.'defines.php' );
-require_once ( JPATH_LIBRARIES .DS.'joomla'.DS.'methods.php' );
-require_once ( JPATH_LIBRARIES .DS.'joomla'.DS.'factory.php' );
-require_once ( JPATH_LIBRARIES .DS.'joomla'.DS.'import.php' );
-require_once ( JPATH_LIBRARIES .DS.'joomla'.DS.'error'.DS.'error.php' );
-require_once ( JPATH_LIBRARIES .DS.'joomla'.DS.'base'.DS.'object.php' );
-require_once ( JPATH_LIBRARIES .DS.'joomla'.DS.'database'.DS.'database.php' );
-require_once ( JPATH_LIBRARIES .DS.'joomla'.DS.'html'.DS.'parameter.php' );
-//require_once ( JPATH_ADMINISTRATOR .DS.'components'.DS.'com_jupgrade'.DS.'helpers'.DS.'extendeddb.php' );
-require(JPATH_ROOT.DS."configuration.php");
+require_once ( JPATH_BASE .DS.'jupgrade.class.php' );
 
-$jconfig = new JConfig();
+$jUpgrade = new jUpgrade();
 
-//print_r($jconfig);
+$db = &$jUpgrade->db_old;
+$db_new = &$jUpgrade->db_new;
+$config = &$jUpgrade->config;
 
-$config = array();
-$config['driver']   = 'mysql';
-$config['host']     = $jconfig->host;
-$config['user']     = $jconfig->user; 
-$config['password'] = $jconfig->password;
-$config['database'] = $jconfig->db;  
-$config['prefix']   = $jconfig->dbprefix;
-//print_r($config);
-
-$config_new = $config;
-$config_new['prefix'] = "j16_";
-
-$db = JDatabase::getInstance( $config );
-$db_new = JDatabase::getInstance( $config_new );
-//print_r($db_new);
-//print_r($db);
+##
 
 // Migrating Users
 $query = "SELECT `id`, `name`, `username`, `email`, `password`, `usertype`, `block`,"
@@ -78,25 +35,9 @@ $users = $db->loadObjectList();
 //print_r($users);
 //echo $db->getErrorMsg();
 
-for($i=0;$i<count($users);$i++){
-	$p = explode("\n", $users[$i]->params);
-	$params = array();
-	for($y=0;$y<count($p);$y++){
-		$ex = explode("=",$p[$y]);
-		if($ex[0] != ""){
-			if ($ex[1] == 0) {
-				$ex[1] = "";
-			}
-			$params[$ex[0]] = $ex[1];
-		}
-	}
-	$parameter = new JParameter($params);
-	$parameter->loadArray($params);
-	$users[$i]->params = $parameter->toString();
-	//echo $parameter->toString() . "\n";
-}
+$users = $jUpgrade->fixParams($users);
 
-insertObjectList($db_new, '#__users', $users);
+$jUpgrade->insertObjectList($db_new, '#__users', $users);
 
 // Migrating Groups
 $query = "SELECT id, title FROM #__usergroups";
@@ -122,8 +63,7 @@ for($i=0;$i<count($user_usergroup_map);$i++) {
 	$user_usergroup_map[$i]->group_id = $newgids[$user_usergroup_map[$i]->group_id];
 }
 //print_r($user_usergroup_map);
-$ret = insertObjectList($db_new, '#__user_usergroup_map', $user_usergroup_map);	
+$ret = $jUpgrade->insertObjectList($db_new, '#__user_usergroup_map', $user_usergroup_map);	
 
-sleep(1);
-
+//sleep(1);
 ?>
