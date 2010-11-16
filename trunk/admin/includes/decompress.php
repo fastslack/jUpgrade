@@ -2,10 +2,12 @@
 /**
  * jUpgrade
  *
- * @author      Matias Aguirre
- * @email       maguirre@matware.com.ar
- * @url         http://www.matware.com.ar
- * @license     GNU/GPL
+ * @version		$Id$
+ * @package		MatWare
+ * @subpackage	com_jupgrade
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 define( '_JEXEC', 1 );
