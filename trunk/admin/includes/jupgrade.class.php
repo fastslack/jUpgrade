@@ -374,29 +374,4 @@ class jUpgrade
 		return $ret;
 	}
 
-	function fixParams ($object) {
-
-		for ($i=0;$i<count($object);$i++)
-		{
-			$p = explode("\n", $object[$i]->params);
-			$params = array();
-
-			for ($y=0;$y<count($p);$y++) {
-				$ex = explode("=",$p[$y]);
-				if ($ex[0] != "") {
-					if ($ex[1] == 0) {
-						$ex[1] = "";
-					}
-					$params[$ex[0]] = $ex[1];
-				}
-			}
-
-			$parameter = new JParameter($params);
-			$parameter->loadArray($params);
-			$object[$i]->params = $parameter->toString();
-			//echo $parameter->toString() . "\n";
-		}
-
-		return $object;
-	}
 }
