@@ -116,6 +116,7 @@ class jUpgrade
 	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
+	 * @param	string 	$select	A select condition to add to the query.
 	 * @param	string	$where	A where condition to add to the query.
 	 * @param	string	$order	The ordering for the source data.
 	 *
@@ -123,21 +124,26 @@ class jUpgrade
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function &getSourceData($where = null, $order = null)
+	protected function &getSourceData($select = '*', $where = null, $order = null)
 	{
 		// Error checking.
 		if (empty($this->source)) {
 			throw new Exception('Source table not specified.');
 		}
 
-		// Prepare the query for the source data.
-		// TODO: We *should* be using JDatabaseQuery here.
-		$this->db_old->setQuery(
-			'SELECT *' .
-			' FROM '.$this->db_old->nameQuote($this->source) .
-			(empty($where) ? '' : ' WHERE '.$where) .
-			(empty($order) ? '' : ' ORDER BY '.$this->db_old->nameQuote($order))
-		);
+		/// Prepare the query for the source data.
+		$query = $this->db_old->getQuery(true);
+
+		$query->select($select);
+		$query->from($this->db_old->nameQuote($this->source));
+		if (!empty($where)) {
+			$query->where($where);
+		}
+		if (!empty($order)) {
+			$query->order($this->db_old->nameQuote($order));
+		}
+
+		$this->db_old->setQuery((string)$query);
 
 		$rows	= $this->db_old->loadAssocList();
 		$error	= $this->db_old->getErrorMsg();
