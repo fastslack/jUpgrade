@@ -10,101 +10,59 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-define( '_JEXEC', 1 );
-define( 'JPATH_BASE', dirname(__FILE__) );
-define( 'DS', DIRECTORY_SEPARATOR );
-require_once ( JPATH_BASE .DS.'defines.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'methods.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'factory.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'import.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'error'.DS.'error.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'base'.DS.'object.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'database.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table.php' );
-require_once ( JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'tablenested.php' );
-require(JPATH_ROOT.DS."configuration.php");
+define('_JEXEC',		1);
+//define('JPATH_BASE',	dirname(dirname(dirname(dirname(dirname(__FILE__))))));
+define('JPATH_BASE',	dirname(__FILE__));
+define('DS',			DIRECTORY_SEPARATOR);
+
+require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/jupgrade.class.php';
 
 /**
- * Contact table
+ * Upgrade class for Contacts
  *
- * @package		Joomla.Framework
- * @subpackage	Table
- * @since		1.0
+ * This class takes the contacts from the existing site and inserts them into the new site.
+ *
+ * @since	0.4.5
  */
-class JTableContact extends JTable
+class jUpgradeContacts extends jUpgrade
 {
 	/**
-	* @param database A database connector object
-	*/
-	function __construct(&$db)
+	 * @var		string	The name of the source database table.
+	 * @since	0.4.5
+	 */
+	protected $source = '#__contact_details';
+
+	/**
+	 * Get the raw data for this part of the upgrade.
+	 *
+	 * @return	array	Returns a reference to the source data array.
+	 * @since	0.4.5
+	 * @throws	Exception
+	 */
+	protected function &getSourceData()
 	{
-		parent::__construct('#__contact_details', 'id', $db);
+		$rows = parent::getSourceData(
+			'*',
+			null,
+			'id'
+		);
+
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row)
+		{
+			$row['params'] = $this->convertParams($row['params']);
+
+			// Remove unused fields.
+			unset($row['gid']);
+		}
+
+		return $rows;
 	}
 }
 
-$jconfig = new JConfig();
-//print_r($jconfig);
+// Migrate the contacts.
+$contacts = new jUpgradeContacts;
+$contacts->upgrade();
 
-$config = array();
-$config['driver']   = 'mysql';
-$config['host']     = $jconfig->host;
-$config['user']     = $jconfig->user; 
-$config['password'] = $jconfig->password;
-$config['database'] = $jconfig->db;  
-$config['prefix']   = $jconfig->dbprefix;
-//print_r($config);
-
-$config_new = $config;
-$config_new['prefix'] = "j16_";
-
-$db = JDatabase::getInstance( $config );
-$db_new = JDatabase::getInstance( $config_new );
-//print_r($db_new);
-
-$query = "SELECT *"
-." FROM {$config['prefix']}contact_details"
-." ORDER BY id ASC";
-
-$db->setQuery( $query );
-$contacts = $db->loadObjectList();
-//echo $db->errorMsg();
-
-//print_r($content[0]);
-/*
-for($i=0;$i<count($contacts);$i++) {
-	//echo $sections[$i]->id . "<br>";
-	$new = new JTableContact($db_new);
-	print_r($new);
-	$new->name = $contacts[$i]->name;
-	$new->alias = $contacts[$i]->alias;
-	$new->con_position = $contacts[$i]->con_position;
-	$new->address = $contacts[$i]->address;
-	$new->suburb = $contacts[$i]->suburb;
-	$new->state = $contacts[$i]->state;
-	$new->country = $contacts[$i]->country;
-	$new->postcode = $contacts[$i]->postcode;
-	$new->telephone = $contacts[$i]->telephone;
-	$new->fax = $contacts[$i]->fax;
-	$new->misc = $contacts[$i]->misc;
-	$new->image = $contacts[$i]->image;
-	$new->imagepos = $contacts[$i]->imagepos;
-	$new->email_to = $contacts[$i]->email_to;
-	$new->default_con = $contacts[$i]->default_con;
-	$new->published = $contacts[$i]->published;
-	$new->checked_out = $contacts[$i]->checked_out;
-	$new->checked_out_time = $contacts[$i]->checked_out_time;
-	$new->ordering = $contacts[$i]->ordering;
-	$new->params = $contacts[$i]->params;
-	$new->user_id = $contacts[$i]->user_id;
-	$new->catid = $contacts[$i]->catid;
-	$new->access = $contacts[$i]->access;
-	$new->mobile = $contacts[$i]->mobile;
-	$new->webpage = $contacts[$i]->webpage;
-	//$new->setRules('{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}');
-	$new->store();
-
-}
-
-sleep(1);
-*/
 ?>

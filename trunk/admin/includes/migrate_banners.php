@@ -10,47 +10,69 @@
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-define( '_JEXEC', 1 );
-define( 'JPATH_BASE', dirname(__FILE__) );
-define( 'DS', DIRECTORY_SEPARATOR );
-require_once ( JPATH_BASE .DS.'defines.php' );
-require_once ( JPATH_BASE .DS.'jupgrade.class.php' );
+define('_JEXEC',		1);
+//define('JPATH_BASE',	dirname(dirname(dirname(dirname(dirname(__FILE__))))));
+define('JPATH_BASE',	dirname(__FILE__));
+define('DS',			DIRECTORY_SEPARATOR);
 
-$jUpgrade = new jUpgrade();
+require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/jupgrade.class.php';
 
-$db = &$jUpgrade->db_old;
-$db_new = &$jUpgrade->db_new;
-$config = &$jUpgrade->config;
+/**
+ * Upgrade class for Banners
+ *
+ * This class takes the banners from the existing site and inserts them into the new site.
+ *
+ * @since	0.4.5
+ */
+class jUpgradeBanners extends jUpgrade
+{
+	/**
+	 * @var		string	The name of the source database table.
+	 * @since	0.4.5
+	 */
+	protected $source = '#__banner';
 
-##
+	/**
+	 * @var		string	The name of the destination database table.
+	 * @since	0.4.5
+	 */
+	protected $destination = '#__banners';
 
-$query = "SELECT `bid` AS id,`cid`,`type`,`name`,`alias`, `imptotal` ,`impmade`, `clicks`, "
-." `clickurl`, `checked_out`, `checked_out_time`, `showBanner` AS state,"
-." `custombannercode`,`description`,`sticky`,
-`ordering`,`publish_up`,`publish_down`, `params`"
-." FROM {$config['prefix']}banner"
-." ORDER BY bid ASC";
 
-$db->setQuery( $query );
-$banners = $db->loadObjectList();
-//echo $db->errorMsg();
+	/**
+	 * Get the raw data for this part of the upgrade.
+	 *
+	 * @return	array	Returns a reference to the source data array.
+	 * @since	0.4.5
+	 * @throws	Exception
+	 */
+	protected function &getSourceData()
+	{
+		$rows = parent::getSourceData(
+			'`bid` AS id,`cid`,`type`,`name`,`alias`, `imptotal` ,`impmade`, `clicks`, '
+		 .'`clickurl`, `checked_out`, `checked_out_time`, `showBanner` AS state,'
+		 .' `custombannercode`, `description`, `sticky`, `ordering`, `publish_up`, '
+		 .' `publish_down`, `params`',
+			null,
+			'bid'
+		);
 
-print_r($banners);
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row)
+		{
+			$row['params'] = $this->convertParams($row['params']);
 
-// `id`,`cid`,`type`,`name`,`alias`,`imptotal`,`impmade`,`clicks`,`clickurl`,`state`,`catid`,`description`,
-//`custombannercode`,`sticky`,`ordering`,`metakey`,`params`,`own_prefix`,`metakey_prefix`,`purchase_type`,
-//`track_clicks`,`track_impressions`,`checked_out`,`checked_out_time`,`publish_up`,`publish_down`,`reset`,`created`,`language`
+			// Remove unused fields.
+			unset($row['gid']);
+		}
 
-for($i=0;$i<count($banners);$i++){
-	$banner = &$banners[$i];
-	//$banner->access = $banner->access+1;
-	$banner->language = "*";
-
+		return $rows;
+	}
 }
 
-echo $db->getErrorMsg();
-//echo $query;
-
-echo $jUpgrade->insertObjectList($db_new, '#__banners', $banners);
+// Migrate the banners.
+$banners = new jUpgradeBanners;
+$banners->upgrade();
 
 ?>
