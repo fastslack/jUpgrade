@@ -37,24 +37,36 @@ class jUpgrade
 
 	function __construct()
 	{
+		// Base includes
 		require_once JPATH_LIBRARIES.'/joomla/methods.php';
 		require_once JPATH_LIBRARIES.'/joomla/factory.php';
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
-		require_once JPATH_LIBRARIES.'/joomla/error/error.php';
 		require_once JPATH_LIBRARIES.'/joomla/base/object.php';
 		require_once JPATH_LIBRARIES.'/joomla/application/application.php';
+
+		// Error includes
+		require_once JPATH_LIBRARIES.'/joomla/error/error.php';
+		require_once JPATH_LIBRARIES.'/joomla/error/exception.php';
+
+		// Database includes
 		require_once JPATH_LIBRARIES.'/joomla/database/database.php';
 		require_once JPATH_LIBRARIES.'/joomla/database/table.php';
 		require_once JPATH_LIBRARIES.'/joomla/database/tablenested.php';
 		require_once JPATH_LIBRARIES.'/joomla/database/table/asset.php';
 		require_once JPATH_LIBRARIES.'/joomla/database/table/category.php';
+
+		// Update and installer includes for 3rd party extensions
+		require_once JPATH_LIBRARIES.'/joomla/application/component/modellist.php';
+		require_once JPATH_LIBRARIES.'/joomla/installer/installer.php';
+		require_once JPATH_LIBRARIES.'/joomla/updater/updater.php';
+		require_once JPATH_LIBRARIES.'/joomla/updater/update.php';
+
+		// Other stuff
 		require_once JPATH_LIBRARIES.'/joomla/utilities/string.php';
 		require_once JPATH_LIBRARIES.'/joomla/filter/filteroutput.php';
 		require_once JPATH_LIBRARIES.'/joomla/html/parameter.php';
 		require_once JPATH_ROOT.'/configuration.php';
 
-		require_once JPATH_LIBRARIES.'/joomla/error/error.php';
-		require_once JPATH_LIBRARIES.'/joomla/error/exception.php';
 
 		// Echo all errors, otherwise things go really bad.
 		JError::setErrorHandling(E_ALL, 'echo');
