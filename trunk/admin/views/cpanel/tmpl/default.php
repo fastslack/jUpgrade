@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $version = "v{$this->version}";
 
+JHTML::_( 'behavior.mootools' );
+
 $document = &JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/functions.js' );
 $document->addScript('components/com_jupgrade/js/mtwProgressBar.js' );
@@ -30,8 +32,9 @@ window.addEvent('domready', function() {
 
 	$('download').setStyle('display', 'none');
 	$('decompress').setStyle('display', 'none');
-	$('migration').setStyle('display', 'none');
 	$('install').setStyle('display', 'none');
+	$('migration').setStyle('display', 'none');
+	$('extensions').setStyle('display', 'none');
 	$('done').setStyle('display', 'none');
 
   $('update').addEvent('click', download);
@@ -67,6 +70,11 @@ window.addEvent('domready', function() {
 			<p class="text"><?php echo JText::_( 'Upgrade progress...' ); ?></p>
 			<div id="pb4"></div>
 			<div><i><small><span id="status"><?php echo JText::_( 'Preparing for migration...' ); ?></span></i></small></div>
+		</div>
+		<div id="extensions">
+			<p class="text"><?php echo JText::_( 'Migrating 3rd extensions...' ); ?></p>
+			<div id="pb5"></div>
+			<div><span id="status_ext"><?php echo JText::_( 'UNDER CONSTRUCTION' ); ?></span></div>
 		</div>
 		<div id="done">
 			<h2><?php echo JText::_( 'Joomla 1.6 Upgrade Finished!' ); ?></h2>
