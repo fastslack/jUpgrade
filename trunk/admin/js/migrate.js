@@ -170,7 +170,7 @@ function migrate(event){
 
 	pb4 = new mtwProgressBar('pb4');
 
-	periodical = _doMigration.periodical(3000)
+	periodical = _doMigration.periodical(1000)
 
 };
 
@@ -207,13 +207,64 @@ var _doMigration = function(event)  {
 	if (migrate_global == 9) {
 		pb4.finish();
 
-		var mySlideDone = new Fx.Slide('done');
-		mySlideDone.hide();
-		$('done').setStyle('display', 'block');
-		mySlideDone.toggle();
-
+		// Shutdown periodical
 		$clear(periodical);
+
+		// Run extensions step
+		extensions();
+
 	}
+};
+
+/**
+ * Migrate the 3rd party extensions
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
+function extensions(event){
+
+  var mySlideExt = new Fx.Slide('extensions');
+  mySlideExt.hide();
+  $('extensions').setStyle('display', 'block');
+  mySlideExt.toggle();
+
+	pb5 = new mtwProgressBar('pb5');
+
+	pb5.set(100);
+	pb5.finish();
+
+	done();
+
+/*
+	TODO: Run the jUpgradeExtension class
+
+  var d = new Ajax( 'components/com_jupgrade/includes/extensions.php', {
+    method: 'get',
+    onComplete: function( response ) {
+      //alert(response);
+			pb5.set(100);
+			pb5.finish();
+      //install();
+    }
+  }).request();
+*/
 
 };
+
+
+/**
+ * Show done message
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
+function done(event){
+
+	var mySlideDone = new Fx.Slide('done');
+	mySlideDone.hide();
+	$('done').setStyle('display', 'block');
+	mySlideDone.toggle();
+
+}
 
