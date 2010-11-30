@@ -1,12 +1,13 @@
 /**
  * jUpgrade
  *
- * @author      Matias Aguirre
- * @email       maguirre@matware.com.ar
- * @url         http://www.matware.com.ar
- * @license     GNU/GPL
+ * @version			$Id$
+ * @package			MatWare
+ * @subpackage	com_jupgrade
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 div#update {
 	width: 400px;
 	padding: 3px;
@@ -24,7 +25,7 @@ div#update:hover {
 	border:	1px solid #30559C;
 }
 
-#download, #decompress, #install, #migration, #done {
+#download, #decompress, #install, #migration, #extensions, #done {
 	margin: 7px;
 	border:	2px dotted #e3e1e1;
 	background-color: #fafafa;
@@ -36,6 +37,10 @@ div#update:hover {
 .text {
 	font-family: Arial,Helvetica,sans-serif;
 	font-size: 11pt;
+}
+
+#status_ext {
+	color: red;
 }
 
 #pb1-box, #pb2-box, #pb3-box, #pb4-box {
