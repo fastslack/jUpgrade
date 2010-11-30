@@ -48,6 +48,7 @@ class jUpgradeMenu extends jUpgrade
 			.' `sublevel` AS level,`ordering`,`checked_out`,`checked_out_time`,`browserNav`,'
 			.' `access`,`params`,`lft`,`rgt`,`home`',
 			null,
+			null,
 			'id'
 		);
 
@@ -90,6 +91,7 @@ class jUpgradeMenuTypes extends jUpgrade
 	{
 		$rows = parent::getSourceData(
 			 '*',
+			null,
 			$this->db_old->nameQuote('id').' > 1',
 			'id'
 		);
