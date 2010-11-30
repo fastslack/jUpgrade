@@ -38,35 +38,39 @@ class jUpgrade
 	function __construct()
 	{
 		// Base includes
+		require_once JPATH_LIBRARIES.'/joomla/import.php';
 		require_once JPATH_LIBRARIES.'/joomla/methods.php';
 		require_once JPATH_LIBRARIES.'/joomla/factory.php';
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
-		require_once JPATH_LIBRARIES.'/joomla/base/object.php';
-		require_once JPATH_LIBRARIES.'/joomla/application/application.php';
-
-		// Error includes
-		require_once JPATH_LIBRARIES.'/joomla/error/error.php';
-		require_once JPATH_LIBRARIES.'/joomla/error/exception.php';
-
-		// Database includes
-		require_once JPATH_LIBRARIES.'/joomla/database/database.php';
-		require_once JPATH_LIBRARIES.'/joomla/database/table.php';
-		require_once JPATH_LIBRARIES.'/joomla/database/tablenested.php';
-		require_once JPATH_LIBRARIES.'/joomla/database/table/asset.php';
-		require_once JPATH_LIBRARIES.'/joomla/database/table/category.php';
-
-		// Update and installer includes for 3rd party extensions
-		require_once JPATH_LIBRARIES.'/joomla/application/component/modellist.php';
-		require_once JPATH_LIBRARIES.'/joomla/installer/installer.php';
-		require_once JPATH_LIBRARIES.'/joomla/updater/updater.php';
-		require_once JPATH_LIBRARIES.'/joomla/updater/update.php';
-
-		// Other stuff
-		require_once JPATH_LIBRARIES.'/joomla/utilities/string.php';
-		require_once JPATH_LIBRARIES.'/joomla/filter/filteroutput.php';
-		require_once JPATH_LIBRARIES.'/joomla/html/parameter.php';
 		require_once JPATH_ROOT.'/configuration.php';
 
+		// Base includes
+		jimport('joomla.base.object');
+
+		// Application includes
+		jimport('joomla.application.application');
+		jimport('joomla.application.component.modellist');
+
+		// Error includes
+		jimport('joomla.error.error');
+		jimport('joomla.error.exception');
+
+		// Database includes
+		jimport('joomla.database.database');
+		jimport('joomla.database.table');
+		jimport('joomla.database.tablenested');
+		jimport('joomla.database.table.asset');
+		jimport('joomla.database.table.category');
+
+		// Update and installer includes for 3rd party extensions
+		jimport('joomla.installer.installer');
+		jimport('joomla.updater.updater');
+		jimport('joomla.updater.update');
+
+		// Other stuff
+		jimport('joomla.utilities.string');
+		jimport('joomla.filter.filteroutput');
+		jimport('joomla.html.parameter');
 
 		// Echo all errors, otherwise things go really bad.
 		JError::setErrorHandling(E_ALL, 'echo');
@@ -129,6 +133,7 @@ class jUpgrade
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @param	string 	$select	A select condition to add to the query.
+	 * @param	string 	$join	 A select condition to add to the query.
 	 * @param	string	$where	A where condition to add to the query.
 	 * @param	string	$order	The ordering for the source data.
 	 *
@@ -136,27 +141,34 @@ class jUpgrade
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function &getSourceData($select = '*', $where = null, $order = null)
+	protected function &getSourceData($select = '*', $join = null, $where = null, $order = null)
 	{
 		// Error checking.
 		if (empty($this->source)) {
 			throw new Exception('Source table not specified.');
 		}
 
-		/// Prepare the query for the source data.
+		// Prepare the query for the source data.
 		$query = $this->db_old->getQuery(true);
 
 		$query->select($select);
 		$query->from($this->db_old->nameQuote($this->source));
-		if (!empty($where)) {
+
+		// Check if 'where' clause is set
+		if (!empty($where))
 			$query->where($where);
-		}
-		if (!empty($order)) {
+
+		// TODO: Check if 'join' clause is set 
+		//if (!empty($join)) 
+		//	$query->join($join);
+
+		// Check if 'order' clause is set
+		if (!empty($order))
 			$query->order($this->db_old->nameQuote($order));
-		}
 
 		$this->db_old->setQuery((string)$query);
 
+		// Getting data
 		$rows	= $this->db_old->loadAssocList();
 		$error	= $this->db_old->getErrorMsg();
 
@@ -220,8 +232,9 @@ class jUpgrade
 	 *
 	 * @access  public
 	 * @param   object  An object whose properties match table fields
+	 * @since	0.4.
 	 */
-	function insertCategory($object, $parent)
+	public function insertCategory($object, $parent)
 	{
 		
 		// Get data for category
@@ -257,7 +270,7 @@ class jUpgrade
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
 			$parent = $this->db_new->loadResult();
-			echo $this->db_new->getError();
+			//echo $this->db_new->getError();
 
 			$level = 2;
 			$old = $object->id;
@@ -296,9 +309,10 @@ class jUpgrade
 	/**
 	 * Inserts asset
 	 *
+	 * @since	0.4.
 	 * @access  public
 	 */
-	function insertAsset($parent) {
+	public function insertAsset($parent) {
 
 		/*
 		 * Get parent
@@ -316,6 +330,7 @@ class jUpgrade
 
 		/*
 		 * Get data for asset
+	 	 * @since	0.4.
 		 */
 		$query = "SELECT id FROM #__categories ORDER BY id DESC LIMIT 1";
 		$this->db_new->setQuery($query);
@@ -372,8 +387,14 @@ class jUpgrade
 		return true;
 	}
 
-
-	function insertObjectList($db, $table, &$object, $keyName = NULL)
+	/**
+	 * Insert an entire objectList
+	 *
+	 * @return	error?
+	 * @since	0.4.
+	 * @throws	Exception
+	 */
+	public function insertObjectList($db, $table, &$object, $keyName = NULL)
 	{
 		$count = count($object);
 
@@ -384,6 +405,17 @@ class jUpgrade
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Internal function to debug
+	 *
+	 * @return	a better version of print_r
+	 * @since	0.4.5
+	 * @throws	Exception
+	 */
+	public function print_a($subject){
+		echo str_replace("=>","&#8658;",str_replace("Array","<font color=\"red\"><b>Array</b></font>",nl2br(str_replace(" "," &nbsp; ",print_r($subject,true)))));
 	}
 
 }
