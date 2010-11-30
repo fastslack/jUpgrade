@@ -1,12 +1,13 @@
 /**
  * jUpgrade
  *
- * @author      Matias Aguirre
- * @email       maguirre@matware.com.ar
- * @url         http://www.matware.com.ar
- * @license     GNU/GPL
+ * @version			$Id$
+ * @package			MatWare
+ * @subpackage	com_jupgrade
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 migrate_global = 0;
 
 steps = new Array();
@@ -21,13 +22,17 @@ steps[7] = "newsfeeds";
 steps[8] = "polls";
 steps[9] = "weblinks";
 
-
+/**
+ * Function to change the progressbar
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
 var progress = function(event)  {
 
   var a = new Ajax( 'components/com_jupgrade/includes/getfilesize.php', {
     method: 'get',
     onComplete: function( msg ) {
-        //alert(msg);
 				var ex = explode(',', msg);
 
         currBytes = document.getElementById('currBytes');
@@ -47,6 +52,12 @@ var progress = function(event)  {
 
 };
 
+/**
+ * Function to download Joomla 1.6 using AJAX
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
 function download(event){
 
   var mySlideUpdate = new Fx.Slide('update');
@@ -77,7 +88,12 @@ function download(event){
 
 };
 
-
+/**
+ * Function to decompress the downloaded file
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
 function decompress(event){
 
   var mySlideDecompress = new Fx.Slide('decompress');
@@ -102,6 +118,12 @@ function decompress(event){
 
 };
 
+/**
+ * Install Joomla 1.6 
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
 function install(event){
 
   var mySlideInstall = new Fx.Slide('install');
@@ -133,7 +155,12 @@ function install(event){
 
 };
 
-
+/**
+ * Start the migration
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
 function migrate(event){
 
   var mySlideMigrate = new Fx.Slide('migration');
@@ -143,21 +170,30 @@ function migrate(event){
 
 	pb4 = new mtwProgressBar('pb4');
 
-	periodical = __doMigration2.periodical(3000)
+	periodical = _doMigration.periodical(3000)
 
 };
 
-
-var changeText = function(msg) {
-
+/**
+ * Internal function to change the text
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
+var _changeText = function(msg) {
 	pb4.set(migrate_global*11);
 	text = document.getElementById('status');
 	text.innerHTML = 'Migrating ' + file;
 	migrate_global = migrate_global+1;
 }
 
-
-var __doMigration2 = function(event)  {
+/**
+ * Internal function run the differents php files to migrate
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
+var _doMigration = function(event)  {
 
 	file = steps[migrate_global];
 	//alert('INIT==> '+migrate_global+' <=> '+file);
@@ -165,7 +201,7 @@ var __doMigration2 = function(event)  {
 	var myXHR = new XHR({  
 		method: 'get',
 		//async: false,
-		onSuccess: changeText
+		onSuccess: _changeText
 	}).send('components/com_jupgrade/includes/migrate_'+file+'.php', null);  
 
 	if (migrate_global == 9) {
@@ -179,101 +215,5 @@ var __doMigration2 = function(event)  {
 		$clear(periodical);
 	}
 
-};
-
-
-
-/*
- * OLD !!
- */
-function __doMigration_debug(name, percent){
-
-  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
-    method: 'get',
-		//async: true,
-    onComplete: function( response ) {
-      alert(response);
-			pb4.set(percent);
-			text = document.getElementById('status');
-			text.innerHTML = 'Migrating '+name+'...';
-			
-    }
-  }).request();
-
-}
-
-function __doMigration(name, percent){
-
-/*
- BUG: cannot set async to false.
-*/
-
-	//alert(name);
-  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
-    method: 'get',
-		//async: false,
-    onComplete: function( response ) {
-      alert(name +' '+ response);
-			//pb4.set(percent);
-			//text = document.getElementById('status');
-			//text.innerHTML = 'Migrating '+name+'...';
-			
-    }
-  }).request();
-
-
-/*
-	var myXHR = new XHR({  
-		method: 'get',
-		//async: false
-	}).send('components/com_jupgrade/includes/migrate_'+name+'.php', null);  
-
-	//alert(percent);
-	pb4.set(percent);
-	text = document.getElementById('status');
-	text.innerHTML = 'Migrating '+name+'...';
-
-	//alert(name);
-
-  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+file+'.php', {
-    method: 'get',
-		//async: false,
-    onComplete: changeText
-  }).request();
-
-  var d = new Ajax( 'components/com_jupgrade/includes/migrate_'+name+'.php', {
-    method: 'get',
-		//async: false,
-    onComplete: function( response ) {
-      alert(percent);
-			pb4.set(percent);
-			text = document.getElementById('status');
-			text.innerHTML = 'Migrating '+name+'...';
-			
-    }
-  }).request();
-
-	//alert(d);
-
-	var myRequest = new Request({
-		method: 'get', 
-		url: 'components/com_jupgrade/includes/migrate_'+name+'.php',
-		//async: true,
-    onComplete: function( response ) {
-      alert(response);
-			pb4.set(percent);
-			text = document.getElementById('status');
-			text.innerHTML = 'Migrating '+name+'...';
-    }
-	}).send();
-
-	var req = new Request({
-		method: 'get',
-		url: 'components/com_jupgrade/includes/migrate_'+name+'.php',
-		data: { 'do' : '1' },
-		onRequest: function() { alert('Request made. Please wait...'); },
-		onComplete: function(response) { alert('Response: ' + response); }
-	}).send();
-*/
 };
 
