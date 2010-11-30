@@ -41,6 +41,8 @@ div#update:hover {
 
 #status_ext {
 	color: red;
+	font-size: 11pt;
+	font-weight: bolder;
 }
 
 #pb1-box, #pb2-box, #pb3-box, #pb4-box {
