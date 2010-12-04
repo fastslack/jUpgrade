@@ -43,6 +43,7 @@ class jUpgradeUsers extends jUpgrade
 	protected function &getSourceData()
 	{
 		$rows = parent::getSourceData(
+			'*',
 			null,
 			'id'
 		);
