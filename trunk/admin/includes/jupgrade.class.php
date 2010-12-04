@@ -158,7 +158,21 @@ class jUpgrade
 
 		// Check if 'where' clause is set
 		if (!empty($where))
-			$query->where($where);
+		{
+			// Multiple conditions
+			if (is_array($where))
+			{
+				for($i=0;$i<count($where);$i++) {
+					$query->where($where[$i]);
+				}
+
+			}
+			else if (is_string($where))
+			{			
+				$query->where($where);
+			}
+
+		}
 
 		// Check if 'join' clause is set 
 		if (!empty($join) && strpos($join, 'JOIN') !== false)
