@@ -42,6 +42,7 @@ class jUpgrade
 		require_once JPATH_LIBRARIES.'/joomla/methods.php';
 		require_once JPATH_LIBRARIES.'/joomla/factory.php';
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
+		require_once JPATH_LIBRARIES.'/joomla/config.php';
 		require_once JPATH_ROOT.'/jupgrade/configuration.php';
 
 		// Base includes
