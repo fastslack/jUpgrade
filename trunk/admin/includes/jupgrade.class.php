@@ -42,12 +42,15 @@ class jUpgrade
 		require_once JPATH_LIBRARIES.'/joomla/methods.php';
 		require_once JPATH_LIBRARIES.'/joomla/factory.php';
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
-		require_once JPATH_ROOT.'/configuration.php';
+		require_once JPATH_LIBRARIES.'/joomla/config.php';
+		require_once JPATH_ROOT.'/jupgrade/configuration.php';
 
 		// Base includes
 		jimport('joomla.base.object');
+		jimport('joomla.base.adapter');
 
 		// Application includes
+		jimport('joomla.application.helper');
 		jimport('joomla.application.application');
 		jimport('joomla.application.component.modellist');
 
@@ -79,7 +82,6 @@ class jUpgrade
 		//JTable::addIncludePath(JPATH_LIBRARIES.'/joomla/database/table');
 
 		$jconfig = new JConfig();
-		//print_r($jconfig);
 
 		$this->config['driver']   = 'mysql';
 		$this->config['host']     = $jconfig->host;
@@ -152,15 +154,21 @@ class jUpgrade
 		$query = $this->db_old->getQuery(true);
 
 		$query->select($select);
-		$query->from($this->db_old->nameQuote($this->source));
+		$query->from($this->source);
 
 		// Check if 'where' clause is set
 		if (!empty($where))
 			$query->where($where);
 
-		// TODO: Check if 'join' clause is set 
-		//if (!empty($join)) 
-		//	$query->join($join);
+		// Check if 'join' clause is set 
+		if (!empty($join) && strpos($join, 'JOIN') !== false)
+		{
+			$pieces = explode("JOIN", $join);
+			$type = trim($pieces[0]);
+			$conditions = trim($pieces[1]);
+
+			$query->join($type, $conditions);
+		}
 
 		// Check if 'order' clause is set
 		if (!empty($order))
