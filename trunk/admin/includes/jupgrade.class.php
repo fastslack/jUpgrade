@@ -42,7 +42,6 @@ class jUpgrade
 		require_once JPATH_LIBRARIES.'/joomla/methods.php';
 		require_once JPATH_LIBRARIES.'/joomla/factory.php';
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
-		require_once JPATH_LIBRARIES.'/joomla/config.php';
 		require_once JPATH_ROOT.'/jupgrade/configuration.php';
 
 		// Base includes
@@ -90,11 +89,11 @@ class jUpgrade
 		$this->config['database'] = $jconfig->db;
 		$this->config['prefix']   = $jconfig->dbprefix;
 		//print_r($config);
-		$config_new = $this->config;
-		$config_new['prefix'] = "j16_";
+		$config_old = $this->config;
+		$config_old['prefix'] = "jos_";
 
-		$this->db_old = JDatabase::getInstance($this->config);
-		$this->db_new = JDatabase::getInstance($config_new);
+		$this->db_new = JDatabase::getInstance($this->config);
+		$this->db_old = JDatabase::getInstance($config_old);
 	}
 
 	/**
