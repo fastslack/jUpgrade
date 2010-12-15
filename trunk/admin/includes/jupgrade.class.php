@@ -2,12 +2,12 @@
 /**
  * jUpgrade
  *
- * @version		$Id$
- * @package		MatWare
+ * @version		  $Id$
+ * @package		  MatWare
  * @subpackage	com_jupgrade
  * @author      Matias Aguirre <maguirre@matware.com.ar>
  * @link        http://www.matware.com.ar
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @license		  GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // Check to ensure this file is included in Joomla!
@@ -136,7 +136,7 @@ class jUpgrade
 	 *
 	 * @param	string 	$select	A select condition to add to the query.
 	 * @param	string 	$join	 A select condition to add to the query.
-	 * @param	string	$where	A where condition to add to the query.
+	 * @param	mixed 	$where	A string or array where condition to add to the query.
 	 * @param	string	$order	The ordering for the source data.
 	 *
 	 * @return	array	Returns a reference to the source data array.
@@ -153,8 +153,8 @@ class jUpgrade
 		// Prepare the query for the source data.
 		$query = $this->db_old->getQuery(true);
 
-		$query->select($select);
-		$query->from($this->source);
+		$query->select((string)$select);
+		$query->from((string)$this->source);
 
 		// Check if 'where' clause is set
 		if (!empty($where))
@@ -163,13 +163,13 @@ class jUpgrade
 			if (is_array($where))
 			{
 				for($i=0;$i<count($where);$i++) {
-					$query->where($where[$i]);
+					$query->where((string)$where[$i]);
 				}
 
 			}
 			else if (is_string($where))
 			{			
-				$query->where($where);
+				$query->where((string)$where);
 			}
 
 		}
@@ -181,7 +181,7 @@ class jUpgrade
 			$type = trim($pieces[0]);
 			$conditions = trim($pieces[1]);
 
-			$query->join($type, $conditions);
+			$query->join((string)$type, (string)$conditions);
 		}
 
 		// Check if 'order' clause is set
