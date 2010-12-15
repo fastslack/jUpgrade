@@ -2,12 +2,12 @@
 /**
  * jUpgrade
  *
- * @version		$Id$
- * @package		MatWare
+ * @version		  $Id$
+ * @package		  MatWare
  * @subpackage	com_jupgrade
  * @author      Matias Aguirre <maguirre@matware.com.ar>
  * @link        http://www.matware.com.ar
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @license		  GNU General Public License version 2 or later; see LICENSE.txt
  */
 define( '_JEXEC', 1 );
 define( 'JPATH_BASE', dirname(__FILE__) );
@@ -15,43 +15,122 @@ define( 'DS', DIRECTORY_SEPARATOR );
 require_once ( JPATH_BASE .DS.'defines.php' );
 require_once ( JPATH_BASE .DS.'jupgrade.class.php' );
 
-$jUpgrade = new jUpgrade();
+/**
+ * Upgrade class for modules
+ *
+ * This class takes the modules from the existing site and inserts them into the new site.
+ *
+ * @since	0.4.5
+ */
+class jUpgradeModules extends jUpgrade
+{
+	/**
+	 * @var		string	The name of the source database table.
+	 * @since	0.4.5
+	 */
+	protected $source = '#__modules';
 
-$db = &$jUpgrade->db_old;
-$db_new = &$jUpgrade->db_new;
-$config = &$jUpgrade->config;
+	/**
+	 * @var		string	The name of the destination database table.
+	 * @since	0.4.5
+	 */
+	protected $destination = '#__modules';
 
-##
+	/**
+	 * Get the raw data for this part of the upgrade.
+	 *
+	 * @return	array	Returns a reference to the source data array.
+	 * @since	0.4.5
+	 * @throws	Exception
+	 */
+	protected function &getSourceData()
+	{
 
-$query = "SELECT `title`,NULL AS `note`, `content`,`ordering`,`position`,"
-." `checked_out`,`checked_out_time`,`published`,`module`,"
-." `access`,`showtitle`,`params`,`client_id`,NULL AS `language`"
-." FROM {$config['prefix']}modules"
-." WHERE iscore = 0 AND id > 19"
-." ORDER BY id ASC";
+		$query = "`title`,NULL AS `note`, `ordering`,`position`,"
+						." `checked_out`,`checked_out_time`,`published`,`module`,"
+						." `access`,`showtitle`,`params`,`client_id`,NULL AS `language`";
 
-$db->setQuery( $query );
-$modules = $db->loadObjectList();
-//echo $db->errorMsg();
+		$where = "iscore = 0 AND id > 19";
 
+		$rows = parent::getSourceData(
+			$query,
+		  null,
+			$where,
+			'id'
+		);
 
-for($i=0;$i<count($modules);$i++){
-	## Language
-	$modules[$i]->language = "*";
-	
-	## Module
-	if ($modules[$i]->module == "mod_mainmenu") {
-		$modules[$i]->module = "mod_menu";
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row)
+		{
+			$row['params'] = $this->convertParams($row['params']);
+
+			## Fix access
+			$row['access'] = $row['access']+1;
+
+			## Language
+			$row['language'] = "*";
+
+			## Module
+			if ($row['module'] == "mod_mainmenu") {
+				$row['module'] = "mod_menu";
+			}
+
+		}
+
+		return $rows;
 	}
-
-	## Access
-	$modules[$i]->access = $modules[$i]->access+1;
-
 }
 
-$modules = $jUpgrade->fixParams($modules);
+/**
+ * Upgrade class for modules menu
+ *
+ * This class takes the modules from the existing site and inserts them into the new site.
+ *
+ * @since	0.4.5
+ */
+class jUpgradeModulesMenu extends jUpgrade
+{
+	/**
+	 * @var		string	The name of the source database table.
+	 * @since	0.4.5
+	 */
+	protected $source = '#__modules_menu';
 
-echo $jUpgrade->insertObjectList($db_new, '#__modules', $modules);
+	/**
+	 * @var		string	The name of the destination database table.
+	 * @since	0.4.5
+	 */
+	protected $destination = '#__modules_menu';
 
+	/**
+	 * Get the raw data for this part of the upgrade.
+	 *
+	 * @return	array	Returns a reference to the source data array.
+	 * @since	0.4.5
+	 * @throws	Exception
+	 */
+	protected function &getSourceData()
+	{
+
+		$rows = parent::getSourceData(
+			'*',
+		  null,
+			null,
+			'moduleid'
+		);
+
+		return $rows;
+	}
+}
+
+
+
+// Migrate the Modules.
+$modules = new jUpgradeModules;
+$modules->upgrade();
+
+// Migrate the Modules Menus.
+$modulesmenu = new jUpgradeModulesMenu;
+$modulesmenu->upgrade();
 
 ?>
