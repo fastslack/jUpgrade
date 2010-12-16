@@ -32,6 +32,7 @@ class jUpgrade
 	protected $source = null;
 
 	public $config = array();
+	public $config_old = array();
 	public $db_old = null;
 	public $db_new = null;
 
@@ -90,11 +91,11 @@ class jUpgrade
 		$this->config['database'] = $jconfig->db;
 		$this->config['prefix']   = $jconfig->dbprefix;
 		//print_r($config);
-		$config_old = $this->config;
-		$config_old['prefix'] = "jos_";
+		$this->config_old = $this->config;
+		$this->config_old['prefix'] = "jos_";
 
 		$this->db_new = JDatabase::getInstance($this->config);
-		$this->db_old = JDatabase::getInstance($config_old);
+		$this->db_old = JDatabase::getInstance($this->config_old);
 	}
 
 	/**
@@ -256,7 +257,7 @@ class jUpgrade
 	 * @param   object  An object whose properties match table fields
 	 * @since	0.4.
 	 */
-	public function insertCategory($object, $parent)
+	public function insertCategory($object, $parent = false)
 	{
 		
 		// Get data for category
@@ -271,8 +272,8 @@ class jUpgrade
 		$alias = $object->alias;
 		$published = $object->published;
 		$access = $object->access + 1;
-		$extension = $object->section;
-
+		//$extension = $object->section;
+		$extension = "com_content";
 
 		// Correct extension
 		if (is_numeric($extension) || $extension == "") {
@@ -286,16 +287,16 @@ class jUpgrade
 		}
 
 		// Get parent
-		if ($parent != "") {
+		if ($parent !== false) {
 			$path = JFilterOutput::stringURLSafe($parent)."/".$alias;
 
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
 			$parent = $this->db_new->loadResult();
-			//echo $this->db_new->getError();
+			echo $this->db_new->getError();
 
 			$level = 2;
-			$old = $object->id;
+			$old = $object->sid;
 		}
 		else {
 			$parent = 1;
@@ -334,12 +335,12 @@ class jUpgrade
 	 * @since	0.4.
 	 * @access  public
 	 */
-	public function insertAsset($parent) {
+	public function insertAsset($parent = false) {
 
 		/*
 		 * Get parent
 		 */
-		if ($parent != false) {
+		if ($parent !== false) {
 			$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
 			$parent = $this->db_new->loadResult();
