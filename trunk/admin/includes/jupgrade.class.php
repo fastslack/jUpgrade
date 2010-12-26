@@ -39,12 +39,12 @@ class jUpgrade
 	function __construct()
 	{
 		// Base includes
-		require_once JPATH_LIBRARIES.'/joomla/import.php';
-		require_once JPATH_LIBRARIES.'/joomla/methods.php';
-		require_once JPATH_LIBRARIES.'/joomla/factory.php';
-		require_once JPATH_LIBRARIES.'/joomla/import.php';
-		require_once JPATH_LIBRARIES.'/joomla/config.php';
-		require_once JPATH_ROOT.'/jupgrade/configuration.php';
+		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'import.php';
+		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'methods.php';
+		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'factory.php';
+		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'import.php';
+		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'config.php';
+		require_once JPATH_ROOT.DS.'jupgrade'.DS.'configuration.php';
 
 		// Base includes
 		jimport('joomla.base.object');
