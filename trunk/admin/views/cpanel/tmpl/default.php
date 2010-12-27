@@ -34,6 +34,7 @@ window.addEvent('domready', function() {
 	$('decompress').setStyle('display', 'none');
 	$('install').setStyle('display', 'none');
 	$('migration').setStyle('display', 'none');
+	$('templates').setStyle('display', 'none');
 	$('extensions').setStyle('display', 'none');
 	$('done').setStyle('display', 'none');
 
@@ -67,14 +68,19 @@ window.addEvent('domready', function() {
 			<div id="pb3"></div>
 		</div>
 		<div id="migration">
-			<p class="text"><?php echo JText::_( 'Upgrade progress...' ); ?></p>
+			<p class="text"><?php echo JText::_( 'Upgrading progress...' ); ?></p>
 			<div id="pb4"></div>
 			<div><i><small><span id="status"><?php echo JText::_( 'Preparing for migration...' ); ?></span></i></small></div>
 		</div>
-		<div id="extensions">
-			<p class="text"><?php echo JText::_( 'Migrating 3rd extensions...' ); ?></p>
+		<div id="templates">
+			<p class="text"><?php echo JText::_( 'Upgrading templates...' ); ?></p>
 			<div id="pb5"></div>
-			<div><span id="status_ext"><?php echo JText::_( 'UNDER CONSTRUCTION' ); ?></span></div>
+			<div><span id="status_ext"><?php echo JText::_( 'COMING SOON' ); ?></span></div>
+		</div>
+		<div id="extensions">
+			<p class="text"><?php echo JText::_( 'Upgrading 3rd extensions...' ); ?></p>
+			<div id="pb6"></div>
+			<div><span id="status_ext"><?php echo JText::_( 'COMING SOON' ); ?></span></div>
 		</div>
 		<div id="done">
 			<h2><?php echo JText::_( 'Joomla 1.6 Upgrade Finished!' ); ?></h2>
