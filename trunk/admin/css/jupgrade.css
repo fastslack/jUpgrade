@@ -25,7 +25,7 @@ div#update:hover {
 	border:	1px solid #30559C;
 }
 
-#download, #decompress, #install, #migration, #extensions, #done {
+#download, #decompress, #install, #migration, #templates, #extensions, #done {
 	margin: 7px;
 	border:	2px dotted #e3e1e1;
 	background-color: #fafafa;
