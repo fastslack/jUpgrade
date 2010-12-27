@@ -210,10 +210,40 @@ var _doMigration = function(event)  {
 		// Shutdown periodical
 		$clear(periodical);
 
-		// Run extensions step
-		extensions();
+		// Run templates step
+		templates();
 
 	}
+};
+
+/**
+ * Upgrading template
+ *
+ * @return	bool	
+ * @since	0.4.
+ */
+function templates(event){
+
+  var mySlideTem = new Fx.Slide('templates');
+  mySlideTem.hide();
+  $('templates').setStyle('display', 'block');
+  mySlideTem.toggle();
+
+	pb5 = new mtwProgressBar('pb5');
+	pb5.set(50);
+
+	extensions();
+/*
+  var d = new Ajax( 'components/com_jupgrade/includes/templates.php', {
+    method: 'get',
+    onComplete: function( response ) {
+      //alert(response);
+			pb5.set(100);
+			pb5.finish();
+      extensions();
+    }
+  }).request();
+*/
 };
 
 /**
@@ -229,7 +259,7 @@ function extensions(event){
   $('extensions').setStyle('display', 'block');
   mySlideExt.toggle();
 
-	pb5 = new mtwProgressBar('pb5');
+	pb5 = new mtwProgressBar('pb6');
 
 	pb5.set(100);
 	pb5.finish();
@@ -266,5 +296,5 @@ function done(event){
 	$('done').setStyle('display', 'block');
 	mySlideDone.toggle();
 
-}
+};
 
