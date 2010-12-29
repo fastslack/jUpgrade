@@ -70,8 +70,8 @@ function download(event){
 
 	pb1 = new mtwProgressBar('pb1');
 
-	//install();
-
+	install();
+/*
   var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
     method: 'get',
     onRequest: function( response ) {	
@@ -85,7 +85,7 @@ function download(event){
       decompress();
     }
   }).request();
-
+*/
 };
 
 /**
@@ -220,7 +220,7 @@ var _doMigration = function(event)  {
  * Upgrading template
  *
  * @return	bool	
- * @since	0.4.
+ * @since	0.4.8
  */
 function templates(event){
 
@@ -230,20 +230,27 @@ function templates(event){
   mySlideTem.toggle();
 
 	pb5 = new mtwProgressBar('pb5');
-	pb5.set(50);
+	pb5.set(10);
 
-	extensions();
-/*
-  var d = new Ajax( 'components/com_jupgrade/includes/templates.php', {
+  var d = new Ajax( 'components/com_jupgrade/includes/templates_db.php', {
     method: 'get',
     onComplete: function( response ) {
       //alert(response);
-			pb5.set(100);
-			pb5.finish();
-      extensions();
+			pb5.set(50);
+
+			var d2 = new Ajax( 'components/com_jupgrade/includes/templates_files.php', {
+				method: 'get',
+				onComplete: function( response ) {
+				  //alert(response);
+					pb5.set(100);
+					pb5.finish();
+					extensions();
+				}
+			}).request();
+
     }
   }).request();
-*/
+
 };
 
 /**
