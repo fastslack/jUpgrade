@@ -72,6 +72,7 @@ class jUpgrade
 		jimport('joomla.updater.update');
 
 		// Other stuff
+		jimport('joomla.filesystem.folder');
 		jimport('joomla.utilities.string');
 		jimport('joomla.filter.filteroutput');
 		jimport('joomla.html.parameter');
@@ -189,11 +190,14 @@ class jUpgrade
 		if (!empty($order))
 			$query->order($this->db_old->nameQuote($order));
 
+		// Debug
+		//print_r($query->__toString());
+
 		$this->db_old->setQuery((string)$query);
 
 		// Getting data
 		$rows	= $this->db_old->loadAssocList();
-		$error	= $this->db_old->getErrorMsg();
+		$error = $this->db_old->getErrorMsg();
 
 		// Check for query error.
 		if ($error) {
