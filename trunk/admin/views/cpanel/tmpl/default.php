@@ -75,7 +75,6 @@ window.addEvent('domready', function() {
 		<div id="templates">
 			<p class="text"><?php echo JText::_( 'Upgrading templates...' ); ?></p>
 			<div id="pb5"></div>
-			<div><span id="status_ext"><?php echo JText::_( 'COMING SOON' ); ?></span></div>
 		</div>
 		<div id="extensions">
 			<p class="text"><?php echo JText::_( 'Upgrading 3rd extensions...' ); ?></p>
