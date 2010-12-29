@@ -8,6 +8,12 @@
  * @link        http://www.matware.com.ar
  * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+/* Toolbar */
+.icon-48-jupgrade {
+    background: url(../images/icon-48-jupgrade.png) no-repeat left;
+}
+
 div#update {
 	width: 400px;
 	padding: 3px;
@@ -45,13 +51,13 @@ div#update:hover {
 	font-weight: bolder;
 }
 
-#pb1-box, #pb2-box, #pb3-box, #pb4-box {
+#pb1-box, #pb2-box, #pb3-box, #pb4-box, #pb5-box, #pb6-box {
   background:url(../images/progress-bar-back.gif) no-repeat scroll right center transparent;
   width:200px;
   height:19px;
 }
 
-#pb1-perc, #pb2-perc, #pb3-perc, #pb4-perc	{
+#pb1-perc, #pb2-perc, #pb3-perc, #pb4-perc, #pb5-perc, #pb6-perc	{
   background:url(../images/progress-bar.gif) no-repeat scroll right center transparent;
   height:19px;
   float:left;
