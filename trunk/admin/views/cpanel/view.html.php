@@ -20,7 +20,10 @@ class jupgradeViewCpanel extends JView
 	function display($tpl = null)
 	{
 		JToolBarHelper::title(   JText::_( 'jUpgrade' ), 'jupgrade' );
-		JToolBarHelper::custom('back', 'back.png', 'back_f2.png', 'Back', false, false);
+		JToolBarHelper::custom('cpanel', 'back.png', 'back_f2.png', 'Back', false, false);
+		JToolBarHelper::preferences('com_jupgrade', '500');
+		JToolBarHelper::spacer();
+		JToolBarHelper::custom('help', 'help.png', 'help_f2.png', 'Help', false, false);
 		JToolBarHelper::spacer();
 
 		$xmlfile = JPATH_COMPONENT.DS."jupgrade.xml";

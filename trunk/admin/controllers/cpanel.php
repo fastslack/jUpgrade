@@ -2,10 +2,12 @@
 /**
  * jUpgrade
  *
- * @author      Matias Aguirre
- * @email       maguirre@matware.com.ar
- * @url         http://www.matware.com.ar
- * @license     GNU/GPL
+ * @version			$Id$
+ * @package			MatWare
+ * @subpackage	com_jupgrade
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // Check to ensure this file is included in Joomla!
@@ -26,22 +28,16 @@ class jupgradeControllerCpanel extends jupgradeController
 	function __construct()
 	{
 		parent::__construct();
-
-		// Register Extra tasks
-		//$this->registerTask( 'add'  , 	'edit' );
 	}
 
   function display() {
-  
     JRequest::setVar( 'view', 'cpanel' );
-
     parent::display();
   }
 
-  function back() {
-  
-		$msg = JText::_( 'jUpgrade cancelled' );
-		$link = "index.php";
+  function help() {
+		$msg = "";
+		$link = "http://www.matware.com.ar/foros.html";
 		$this->setRedirect($link, $msg);   
   }
 
