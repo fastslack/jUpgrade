@@ -15,8 +15,8 @@ define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.'/defines.php';
-require_once JPATH_BASE.'/jupgrade.class.php';
+require_once JPATH_BASE.DS.'defines.php';
+require_once JPATH_BASE.DS.'jupgrade.class.php';
 
 /**
  * Upgrade class for Newsfeeds
