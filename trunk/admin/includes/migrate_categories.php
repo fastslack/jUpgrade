@@ -77,6 +77,11 @@ class jUpgradeCategories extends jUpgrade
 		// Get the source data.
 		$rows	= $this->getSourceData();
 
+		$query = "TRUNCATE TABLE `j16_jupgrade_categories`";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+		echo $this->db_new->getError();	
+
 		foreach ($rows as $row)
 		{
 			// Convert the array into an object.
