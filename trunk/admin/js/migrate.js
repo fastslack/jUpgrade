@@ -10,6 +10,9 @@
  */
 migrate_global = 0;
 
+skip_download = 0;
+skip_decompress = 0;
+
 steps = new Array();
 steps[0] = "users";
 steps[1] = "modules";
@@ -29,6 +32,11 @@ steps[9] = "weblinks";
  * @since	0.5.0
  */
 function checks(event){
+
+	//alert(this.debug);
+	var skip = new Array();
+	skip['skip_download'] = this.skip_download;
+	skip['skip_decompress'] = this.skip_decompress;
 
   var mySlideUpdate = new Fx.Slide('update');
   mySlideUpdate.toggle();
@@ -66,7 +74,7 @@ function checks(event){
 
 						if (response == 'LOADED') {
 							text.innerHTML = 'Check DONE';
-							download();
+							download(skip);
 						}else if (response == 'NOT_LOADED'){
 							text.innerHTML = '<span id="checktext">Error: curl not loaded</span>';
 						}
@@ -116,7 +124,7 @@ var progress = function(event)  {
  * @return	bool	
  * @since	0.4.
  */
-function download(event){
+function download(skip){
 
   var mySlideDownload = new Fx.Slide('download');
   mySlideDownload.hide();
@@ -125,22 +133,32 @@ function download(event){
 
 	pb1 = new mtwProgressBar('pb1');
 
-	//install();
+	if (skip['skip_download'] == 1) {
+		if (skip['skip_decompress'] == 1) {
+			install();
+		}else{
+			decompress();
+		}
+	}else{
+		var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
+		  method: 'get',
+		  onRequest: function( response ) {	
+				//alert(response);		
+		    var progressID = progress.periodical(100);
+		  },
+		  onComplete: function( response ) {
+				//alert(response);
+		    //alert('finish');
+				pb1.finish();
 
-  var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
-    method: 'get',
-    onRequest: function( response ) {	
-			//alert(response);		
-      var progressID = progress.periodical(100);
-    },
-    onComplete: function( response ) {
-			//alert(response);
-      //alert('finish');
-			pb1.finish();
-      decompress();
-    }
-  }).request();
-
+				if (skip['skip_decompress'] == 1) {
+					install();
+				}else{
+					decompress();
+				}
+		  }
+		}).request();
+	}
 };
 
 /**
@@ -149,7 +167,7 @@ function download(event){
  * @return	bool	
  * @since	0.4.
  */
-function decompress(event){
+function decompress(skip){
 
   var mySlideDecompress = new Fx.Slide('decompress');
   mySlideDecompress.hide();
@@ -159,17 +177,21 @@ function decompress(event){
 	pb2 = new mtwProgressBar('pb2');
 	pb2.set(50);
 
-	//install();
-
-  var d = new Ajax( 'components/com_jupgrade/includes/decompress.php', {
-    method: 'get',
-    onComplete: function( response ) {
-      //alert(response);
-			pb2.set(100);
-			pb2.finish();
-      install();
-    }
-  }).request();
+	if (skip['skip_decompress'] == 1) {
+		pb2.set(100);
+		pb2.finish();
+		install();
+	}else{
+		var d = new Ajax( 'components/com_jupgrade/includes/decompress.php', {
+		  method: 'get',
+		  onComplete: function( response ) {
+		    //alert(response);
+				pb2.set(100);
+				pb2.finish();
+		    install();
+		  }
+		}).request();
+	}
 
 };
 

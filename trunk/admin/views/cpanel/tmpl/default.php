@@ -16,6 +16,8 @@ $version = "v{$this->version}";
 
 JHTML::_( 'behavior.mootools' );
 
+$params = &JComponentHelper::getParams( 'com_jupgrade' );
+
 $document = &JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/functions.js' );
 $document->addScript('components/com_jupgrade/js/mtwProgressBar.js' );
@@ -40,6 +42,9 @@ window.addEvent('domready', function() {
 	$('templates').setStyle('display', 'none');
 	$('extensions').setStyle('display', 'none');
 	$('done').setStyle('display', 'none');
+
+	$('update').skip_download = <?php echo $params->get("skip_download"); ?>;
+	$('update').skip_decompress =  <?php echo $params->get("skip_decompress"); ?>;
 
   $('update').addEvent('click', checks);
 
