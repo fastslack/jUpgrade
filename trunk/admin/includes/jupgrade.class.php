@@ -177,21 +177,37 @@ class jUpgrade
 		}
 
 		// Check if 'join' clause is set 
-		if (!empty($join) && strpos($join, 'JOIN') !== false)
+		if (!empty($join))
 		{
-			$pieces = explode("JOIN", $join);
-			$type = trim($pieces[0]);
-			$conditions = trim($pieces[1]);
+			// Multiple joins
+			if (is_array($join))
+			{
+				for($i=0;$i<count($join);$i++) {
+					$pieces = explode("JOIN", $join[$i]);
+					$type = trim($pieces[0]);
+					$conditions = trim($pieces[1]);
 
-			$query->join((string)$type, (string)$conditions);
+					$query->join((string)$type, (string)$conditions);
+				}
+
+			}
+			else if (is_string($join))
+			{			
+				$pieces = explode("JOIN", $join);
+				$type = trim($pieces[0]);
+				$conditions = trim($pieces[1]);
+
+				$query->join((string)$type, (string)$conditions);
+			}
 		}
 
 		// Check if 'order' clause is set
 		if (!empty($order))
-			$query->order($this->db_old->nameQuote($order));
+			$query->order($order);
 
 		// Debug
 		//print_r($query->__toString());
+		//cho "\n";
 
 		$this->db_old->setQuery((string)$query);
 
