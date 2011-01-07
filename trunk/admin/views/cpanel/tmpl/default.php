@@ -2,10 +2,12 @@
 /**
  * jUpgrade
  *
- * @author      Matias Aguirre
- * @email       maguirre@matware.com.ar
- * @url         http://www.matware.com.ar
- * @license     GNU/GPL
+ * @version			$Id$
+ * @package			MatWare
+ * @subpackage	com_jupgrade
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -30,6 +32,7 @@ $document->addScript('components/com_jupgrade/js/migrate.js' );
 
 window.addEvent('domready', function() {
 
+	$('checks').setStyle('display', 'none');
 	$('download').setStyle('display', 'none');
 	$('decompress').setStyle('display', 'none');
 	$('install').setStyle('display', 'none');
@@ -38,7 +41,7 @@ window.addEvent('domready', function() {
 	$('extensions').setStyle('display', 'none');
 	$('done').setStyle('display', 'none');
 
-  $('update').addEvent('click', download);
+  $('update').addEvent('click', checks);
 
 });
 
@@ -50,6 +53,11 @@ window.addEvent('domready', function() {
 		<div id="update">
 			<img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
 			<h2><?php echo JText::_( 'START UPGRADE' ); ?></h2>
+		</div>
+		<div id="checks">
+			<p class="text"><?php echo JText::_( 'Checking...' ); ?></p>
+			<div id="pb0"></div>
+			<div><i><small><span id="checkstatus"><?php echo JText::_( 'Preparing for check...' ); ?></span></i></small></div>
 		</div>
 		<div id="download">
 			<p class="text"><?php echo JText::_( 'Downloading Joomla 1.6...' ); ?></p>
@@ -91,8 +99,8 @@ window.addEvent('domready', function() {
 		</div>
    </tr>
 </table>
-<form action="index.php" method="post" name="adminForm">
-<input type="hidden" name="option" value="com_cpanel" />
+<form action="index.php?option=com_jupgrade" method="post" name="adminForm">
+<input type="hidden" name="option" value="com_jupgrade" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" id="count" value="" />
 </form>

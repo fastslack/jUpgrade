@@ -23,6 +23,64 @@ steps[8] = "polls";
 steps[9] = "weblinks";
 
 /**
+ * Function to check PHP modules required for jUpgrade
+ *
+ * @return	bool	
+ * @since	0.5.0
+ */
+function checks(event){
+
+  var mySlideUpdate = new Fx.Slide('update');
+  mySlideUpdate.toggle();
+
+  var mySlideChecks = new Fx.Slide('checks');
+  mySlideChecks.hide();
+  $('checks').setStyle('display', 'block');
+  mySlideChecks.toggle();
+
+	pb0 = new mtwProgressBar('pb0');
+
+	text = document.getElementById('checkstatus');
+	text.innerHTML = 'Checking directories';
+
+  var c = new Ajax( 'components/com_jupgrade/includes/check_dirs.php', {
+    method: 'get',
+    onComplete: function( response ) {
+      //alert(response);
+
+			if (response != 'OK') {
+				pb0.set(100);
+				pb0.finish();
+				text.innerHTML = '<span id="checktext">'+response+' is unwritable</span>';
+
+			}else	if (response == 'OK') {
+				pb0.set(50);
+
+				var c2 = new Ajax( 'components/com_jupgrade/includes/check_curl.php', {
+					method: 'get',
+					onComplete: function( response ) {
+						//alert(response);
+
+						pb0.set(100);
+						pb0.finish();
+
+						if (response == 'LOADED') {
+							text.innerHTML = 'Check DONE';
+							download();
+						}else if (response == 'NOT_LOADED'){
+							text.innerHTML = '<span id="checktext">Error: curl not loaded</span>';
+						}
+					}
+				}).request();
+
+			}
+
+    }
+  }).request();
+
+};
+
+/**
  * Function to change the progressbar
  *
  * @return	bool	
@@ -59,9 +117,6 @@ var progress = function(event)  {
  * @since	0.4.
  */
 function download(event){
-
-  var mySlideUpdate = new Fx.Slide('update');
-  mySlideUpdate.toggle();
 
   var mySlideDownload = new Fx.Slide('download');
   mySlideDownload.hide();
