@@ -76,6 +76,7 @@ window.addEvent('domready', function() {
 		<div id="decompress">
 			<p class="text"><?php echo JText::_( 'Decompressing package...' ); ?></p>
 			<div id="pb2"></div>
+			<span id="decompressstatus"></span>
 		</div>
 		<div id="install">
 			<p class="text"><?php echo JText::_( 'Installing Joomla 1.6...' ); ?></p>

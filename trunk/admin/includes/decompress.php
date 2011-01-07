@@ -40,16 +40,18 @@ require_once ('..'.DS.'libraries'.DS.'pclzip.lib.php');
 
 require(JPATH_ROOT.DS."configuration.php");
 
-$filename = 'joomla16.zip';
+$zipfile = JPATH_ROOT.DS.'tmp'.DS.'joomla16.zip';
+$dir = JPATH_ROOT.DS.'jupgrade';
 
-//$path = str_replace('&#96;', '\\', $_REQUEST['root']); 
-//$dir = $path.DS."jupgrade";
-$dir = JPATH_SITE.DS.'jupgrade';
+if (file_exists($zipfile)) {
+	$archive = new PclZip($zipfile);
 
-$archive = new PclZip($filename);
-
-if ($archive->extract(PCLZIP_OPT_PATH, $dir) == 0) {
-  die("Error : ".$archive->errorInfo(true));
+	if ($archive->extract(PCLZIP_OPT_PATH, $dir) == 0) {
+		die("Error : ".$archive->errorInfo(true));
+	}
+  echo 1;
+} else {
+  echo 0;
 }
 
 ?>

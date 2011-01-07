@@ -139,7 +139,7 @@ function download(skip){
 		if (skip['skip_decompress'] == 1) {
 			install();
 		}else{
-			decompress();
+			decompress(skip);
 		}
 	}else{
 		var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
@@ -150,14 +150,13 @@ function download(skip){
 		  },
 		  onComplete: function( response ) {
 				//alert(response);
-		    //alert('finish');
 				pb1.finish();
 
 				if (response == 1) {
 					if (skip['skip_decompress'] == 1) {
 						install();
 					}else{
-						decompress();
+						decompress(skip);
 					}
 				}else if (response == 0){
 					text.innerHTML = '<span id="checktext">Error: zip file was not successfully downloaded</span>';
@@ -184,6 +183,8 @@ function decompress(skip){
 	pb2 = new mtwProgressBar('pb2');
 	pb2.set(50);
 
+	text = document.getElementById('decompressstatus');
+
 	if (skip['skip_decompress'] == 1) {
 		pb2.set(100);
 		pb2.finish();
@@ -195,7 +196,13 @@ function decompress(skip){
 		    //alert(response);
 				pb2.set(100);
 				pb2.finish();
-		    install();
+
+				if (response == 1) {
+					install();
+				}else if (response == 0){
+					text.innerHTML = '<span id="checktext">Error: zip file not found</span>';
+				}
+
 		  }
 		}).request();
 	}
