@@ -31,7 +31,13 @@ class jUpgradeMenu extends jUpgrade
 	 * @var		string	The name of the source database table.
 	 * @since	0.4.5
 	 */
-	protected $source = '#__menu';
+	protected $source = '#__menu AS m';
+
+	/**
+	 * @var		string	The name of the destination database table.
+	 * @since	0.4.8
+	 */
+	protected $destination = '#__menu';
 
 	/**
 	 * Get the raw data for this part of the upgrade.
@@ -42,23 +48,41 @@ class jUpgradeMenu extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
+		$join = array();
+		$join[] = 'LEFT JOIN #__components AS c ON c.id = m.componentid';
+		$join[] = 'LEFT JOIN j16_extensions AS e ON e.name = c.option';
+
+		$where = "m.name != 'Home' AND m.alias != 'home'";
+
 		$rows = parent::getSourceData(
-			 '`menutype`,`name` AS title,`alias`,`link`,`type`,'
-			.' `published`,`parent` AS parent_id, `componentid` AS component_id,'
-			.' `sublevel` AS level,`ordering`,`checked_out`,`checked_out_time`,`browserNav`,'
-			.' `access`,`params`,`lft`,`rgt`,`home`',
-			null,
-			null,
-			'id'
+			 ' m.menutype, m.name AS title, m.alias, m.link, m.type,'
+			.' m.published, m.parent AS parent_id, e.extension_id AS component_id,'
+			.' m.sublevel AS level, m.ordering, m.checked_out, m.checked_out_time, m.browserNav,'
+			.' m.access, m.params, m.lft, m.rgt, m.home',
+			$join,
+			$where,
+			'm.id'
 		);
+
+		$query = "SELECT alias FROM j16_menu";
+		$this->db_new->setQuery($query);
+		$aliases = $this->db_new->loadResultArray();
+		echo $this->db_new->getError();	
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
+			// Converting params to JSON
 			$row['params'] = $this->convertParams($row['params']);
+			// Fixing parent id
+			$row['parent_id'] = $row['parent_id'] == 0 ? $row['parent_id']+1 : $row['parent_id'];
+			// Fixing access
+			$row['access'] = $row['access'] == 0 ? 1 : $row['access']+1;
+			// Fixing level
+			$row['level'] = $row['level'] == 0 ? 1 : $row['level']+1;
+			// Fixing language
+			$row['language'] = '*';
 
-			// Remove unused fields.
-			unset($row['gid']);
 		}
 
 		return $rows;
