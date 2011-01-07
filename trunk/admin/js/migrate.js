@@ -133,6 +133,8 @@ function download(skip){
 
 	pb1 = new mtwProgressBar('pb1');
 
+	text = document.getElementById('downloadstatus');
+
 	if (skip['skip_download'] == 1) {
 		if (skip['skip_decompress'] == 1) {
 			install();
@@ -151,11 +153,16 @@ function download(skip){
 		    //alert('finish');
 				pb1.finish();
 
-				if (skip['skip_decompress'] == 1) {
-					install();
-				}else{
-					decompress();
+				if (response == 1) {
+					if (skip['skip_decompress'] == 1) {
+						install();
+					}else{
+						decompress();
+					}
+				}else if (response == 0){
+					text.innerHTML = '<span id="checktext">Error: zip file was not successfully downloaded</span>';
 				}
+
 		  }
 		}).request();
 	}

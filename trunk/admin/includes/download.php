@@ -2,54 +2,63 @@
 /**
  * jUpgrade
  *
- * @version		$Id$
- * @package		MatWare
+ * @version			$Id$
+ * @package			MatWare
  * @subpackage	com_jupgrade
  * @author      Matias Aguirre <maguirre@matware.com.ar>
  * @link        http://www.matware.com.ar
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
+define('_JEXEC',		1);
+define('JPATH_BASE',	dirname(__FILE__));
+define('DS',			DIRECTORY_SEPARATOR);
+
+require_once JPATH_BASE.DS.'defines.php';
+require_once JPATH_BASE.DS.'jupgrade.class.php';
+
 
 //$file = "http://localhost/joomla16.zip";
-$file = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla16.zip";
+$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla16.zip";
+$sizefile = JPATH_ROOT.DS.'tmp'.DS.'size.tmp';
+$zipfile = JPATH_ROOT.DS.'tmp'.DS.'joomla16.zip';
 
-//sleep(5);
-// Create a curl connection
+/*
+	Getting the size of the zip
+ */
 $chGetSize = curl_init();
 
 // Set a valid user agent
-curl_setopt($chGetSize, CURLOPT_URL, $file);
-//curl_setopt($chGetSize, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.11) Gecko/20071127 Firefox/2.0.0.11");
-//curl_setopt($chGetSize, CURLOPT_FILE, $out);
+curl_setopt($chGetSize, CURLOPT_URL, $url);
 curl_setopt($chGetSize, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($chGetSize, CURLOPT_HEADER, false);
-//curl_setopt($chGetSize, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
-//curl_setopt($chGetSize, CURLOPT_USERPWD, '[anonymous]:[]');
-
 // Don’t download the body content
 curl_setopt($chGetSize, CURLOPT_NOBODY, true);
-
 // Run the curl functions to process the request
 $chGetSizeStore = curl_exec($chGetSize);
 $chGetSizeError = curl_error($chGetSize);
 $chGetSizeInfo = curl_getinfo($chGetSize);
-
 // Close the connection
 curl_close($chGetSize);// Print the file size in bytes
+// Debug
+// print_r($chGetSizeInfo);
 
-//print_r($chGetSizeInfo);
+$length = $chGetSizeInfo['download_content_length'];
 
-$size = fopen('size.tmp', 'wb');
+// Open file to write
+$size = fopen($sizefile, 'wb');
 if ($size == FALSE){
   print "File not opened<br>";
   exit;
 } 
 
-//echo $chGetSizeInfo['download_content_length']."\n";
-fwrite($size, $chGetSizeInfo['download_content_length']);
+// Write and close the file
+fwrite($size, $length);
 fclose($size);
 
-$out = fopen('joomla16.zip', 'wb');
+/*
+	Getting the zip
+ */
+$out = fopen($zipfile, 'wb');
 if ($out == FALSE){
   print "File not opened<br>";
   exit;
@@ -57,25 +66,25 @@ if ($out == FALSE){
 
 // Create a curl connection
 $chGetFile = curl_init();
-
-curl_setopt($chGetFile, CURLOPT_URL, $file);
-curl_setopt($chGetFile, CURLOPT_TIMEOUT, 150);
+curl_setopt($chGetFile, CURLOPT_URL, $url);
+curl_setopt($chGetFile, CURLOPT_TIMEOUT, 250);
 curl_setopt($chGetFile, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($chGetFile, CURLOPT_HEADER, false);
 curl_setopt($chGetFile, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($chGetFile, CURLOPT_FILE, $out);
-//curl_setopt($chGetFile, CURLOPT_HTTPAUTH, CURLAUTH_BASIC); 
-//curl_setopt($chGetFile, CURLOPT_USERPWD, '[anonymous]:[]');
-
-
+// Run the curl functions to process the request
 $chGetFileStore = curl_exec($chGetFile);
 $chGetFileError = curl_error($chGetFile);
 $chGetFileInfo = curl_getinfo($chGetFile);
-
-//print_r($chGetFileInfo);
-
+// Write and close the file
 curl_close($chGetFile);
 fclose($out);
-//echo 11;
+
+if (file_exists($zipfile)) {
+    echo 1;
+} else {
+    echo 0;
+}
+
 
 ?>

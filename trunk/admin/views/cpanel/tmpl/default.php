@@ -71,6 +71,7 @@ window.addEvent('domready', function() {
         <i><small><b><span id="currBytes">0</span></b> bytes / <b>
         <span id="totalBytes">0</span></b> bytes</small></i>
       </div>
+			<span id="downloadstatus"></span>
     </div>
 		<div id="decompress">
 			<p class="text"><?php echo JText::_( 'Decompressing package...' ); ?></p>
