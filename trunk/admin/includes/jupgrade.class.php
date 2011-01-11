@@ -207,7 +207,6 @@ class jUpgrade
 
 		// Debug
 		//print_r($query->__toString());
-		//cho "\n";
 
 		$this->db_old->setQuery((string)$query);
 
@@ -271,6 +270,31 @@ class jUpgrade
 	}
 
 	/**
+	 * Cleanup the data in the destination database.
+	 *
+	 * @return	void
+	 * @since	0.5.1
+	 * @throws	Exception
+	 */
+	protected function cleanDestinationData()
+	{
+		// Get the table
+		$table	= empty($this->destination) ? $this->source : $this->destination;
+
+		$query = "TRUNCATE TABLE {$table}";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
+	}
+
+	/**
 	 * Inserts a category
 	 *
 	 * @access  public
@@ -322,7 +346,6 @@ class jUpgrade
 			$parent = 1;
 			$level = 1;
 			$path = $alias;
-			$old = 0;
 		}
 
 		// Insert Category
@@ -339,12 +362,14 @@ class jUpgrade
 		$this->db_new->setQuery($query);
 		$this->db_new->query();	echo $this->db_new->getError();
 
-		// Save old id and new id
-		$query = "INSERT INTO #__jupgrade_categories"
-		." (`old`,`new`)"
-		." VALUES({$old}, {$new}) ";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
+		if ($parent !== false) {
+			// Save old id and new id
+			$query = "INSERT INTO #__jupgrade_categories"
+			." (`old`,`new`)"
+			." VALUES({$old}, {$new}) ";
+			$this->db_new->setQuery($query);
+			$this->db_new->query();
+		}
 
 	 	return true;
 	}

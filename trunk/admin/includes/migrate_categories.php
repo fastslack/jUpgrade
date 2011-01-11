@@ -77,11 +77,33 @@ class jUpgradeCategories extends jUpgrade
 		// Get the source data.
 		$rows	= $this->getSourceData();
 
+		// Truncate j16_jupgrade_categories table
 		$query = "TRUNCATE TABLE `j16_jupgrade_categories`";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
-		echo $this->db_new->getError();	
 
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
+		// Insert uncategorized id
+		$query = "INSERT INTO `j16_jupgrade_categories` (`old`, `new`) VALUES (0, 2)";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}	
+
+		//
+		// Insert the categories
+		//
 		foreach ($rows as $row)
 		{
 			// Convert the array into an object.
@@ -100,7 +122,7 @@ class jUpgradeCategories extends jUpgrade
 
 			for($y=0;$y<count($categories);$y++){
 
-				$categories[$y]->params = $this->convertParams($categories[$y]->param);
+				$categories[$y]->params = $this->convertParams($categories[$y]->params);
 
 				$this->insertCategory($categories[$y], $row->title);
 				$this->insertAsset($row->title);
