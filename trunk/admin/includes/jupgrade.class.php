@@ -330,8 +330,14 @@ class jUpgrade
 			$extension = "com_contact";
 		}
 
+		// Correct alias
+		if ($alias == "") {
+			$alias = JFilterOutput::stringURLSafe($title);
+		}
+
 		// Get parent
 		if ($parent !== false) {
+
 			$path = JFilterOutput::stringURLSafe($parent)."/".$alias;
 
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
