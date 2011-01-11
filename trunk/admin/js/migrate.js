@@ -389,10 +389,15 @@ function extensions(event){
  */
 function done(event){
 
-	var mySlideDone = new Fx.Slide('done');
-	mySlideDone.hide();
-	$('done').setStyle('display', 'block');
-	mySlideDone.toggle();
+  var d = new Ajax( 'components/com_jupgrade/includes/done.php', {
+    method: 'get',
+    onComplete: function( response ) {
+			var mySlideDone = new Fx.Slide('done');
+			mySlideDone.hide();
+			$('done').setStyle('display', 'block');
+			mySlideDone.toggle();
+    }
+  }).request();
 
 };
 
