@@ -9,7 +9,7 @@
 # 
 
 PROJECT="jupgrade"
-VERSION="0.2.0"
+VERSION="0.5.1"
 
 # Initial Cleanup
 rm com_${PROJECT}-${VERSION}.zip

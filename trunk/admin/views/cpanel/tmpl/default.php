@@ -43,8 +43,8 @@ window.addEvent('domready', function() {
 	$('extensions').setStyle('display', 'none');
 	$('done').setStyle('display', 'none');
 
-	$('update').skip_download = <?php echo $params->get("skip_download"); ?>;
-	$('update').skip_decompress =  <?php echo $params->get("skip_decompress"); ?>;
+	$('update').skip_download = <?php echo $params->get("skip_download") ? $params->get("skip_download") : 0; ?>;
+	$('update').skip_decompress =  <?php echo $params->get("skip_decompress") ? $params->get("skip_decompress") : 0; ?>;
 
   $('update').addEvent('click', checks);
 
