@@ -70,7 +70,7 @@ curl_setopt($chGetFile, CURLOPT_URL, $url);
 curl_setopt($chGetFile, CURLOPT_TIMEOUT, 250);
 curl_setopt($chGetFile, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($chGetFile, CURLOPT_HEADER, false);
-curl_setopt($chGetFile, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($chGetFile, CURLOPT_FOLLOWLOCATION, false);
 curl_setopt($chGetFile, CURLOPT_FILE, $out);
 // Run the curl functions to process the request
 $chGetFileStore = curl_exec($chGetFile);
