@@ -64,11 +64,6 @@ class jUpgradeMenu extends jUpgrade
 			'm.id'
 		);
 
-		$query = "SELECT alias FROM j16_menu";
-		$this->db_new->setQuery($query);
-		$aliases = $this->db_new->loadResultArray();
-		echo $this->db_new->getError();	
-
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
@@ -83,10 +78,53 @@ class jUpgradeMenu extends jUpgrade
 			// Fixing language
 			$row['language'] = '*';
 
+			//
+			// Bug with alias insert, mysql cannot allow insert duplicated aliases
+			//
+			/*
+			$query = "SELECT alias FROM j16_menu WHERE alias = '{$row['alias']}' LIMIT 1";
+			$this->db_new->setQuery($query);
+			$alias = $this->db_new->loadResult();
+			echo $this->db_new->getError();	
+
+			echo $query."\n";
+			echo ">{$alias}<\n";
+
+			if($alias != "") {
+				$row['alias'] = $row['alias'].rand();
+			}
+			*/
+
+			$row['alias'] = JFilterOutput::stringURLSafe($row['title'])."-".rand();
+			
+			// Correct path
+			//$row['path'] = JFilterOutput::stringURLSafe($parent)."/".$alias;
+
 		}
 
 		return $rows;
 	}
+
+
+	/**
+	 * The public entry point for the class.
+	 *
+	 * @return	void
+	 * @since	0.5.2
+	 * @throws	Exception
+	 */
+	public function upgrade()
+	{
+		if (parent::upgrade()) {
+			// Rebuild the usergroup nested set values.
+			$table = JTable::getInstance('Menu', 'JTable', array('dbo' => $this->db_new));
+
+			if (!$table->rebuild()) {
+				echo JError::raiseError(500, $table->getError());
+			}
+		}
+	}
+
 }
 
 /**

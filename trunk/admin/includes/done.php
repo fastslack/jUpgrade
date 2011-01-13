@@ -11,7 +11,22 @@
 define( '_JEXEC', 1 );
 define( 'DS', DIRECTORY_SEPARATOR );
 define( 'JPATH_BASE', dirname(__FILE__) );
- 
+
+
+function rrmdir($dir) {
+	if (is_dir($dir)) {
+		$objects = scandir($dir);
+		foreach ($objects as $object) {
+			if ($object != "." && $object != "..") {
+				if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+			}
+		}
+		reset($objects);
+		rmdir($dir);
+	}
+} 
+
+
 $parts = explode( DS, JPATH_BASE );
 $newparts = array();
 for($i=0;$i<count($parts)-4;$i++){
@@ -33,6 +48,10 @@ define( 'JPATH_CACHE',			JPATH_BASE.DS.'cache');
 
 $olddir = JPATH_ROOT.DS.'jupgrade'.DS.'installation';
 $dir = JPATH_ROOT.DS.'jupgrade'.DS.'installation-old';
+
+if (is_dir($dir)) {
+	rrmdir($dir);
+}
 
 if (rename($olddir, $dir)) {
   echo 1;
