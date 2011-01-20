@@ -48,7 +48,7 @@ class jUpgradeContent extends jUpgrade
 	protected function &getSourceData()
 	{
 		$rows = parent::getSourceData(
-			'`title`, NULL AS `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
+			'`id`, `title`, NULL AS `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
 		 .'`sectionid`, `mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
 		 .'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
 		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, `access`, `hits`, NULL',
@@ -67,6 +67,45 @@ class jUpgradeContent extends jUpgrade
 
 		return $rows;
 	}
+
+
+	/**
+	* Sets the data in the destination database.
+	*
+	* @return	void
+	* @since	0.5.3
+	* @throws	Exception
+	*/
+	protected function setDestinationData()
+	{
+		parent::setDestinationData();
+		
+		// Update the featured column with records from content_frontpage
+		$query = "UPDATE `j16_content`, `{$this->config_old['prefix']}content_frontpage`"
+		." SET `j16_content`.featured = 1 WHERE `j16_content`.id = `{$this->config_old['prefix']}content_frontpage`.content_id";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+		print_r($query);
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
+		// Make a copy of the content_frontpage table
+		$query = "DROP TABLE `j16_content_frontpage`; CREATE TABLE `j16_content_frontpage` SELECT * FROM `{$this->config_old['prefix']}content_frontpage`";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+		print_r($query);
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+	}
+
 }
 
 // Migrate the Content.
