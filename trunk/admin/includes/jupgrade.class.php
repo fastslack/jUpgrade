@@ -93,7 +93,7 @@ class jUpgrade
 		$this->config['prefix']   = $jconfig->dbprefix;
 		//print_r($config);
 		$this->config_old = $this->config;
-		$this->config_old['prefix'] = "jos_";
+		$this->config_old['prefix'] = $this->getPrefix();
 
 		$this->db_new = JDatabase::getInstance($this->config);
 		$this->db_old = JDatabase::getInstance($this->config_old);
@@ -490,6 +490,36 @@ class jUpgrade
 	 */
 	public function print_a($subject){
 		echo str_replace("=>","&#8658;",str_replace("Array","<font color=\"red\"><b>Array</b></font>",nl2br(str_replace(" "," &nbsp; ",print_r($subject,true)))));
+	}
+
+
+	/**
+	 * Internal function to get original database prefix
+	 *
+	 * @return	an original database prefix
+	 * @since	0.5.3
+	 * @throws	Exception
+	 */
+	public function getPrefix(){
+
+		// configuration.php path
+		$filename = JPATH_ROOT.DS.'configuration.php';
+
+		// read the file
+		$handle = fopen($filename, "r");
+		$contents = fread($handle, filesize($filename));
+		fclose($handle);
+
+		// grep the dbprefix line
+		$pattern = '/dbprefix\ = (.*)/';
+		preg_match($pattern, $contents, $matches);
+		$prefix = $matches[1];
+
+		// Strip all trash 
+		$prefix = explode(";", $prefix);
+		$prefix = $prefix[0];
+		return $prefix = trim($prefix, "'");
+
 	}
 
 }
