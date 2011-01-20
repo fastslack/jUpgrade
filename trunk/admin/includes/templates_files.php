@@ -44,7 +44,7 @@ class jUpgradeTemplatesFiles extends jUpgrade
 	{
 
 		$folders = JFolder::folders(JPATH_ROOT.DS.'templates');
-		$folders = array_diff($folders, array("system", "rhuk_milkyway", "beez"));
+		$folders = array_diff($folders, array("system", "beez"));
 		sort($folders);
 		//print_r($folders);
 
