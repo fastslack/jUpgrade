@@ -108,8 +108,34 @@ class jUpgradeContent extends jUpgrade
 
 }
 
+/**
+ * Upgrade class for the Usergroup Map
+ *
+ * This translates the group mapping table from 1.5 to 1.6.
+ * Group id's up to 30 need to be mapped to the new group id's.
+ * Group id's over 30 can be used as is.
+ * User id's are maintained in this upgrade process.
+ *
+ * @package		MatWare
+ * @subpackage	com_jupgrade
+ * @since		0.4.4
+ */
+class jUpgradeContentFrontpage extends jUpgrade
+{
+	/**
+	 * @var		string	The name of the source database table.
+	 * @since	0.4.4
+	 */
+	protected $source = '#__content_frontpage';
+
+}
+
+
 // Migrate the Content.
 $content = new jUpgradeContent;
 $content->upgrade();
 
-?>
+// Migrate the Frontpage Content.
+$frontpage = new jUpgradeContentFrontpage;
+$frontpage->upgrade();
+
