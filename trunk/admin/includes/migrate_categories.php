@@ -123,6 +123,7 @@ class jUpgradeCategories extends jUpgrade
 			for($y=0;$y<count($categories);$y++){
 
 				$categories[$y]->params = $this->convertParams($categories[$y]->params);
+				$categories[$y]->title = mysql_real_escape_string($categories[$y]->title);
 
 				$this->insertCategory($categories[$y], $row->title);
 				$this->insertAsset($row->title);

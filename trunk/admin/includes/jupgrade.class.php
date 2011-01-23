@@ -337,19 +337,17 @@ class jUpgrade
 
 		// Get parent
 		if ($parent !== false) {
-
 			$path = JFilterOutput::stringURLSafe($parent)."/".$alias;
 
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
-			$parent = $this->db_new->loadResult();
+			$parent_query = $this->db_new->loadResult();
 			echo $this->db_new->getError();
 
 			$level = 2;
 			$old = $object->sid;
-		}
-		else {
-			$parent = 1;
+		}	else {
+			$parent_query = 1;
 			$level = 1;
 			$path = $alias;
 		}
@@ -357,9 +355,10 @@ class jUpgrade
 		// Insert Category
 		$query = "INSERT INTO #__categories"
 		." (`parent_id`,`lft`,`rgt`,`level`,`path`,`extension`,`title`,`alias`,`published`, `access`, `language`)"
-		." VALUES({$parent}, {$lft}, {$rgt}, {$level}, '{$path}', '{$extension}', '{$title}', '{$alias}', {$published}, {$access}, '*') ";
+		." VALUES({$parent_query}, {$lft}, {$rgt}, {$level}, '{$path}', '{$extension}', '{$title}', '{$alias}', {$published}, {$access}, '*') ";
 		$this->db_new->setQuery($query);
-		$this->db_new->query();	echo $this->db_new->getError();
+		$this->db_new->query();
+		echo $this->db_new->getError();
 		$new = $this->db_new->insertid();
 
 		// Update ROOT rgt
