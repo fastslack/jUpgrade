@@ -99,7 +99,7 @@ window.addEvent('domready', function() {
 		<div id="done">
 			<h2><?php echo JText::_( 'Joomla 1.6 Upgrade Finished!' ); ?></h2>
 			<p class="text">
-				<?php echo JText::_( 'You can check your new site here: ' ); ?>
+				<?php echo JText::_( 'You can check your new site here' ); ?>:&nbsp;
 				<a href="<?php echo JURI::root(); ?>jupgrade/" target="_blank"><?php echo JText::_( 'Site' ); ?></a> and
 				<a href="<?php echo JURI::root(); ?>jupgrade/administrator/" target="_blank"><?php echo JText::_( 'Administrator' ); ?></a>
 			</p>
