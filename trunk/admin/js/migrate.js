@@ -8,6 +8,11 @@
  * @link        http://www.matware.com.ar
  * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+// Debug
+var debug = 0;
+
+// Init some variables
 var migrate_global = 0;
 var skip_download = 0;
 var skip_decompress = 0;
@@ -118,7 +123,19 @@ var progress = function(event)  {
 
 				if(ex[1] < ex[2]){
           pb1.set(ex[0].toInt());
+
+					if (debug == 1) {
+						text = document.getElementById('debug');
+						text.innerHTML = text.innerHTML + '.';
+					}
+
 				}else if(ex[1] == ex[2]){
+
+					if (debug == 1) {
+						text = document.getElementById('debug');
+						text.innerHTML = text.innerHTML + ',';
+					}
+
           pb1.set(ex[0].toInt());
           //$clear(progressID);
 					return false;
@@ -141,7 +158,7 @@ function download(skip){
   $('download').setStyle('display', 'block');
   mySlideDownload.toggle();
 
-	var pb1 = new dwProgressBar({
+	pb1 = new dwProgressBar({
 		container: $('pb1'),
 		startPercentage: 1,
 		speed: 1000,
@@ -164,11 +181,14 @@ function download(skip){
 		  method: 'get',
 		  onRequest: function( response ) {	
 				//alert(response);		
-		    var progressID = progress.periodical(100);
+		    progressID = progress.periodical(100);
 		  },
 		  onComplete: function( response ) {
-				alert(response);
+				//alert(response);
 				pb1.finish();
+
+				// Shutdown periodical
+				$clear(progressID);
 
 				if (response == 1) {
 					if (skip['skip_decompress'] == 1) {
@@ -291,7 +311,7 @@ function migrate(event){
   $('migration').setStyle('display', 'block');
   mySlideMigrate.toggle();
 
-	var pb4 = new dwProgressBar({
+	pb4 = new dwProgressBar({
 		container: $('pb4'),
 		startPercentage: 1,
 		speed: 1000,
@@ -301,7 +321,7 @@ function migrate(event){
 		displayText: false
 	});
 
-	periodical = _doMigration.periodical(1000)
+	migration_periodical = _doMigration.periodical(1000)
 
 };
 
@@ -316,6 +336,12 @@ var _changeText = function(msg) {
 	text = document.getElementById('status');
 	text.innerHTML = 'Migrating ' + file;
 	migrate_global = migrate_global+1;
+
+	if (debug == 1) {
+		text = document.getElementById('debug');
+		text.innerHTML = text.innerHTML + ';';
+	}
+
 }
 
 /**
@@ -339,7 +365,7 @@ var _doMigration = function(event)  {
 		pb4.finish();
 
 		// Shutdown periodical
-		$clear(periodical);
+		$clear(migration_periodical);
 
 		// Run templates step
 		templates();
