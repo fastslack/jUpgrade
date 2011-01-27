@@ -50,8 +50,6 @@ function checks(event){
   $('checks').setStyle('display', 'block');
   mySlideChecks.toggle();
 
-	//pb0 = new dwProgressBar('pb0');
-
 	var pb0 = new dwProgressBar({
 		container: $('pb0'),
 		startPercentage: 1,
@@ -151,7 +149,7 @@ var progress = function(event)  {
  * @return	bool	
  * @since	0.4.
  */
-function download(skip){
+var download = function (skip){
 
   var mySlideDownload = new Fx.Slide('download');
   mySlideDownload.hide();
