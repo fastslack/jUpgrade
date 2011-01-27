@@ -8,10 +8,9 @@
  * @link        http://www.matware.com.ar
  * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
-migrate_global = 0;
-
-skip_download = 0;
-skip_decompress = 0;
+var migrate_global = 0;
+var skip_download = 0;
+var skip_decompress = 0;
 
 steps = new Array();
 steps[0] = "users";
@@ -46,7 +45,18 @@ function checks(event){
   $('checks').setStyle('display', 'block');
   mySlideChecks.toggle();
 
-	pb0 = new mtwProgressBar('pb0');
+	//pb0 = new dwProgressBar('pb0');
+
+	var pb0 = new dwProgressBar({
+		container: $('pb0'),
+		startPercentage: 1,
+		speed: 1000,
+		boxID: 'pb0-box',
+		percentageID: 'pb0-perc',
+		displayID: 'text',
+		displayText: false
+	});
+
 
 	text = document.getElementById('checkstatus');
 	text.innerHTML = 'Checking directories';
@@ -101,8 +111,8 @@ var progress = function(event)  {
     onComplete: function( msg ) {
 				var ex = explode(',', msg);
 
-        currBytes = document.getElementById('currBytes');
-        totalBytes = document.getElementById('totalBytes');
+        var currBytes = document.getElementById('currBytes');
+        var totalBytes = document.getElementById('totalBytes');
         currBytes.innerHTML = ex[1];
         totalBytes.innerHTML = ex[2];
 
@@ -131,7 +141,15 @@ function download(skip){
   $('download').setStyle('display', 'block');
   mySlideDownload.toggle();
 
-	pb1 = new mtwProgressBar('pb1');
+	var pb1 = new dwProgressBar({
+		container: $('pb1'),
+		startPercentage: 1,
+		speed: 1000,
+		boxID: 'pb1-box',
+		percentageID: 'pb1-perc',
+		displayID: 'text',
+		displayText: false
+	});
 
 	text = document.getElementById('downloadstatus');
 
@@ -149,7 +167,7 @@ function download(skip){
 		    var progressID = progress.periodical(100);
 		  },
 		  onComplete: function( response ) {
-				//alert(response);
+				alert(response);
 				pb1.finish();
 
 				if (response == 1) {
@@ -180,8 +198,15 @@ function decompress(skip){
   $('decompress').setStyle('display', 'block');
   mySlideDecompress.toggle();
 
-	pb2 = new mtwProgressBar('pb2');
-	pb2.set(50);
+	var pb2 = new dwProgressBar({
+		container: $('pb2'),
+		startPercentage: 50,
+		speed: 1000,
+		boxID: 'pb2-box',
+		percentageID: 'pb2-perc',
+		displayID: 'text',
+		displayText: false
+	});
 
 	text = document.getElementById('decompressstatus');
 
@@ -222,8 +247,15 @@ function install(event){
   $('install').setStyle('display', 'block');
   mySlideInstall.toggle();
 
-	pb3 = new mtwProgressBar('pb3');
-	pb3.set(2);
+	var pb3 = new dwProgressBar({
+		container: $('pb3'),
+		startPercentage: 2,
+		speed: 1000,
+		boxID: 'pb3-box',
+		percentageID: 'pb3-perc',
+		displayID: 'text',
+		displayText: false
+	});
 
   var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
     method: 'get',
@@ -259,7 +291,15 @@ function migrate(event){
   $('migration').setStyle('display', 'block');
   mySlideMigrate.toggle();
 
-	pb4 = new mtwProgressBar('pb4');
+	var pb4 = new dwProgressBar({
+		container: $('pb4'),
+		startPercentage: 1,
+		speed: 1000,
+		boxID: 'pb4-box',
+		percentageID: 'pb4-perc',
+		displayID: 'text',
+		displayText: false
+	});
 
 	periodical = _doMigration.periodical(1000)
 
@@ -320,8 +360,15 @@ function templates(event){
   $('templates').setStyle('display', 'block');
   mySlideTem.toggle();
 
-	pb5 = new mtwProgressBar('pb5');
-	pb5.set(10);
+	var pb5 = new dwProgressBar({
+		container: $('pb5'),
+		startPercentage: 10,
+		speed: 1000,
+		boxID: 'pb5-box',
+		percentageID: 'pb5-perc',
+		displayID: 'text',
+		displayText: false
+	});
 
   var d = new Ajax( 'components/com_jupgrade/includes/templates_db.php', {
     method: 'get',
@@ -357,10 +404,17 @@ function extensions(event){
   $('extensions').setStyle('display', 'block');
   mySlideExt.toggle();
 
-	pb5 = new mtwProgressBar('pb6');
+	var pb6 = new dwProgressBar({
+		container: $('pb6'),
+		startPercentage: 100,
+		speed: 1000,
+		boxID: 'pb6-box',
+		percentageID: 'pb6-perc',
+		displayID: 'text',
+		displayText: false
+	});
 
-	pb5.set(100);
-	pb5.finish();
+	pb6.finish();
 
 	done();
 

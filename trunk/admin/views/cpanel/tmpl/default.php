@@ -19,9 +19,9 @@ JHTML::_( 'behavior.mootools' );
 $params = &JComponentHelper::getParams( 'com_jupgrade' );
 
 $document = &JFactory::getDocument();
-$document->addScript('components/com_jupgrade/js/functions.js' );
-$document->addScript('components/com_jupgrade/js/mtwProgressBar.js' );
-$document->addScript('components/com_jupgrade/js/migrate.js' );
+$document->addScript('components'.DS.'com_jupgrade'.DS.'js'.DS.'functions.js' );
+$document->addScript('components'.DS.'com_jupgrade'.DS.'js'.DS.'dwProgressBar.js' );
+$document->addScript('components'.DS.'com_jupgrade'.DS.'js'.DS.'migrate.js' );
 ?>
 <link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
 <!--
