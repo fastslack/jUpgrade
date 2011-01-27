@@ -314,6 +314,7 @@ class jUpgrade
 		$rgt = $lft+1;
 		$title = $object->title;
 		$alias = $object->alias;
+		$description = $object->description;
 		$published = $object->published;
 		$access = $object->access + 1;
 		//$extension = $object->section;
@@ -354,8 +355,8 @@ class jUpgrade
 
 		// Insert Category
 		$query = "INSERT INTO #__categories"
-		." (`parent_id`,`lft`,`rgt`,`level`,`path`,`extension`,`title`,`alias`,`published`, `access`, `language`)"
-		." VALUES({$parent_query}, {$lft}, {$rgt}, {$level}, '{$path}', '{$extension}', '{$title}', '{$alias}', {$published}, {$access}, '*') ";
+		." (`parent_id`,`lft`,`rgt`,`level`,`path`,`extension`,`title`,`alias`,`description`, `published`, `access`, `language`)"
+		." VALUES({$parent_query}, {$lft}, {$rgt}, {$level}, '{$path}', '{$extension}', '{$title}', '{$alias}', '{$description}', {$published}, {$access}, '*') ";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
 		echo $this->db_new->getError();
