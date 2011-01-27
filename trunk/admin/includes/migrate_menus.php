@@ -105,6 +105,21 @@ class jUpgradeMenu extends jUpgrade
 		return $rows;
 	}
 
+	/**
+	 * A hook to be able to modify params prior as they are converted to JSON.
+	 *
+	 * @param	object	$object	A reference to the parameters as an object.
+	 *
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
+	 */
+	protected function convertParamsHook(&$object)
+	{
+		if((string)$object->menu_image == '-1'){
+			$object->menu_image = '';
+		}
+	}
 
 	/**
 	 * The public entry point for the class.
