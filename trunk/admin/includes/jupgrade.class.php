@@ -351,6 +351,7 @@ class jUpgrade
 			$parent_query = 1;
 			$level = 1;
 			$path = $alias;
+			$old = $object->sid;
 		}
 
 		// Insert Category
@@ -368,14 +369,12 @@ class jUpgrade
 		$this->db_new->setQuery($query);
 		$this->db_new->query();	echo $this->db_new->getError();
 
-		if ($parent !== false) {
-			// Save old id and new id
-			$query = "INSERT INTO #__jupgrade_categories"
-			." (`old`,`new`)"
-			." VALUES({$old}, {$new}) ";
-			$this->db_new->setQuery($query);
-			$this->db_new->query();
-		}
+		// Save old id and new id
+		$query = "INSERT INTO #__jupgrade_categories"
+		." (`old`,`new`)"
+		." VALUES({$old}, {$new}) ";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
 
 	 	return true;
 	}
