@@ -461,26 +461,6 @@ class jUpgrade
 	}
 
 	/**
-	 * Insert an entire objectList
-	 *
-	 * @return	error?
-	 * @since	0.4.
-	 * @throws	Exception
-	 */
-	public function insertObjectList($db, $table, &$object, $keyName = NULL)
-	{
-		$count = count($object);
-
-		for ($i=0; $i<$count; $i++)
-		{
-			$db->insertObject($table, $object[$i]);
-			$ret = $db->getErrorMsg();
-		}
-
-		return $ret;
-	}
-
-	/**
 	 * Internal function to debug
 	 *
 	 * @return	a better version of print_r
