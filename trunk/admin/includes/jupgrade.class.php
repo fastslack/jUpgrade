@@ -304,14 +304,6 @@ class jUpgrade
 	public function insertCategory($object, $parent = false)
 	{
 		
-		// Get data for category
-		$query = "SELECT rgt FROM #__categories"
-		." WHERE title = 'ROOT' AND extension = 'system'"
-		." LIMIT 1";
-		$this->db_new->setQuery($query);
-		$lft = $this->db_new->loadResult();
-
-		$rgt = $lft+1;
 		$title = $object->title;
 		$alias = $object->alias;
 		$description = $object->description;
@@ -346,30 +338,24 @@ class jUpgrade
 			echo $this->db_new->getError();
 
 			$level = 2;
-			$old = $object->sid;
 		}	else {
 			$parent_query = 1;
 			$level = 1;
 			$path = $alias;
-			$old = $object->sid;
 		}
 
 		// Insert Category
 		$query = "INSERT INTO #__categories"
-		." (`parent_id`,`lft`,`rgt`,`level`,`path`,`extension`,`title`,`alias`,`description`, `published`, `access`, `language`)"
-		." VALUES({$parent_query}, {$lft}, {$rgt}, {$level}, '{$path}', '{$extension}', '{$title}', '{$alias}', '{$description}', {$published}, {$access}, '*') ";
+		." (`parent_id`, `path`,`extension`,`title`,`alias`,`description`, `published`, `access`, `language`)"
+		." VALUES({$parent_query}, '{$path}', '{$extension}', '{$title}', '{$alias}', '{$description}', {$published}, {$access}, '*') ";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
 		echo $this->db_new->getError();
 		$new = $this->db_new->insertid();
 
-		// Update ROOT rgt
-		$query = "UPDATE #__categories SET rgt=rgt+2"
-		." WHERE title = 'ROOT' AND extension = 'system'";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();	echo $this->db_new->getError();
+		// Getting old id and save it
+		$old = $object->sid;
 
-		// Save old id and new id
 		$query = "INSERT INTO #__jupgrade_categories"
 		." (`old`,`new`)"
 		." VALUES({$old}, {$new}) ";

@@ -133,6 +133,26 @@ class jUpgradeCategories extends jUpgrade
 		}
 	}
 
+	/**
+	 * The public entry point for the class.
+	 *
+	 * @return	void
+	 * @since	0.5.5
+	 * @throws	Exception
+	 */
+	public function upgrade()
+	{
+		if (parent::upgrade()) {
+			// Rebuild the usergroup nested set values.
+			$table = JTable::getInstance('Category', 'JTable', array('dbo' => $this->db_new));
+
+			if (!$table->rebuild()) {
+				echo JError::raiseError(500, $table->getError());
+			}
+		}
+	}
+
+
 }
 
 // Migrate the Categories.
