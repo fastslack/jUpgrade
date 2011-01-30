@@ -309,6 +309,10 @@ class jUpgrade
 		$description = $object->description;
 		$published = $object->published;
 		$access = $object->access + 1;
+		$checked_out = $object->checked_out;
+		$checked_out_time = $object->checked_out_time;
+		$params = $object->params;
+		
 		//$extension = $object->section;
 		$extension = "com_content";
 
@@ -335,7 +339,13 @@ class jUpgrade
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
 			$parent_query = $this->db_new->loadResult();
-			echo $this->db_new->getError();
+
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
 
 			$level = 2;
 		}	else {
@@ -346,11 +356,19 @@ class jUpgrade
 
 		// Insert Category
 		$query = "INSERT INTO #__categories"
-		." (`parent_id`, `path`,`extension`,`title`,`alias`,`description`, `published`, `access`, `language`)"
-		." VALUES({$parent_query}, '{$path}', '{$extension}', '{$title}', '{$alias}', '{$description}', {$published}, {$access}, '*') ";
+		." (`parent_id`, `path`,`extension`,`title`,`alias`,`description`, `published`, `checked_out`, `checked_out_time`, `params`, `access`, `language`)"
+		." VALUES({$parent_query}, '{$path}', '{$extension}', '{$title}', '{$alias}', '{$description}', {$published}, '{$checked_out}', '{$checked_out_time}', '{$params}', {$access}, '*') ";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
-		echo $this->db_new->getError();
+
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
+		// Get new id
 		$new = $this->db_new->insertid();
 
 		// Getting old id and save it
