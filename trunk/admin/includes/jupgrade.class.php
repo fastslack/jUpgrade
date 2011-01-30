@@ -393,6 +393,14 @@ class jUpgrade
 	 */
 	public function insertAsset($object, $parent = false) {
 
+		// Content or category?
+		if ($object->id) {
+			$object->sid = $object->id;
+			$name = "com_content.article.{$object->sid}";
+		}else{
+			$name = "com_content.category.{$object->sid}";
+		}
+
 		// Get parent and level
 		if ($parent !== false) {
 			$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
@@ -404,8 +412,7 @@ class jUpgrade
 			$level = 2;
 		}
 
-		// Setting name and rules values
-		$name = "com_content.category.{$object->sid}";
+		// Setting rules values
 		$rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
 
 		// Insert Asset
@@ -420,23 +427,27 @@ class jUpgrade
 
 		if ($error) {
 			throw new Exception($error);
+			return false;
 		}	
 
 		// Get new id
 		$assetid = $this->db_new->insertid();
 
-		// updating the categori asset_id;
-		$query = "UPDATE #__categories SET asset_id={$assetid}"
-		." WHERE id = {$object->sid}";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
+		if ($object->id) {
+			// updating the categori asset_id;
+			$query = "UPDATE #__categories SET asset_id={$assetid}"
+			." WHERE id = {$object->sid}";
+			$this->db_new->setQuery($query);
+			$this->db_new->query();
 
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
 
-		if ($error) {
-			throw new Exception($error);
-		}	
+			if ($error) {
+				throw new Exception($error);
+				return false;
+			}	
+		}
 
 		return true;
 	}

@@ -78,14 +78,35 @@ class jUpgradeContent extends jUpgrade
 	*/
 	protected function setDestinationData()
 	{
-		parent::setDestinationData();
-		
+		// Truncate the table for better debug
+		$clean	= $this->cleanDestinationData();
+
+		// Get the source data.
+		$rows	= $this->getSourceData();
+		$table	= empty($this->destination) ? $this->source : $this->destination;
+
+		// Insert content data
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			if (!$this->db_new->insertObject($table, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+
+			if (!$this->insertAsset($row)) {
+				throw new Exception('JUPGRADE_ERROR_INSERTING_ASSET');
+			}
+
+		}
+
 		// Update the featured column with records from content_frontpage
 		$query = "UPDATE `j16_content`, `{$this->config_old['prefix']}content_frontpage`"
 		." SET `j16_content`.featured = 1 WHERE `j16_content`.id = `{$this->config_old['prefix']}content_frontpage`.content_id";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
-		print_r($query);
+
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();
 
@@ -97,12 +118,33 @@ class jUpgradeContent extends jUpgrade
 		$query = "DROP TABLE `j16_content_frontpage`; CREATE TABLE `j16_content_frontpage` SELECT * FROM `{$this->config_old['prefix']}content_frontpage`";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
-		print_r($query);
+
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();
 
 		if ($error) {
 			throw new Exception($error);
+		}
+
+	}
+
+	/**
+	 * The public entry point for the class.
+	 *
+	 * @return	void
+	 * @since	0.5.5
+	 * @throws	Exception
+	 */
+	public function upgrade()
+	{
+		if (parent::upgrade()) {
+			// Rebuild the assets table
+			$assets = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->db_new));
+
+			if (!$assets->rebuild()) {
+				echo JError::raiseError(500, $assets->getError());
+			}
+
 		}
 	}
 
