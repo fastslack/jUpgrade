@@ -386,80 +386,57 @@ class jUpgrade
 	/**
 	 * Inserts asset
 	 *
-	 * @since	0.4.
 	 * @access  public
+	 * @param   object  An object whose properties match table fields
+	 * @param   string  The parent title
+	 * @since	0.4.
 	 */
-	public function insertAsset($parent = false) {
+	public function insertAsset($object, $parent = false) {
 
-		/*
-		 * Get parent
-		 */
+		// Get parent and level
 		if ($parent !== false) {
 			$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
 			$parent = $this->db_new->loadResult();
 			$level = 3;
-		}
-		else {
-			$parent = 1;
+		}	else {
+			$parent = 8;
 			$level = 2;
 		}
 
-		/*
-		 * Get data for asset
-	 	 * @since	0.4.
-		 */
-		$query = "SELECT id FROM #__categories ORDER BY id DESC LIMIT 1";
-		$this->db_new->setQuery($query);
-		$cid = $this->db_new->loadResult();
-
-		$query = "SELECT title FROM #__categories ORDER BY id DESC LIMIT 1";
-		$this->db_new->setQuery($query);
-		$title = $this->db_new->loadResult();
-
-		$query = "SELECT rgt+1 FROM #__assets WHERE name LIKE 'com_content.category%'"
-		." ORDER BY lft DESC LIMIT 1";
-		$this->db_new->setQuery($query);
-		$lft = $this->db_new->loadResult();
-		if (!isset($lft)) {
-			$lft = 34;
-		}
-
-		$rgt = $lft+1;
-		$name = "com_content.category.{$cid}";
+		// Setting name and rules values
+		$name = "com_content.category.{$object->sid}";
 		$rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
 
-		// Update lft & rgt > cat
-		$query = "UPDATE #__assets SET lft=lft+2"
-		." WHERE lft >= {$lft}";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();	echo $this->db_new->getError();
-
-		$query = "UPDATE #__assets SET rgt=rgt+2"
-		." WHERE rgt >= {$rgt}";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();	echo $this->db_new->getError();
-
-		/*
-		 * Insert Asset
-		 */
+		// Insert Asset
 		$query = "INSERT INTO #__assets"
-		." (`parent_id`,`lft`,`rgt`,`level`,`name`,`title`,`rules`)"
-		." VALUES({$parent}, {$lft}, {$rgt}, {$level}, '{$name}', '{$title}', '{$rules}') ";
+		." (`parent_id`, `name`, `title`, `level`, `rules`)"
+		." VALUES({$parent}, '{$name}', '{$object->title}', '{$level}', '{$rules}') ";
 		$this->db_new->setQuery($query);
-		$this->db_new->query();	echo $this->db_new->getError();
-		//echo $query . "<br>";
+		$this->db_new->query();	
 
-		// Setting the asset id to category
-		$query = "SELECT id FROM #__assets ORDER BY id DESC LIMIT 1";
-		$this->db_new->setQuery($query);
-		$assetid = $this->db_new->loadResult();
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
 
+		if ($error) {
+			throw new Exception($error);
+		}	
+
+		// Get new id
+		$assetid = $this->db_new->insertid();
+
+		// updating the categori asset_id;
 		$query = "UPDATE #__categories SET asset_id={$assetid}"
-		." WHERE id = {$cid}";
+		." WHERE id = {$object->sid}";
 		$this->db_new->setQuery($query);
-		$this->db_new->query();	echo $this->db_new->getError();
+		$this->db_new->query();
 
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}	
 
 		return true;
 	}

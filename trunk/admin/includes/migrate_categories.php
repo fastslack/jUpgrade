@@ -110,7 +110,7 @@ class jUpgradeCategories extends jUpgrade
 			$row = (object) $row;
 
 			$this->insertCategory($row);
-			$this->insertAsset();
+			$this->insertAsset($row);
 
 			 // Childen categories
 			$query = "SELECT `id` AS sid, `title`,`alias`,`description`,`published`,`checked_out`,`checked_out_time`,`access`,`params`"
@@ -126,7 +126,7 @@ class jUpgradeCategories extends jUpgrade
 				$categories[$y]->title = mysql_real_escape_string($categories[$y]->title);
 
 				$this->insertCategory($categories[$y], $row->title);
-				$this->insertAsset($row->title);
+				$this->insertAsset($categories[$y], $row->title);
 
 			}
 
@@ -143,12 +143,20 @@ class jUpgradeCategories extends jUpgrade
 	public function upgrade()
 	{
 		if (parent::upgrade()) {
-			// Rebuild the usergroup nested set values.
+			// Rebuild the categories table
 			$table = JTable::getInstance('Category', 'JTable', array('dbo' => $this->db_new));
 
 			if (!$table->rebuild()) {
 				echo JError::raiseError(500, $table->getError());
 			}
+
+			// Rebuild the assets table
+			$assets = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->db_new));
+
+			if (!$assets->rebuild()) {
+				echo JError::raiseError(500, $assets->getError());
+			}
+
 		}
 	}
 
