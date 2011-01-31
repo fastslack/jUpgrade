@@ -319,7 +319,7 @@ function migrate(event){
 		displayText: false
 	});
 
-	migration_periodical = _doMigration.periodical(1000)
+	migration_periodical = _doMigration.periodical(2500)
 
 };
 
