@@ -72,8 +72,11 @@ class jUpgradeMenu extends jUpgrade
 			'm.id'
 		);
 
+		// Getting number of rows
+		$count = count($rows);
+	
 		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
+		foreach ($rows as $key => &$row)
 		{
 			// Converting params to JSON
 			$row['params'] = $this->convertParams($row['params']);
@@ -95,25 +98,27 @@ class jUpgradeMenu extends jUpgrade
 				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
 			}
 
-			//
-			// Bug with alias insert, mysql cannot allow insert duplicated aliases
-			//
-			/*
-			$query = "SELECT alias FROM j16_menu WHERE alias = '{$row['alias']}' LIMIT 1";
-			$this->db_new->setQuery($query);
-			$alias = $this->db_new->loadResult();
-			echo $this->db_new->getError();	
+			// Joomla 1.6 database structure not allow to have duplicated aliases
+			$newrows = $rows;
 
-			echo $query."\n";
-			echo ">{$alias}<\n";
-
-			if($alias != "") {
-				$row['alias'] = $row['alias'].rand();
+			for ($i=$key;$i<$count;$i++) {
+				unset($newrows[$i]);
 			}
-			*/
 
-			$row['alias'] = JFilterOutput::stringURLSafe($row['title'])."-".rand();
+			$strip = array();
+			$strip[$key] = $row;
+
+			$newrows = array_diff_key($newrows, $strip);
 			
+			foreach ($newrows as $key => &$newrow) {
+				if ($newrow['alias'] != $row['alias']) {
+					$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
+				}else{
+					$row['alias'] = JFilterOutput::stringURLSafe($row['title'])."-".rand();
+					break;
+				}
+			}
+
 			// Correct path
 			//$row['path'] = JFilterOutput::stringURLSafe($parent)."/".$alias;
 
@@ -133,8 +138,10 @@ class jUpgradeMenu extends jUpgrade
 	 */
 	protected function convertParamsHook(&$object)
 	{
-		if((string)$object->menu_image == '-1'){
-			$object->menu_image = '';
+		if (isset($object->menu_image)) {
+			if((string)$object->menu_image == '-1'){
+				$object->menu_image = '';
+			}
 		}
 	}
 
