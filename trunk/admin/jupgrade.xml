@@ -8,7 +8,7 @@
   <authorUrl>http://www.matware.com.ar</authorUrl>
   <copyright>Copyleft 2007 2008 2009 2010 2011</copyright>
   <license>GNU</license>
-	<version>0.5.4</version>
+	<version>0.5.5</version>
 	<description></description>
   <install>
 		<sql>
@@ -41,6 +41,9 @@
 			<language tag="pt-BR">languages/pt-BR.com_jupgrade.ini</language>
       <language tag="en-GB">languages/en-GB.com_jupgrade.ini</language>
 			<language tag="pt-PT">languages/pt-PT.com_jupgrade.ini</language>
+			<language tag="de-DE">languages/de-DE.com_jupgrade.ini</language>
+      <language tag="nb-NO">languages/nb-NO.com_jupgrade.ini</language>
+			<language tag="sv-SE">languages/sv-SE.com_jupgrade.ini</language>
     </languages>
 	</administration>
 </install>
