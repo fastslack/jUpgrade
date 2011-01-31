@@ -114,18 +114,6 @@ class jUpgradeContent extends jUpgrade
 			throw new Exception($error);
 		}
 
-		// Make a copy of the content_frontpage table
-		$query = "DROP TABLE `j16_content_frontpage`; CREATE TABLE `j16_content_frontpage` SELECT * FROM `{$this->config_old['prefix']}content_frontpage`";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
-
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
-		}
-
 	}
 
 	/**

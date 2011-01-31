@@ -414,11 +414,12 @@ class jUpgrade
 
 		// Setting rules values
 		$rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
+		$title = mysql_real_escape_string($object->title);
 
 		// Insert Asset
 		$query = "INSERT INTO #__assets"
 		." (`parent_id`, `name`, `title`, `level`, `rules`)"
-		." VALUES({$parent}, '{$name}', '{$object->title}', '{$level}', '{$rules}') ";
+		." VALUES({$parent}, '{$name}', '{$title}', '{$level}', '{$rules}') ";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();	
 
