@@ -48,6 +48,14 @@ class jUpgradeMenu extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
+
+		 // Getting the categories id's
+		$query = "SELECT *"
+		." FROM j16_jupgrade_categories";
+		$this->db_new->setQuery( $query );
+		$categories = $this->db_new->loadObjectList('old');
+
+		// Creating the query
 		$join = array();
 		$join[] = 'LEFT JOIN #__components AS c ON c.id = m.componentid';
 		$join[] = 'LEFT JOIN j16_extensions AS e ON e.name = c.option';
@@ -77,6 +85,15 @@ class jUpgradeMenu extends jUpgrade
 			$row['level'] = $row['level'] == 0 ? 1 : $row['level']+1;
 			// Fixing language
 			$row['language'] = '*';
+
+			// Fixing menus URL's
+			if ($row['link'] == 'index.php?option=com_content&view=frontpage') {
+				$row['link'] = 'index.php?option=com_content&view=featured';
+			}else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section&layout=blog')) ) {
+				$ex = explode('&', $row['link']);
+				$id = substr($ex[3], 3);
+				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
+			}
 
 			//
 			// Bug with alias insert, mysql cannot allow insert duplicated aliases

@@ -435,7 +435,7 @@ class jUpgrade
 		$assetid = $this->db_new->insertid();
 
 		if ($object->id) {
-			// updating the categori asset_id;
+			// updating the category asset_id;
 			$query = "UPDATE #__categories SET asset_id={$assetid}"
 			." WHERE id = {$object->sid}";
 			$this->db_new->setQuery($query);
