@@ -21,7 +21,19 @@ $params = &JComponentHelper::getParams( 'com_jupgrade' );
 $document = &JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/functions.js' );
 $document->addScript('components/com_jupgrade/js/dwProgressBar.js' );
-$document->addScript('components/com_jupgrade/js/migrate.js' );
+
+// Checking for IE
+jimport('joomla.environment.browser');
+
+$browser = new JBrowser();
+$version = $browser->getBrowser();
+
+if ($version == 'msie') {
+	$document->addScript('components/com_jupgrade/js/migrate.ie.js' );
+}else{
+	$document->addScript('components/com_jupgrade/js/migrate.js' );
+}
+
 ?>
 <link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
 <!--
