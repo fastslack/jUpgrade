@@ -312,27 +312,32 @@ class jUpgrade
 		$checked_out = $object->checked_out;
 		$checked_out_time = $object->checked_out_time;
 		$params = $object->params;
-		
-		//$extension = $object->section;
-		$extension = "com_content";
-
-		// Correct extension
-		if (is_numeric($extension) || $extension == "") {
-			$extension = "com_content";
-		}
-		if ($extension == "com_banner") {
-			$extension = "com_banners";
-		}
-		if ($extension == "com_contact_detail") {
-			$extension = "com_contact";
-		}
 
 		// Correct alias
 		if ($alias == "") {
 			$alias = JFilterOutput::stringURLSafe($title);
 		}
 
-		// Get parent
+		// Correct extension
+		$extension = $object->section;
+
+		if ($extension == "com_banner") {
+			$extension = "com_banners";
+		}
+		if ($extension == "com_contact_detail") {
+			$extension = "com_contact";
+		}
+		if ($extension == "com_newsfeeds") {
+			$extension = "com_newsfeeds";
+		}
+		if ($extension == "com_weblinks") {
+			$extension = "com_weblinks";
+		}
+		if (is_numeric($extension) || $extension == "" || $extension == "category") {
+			$extension = "com_content";
+		}
+
+		// If has parent made $path and get parent id
 		if ($parent !== false) {
 			$path = JFilterOutput::stringURLSafe($parent)."/".$alias;
 
@@ -393,21 +398,47 @@ class jUpgrade
 	 */
 	public function insertAsset($object, $parent = false) {
 
-		// Content or category?
-		if ($object->id) {
-			$object->sid = $object->id;
-			$name = "com_content.article.{$object->sid}";
-		}else{
-			$name = "com_content.category.{$object->sid}";
-		}
+		// Getting the categories id's
+		$categories = $this->getCatIDList();
 
-		// Get parent and level
-		if ($parent !== false) {
-			$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
-			$this->db_new->setQuery($query);
-			$parent = $this->db_new->loadResult();
-			$level = 3;
-		}	else {
+		//	
+		// Correct extension
+		//
+		$extension = $object->section;
+
+		$sid = isset($object->sid) ? $object->sid : $object->id ;
+		$id = $categories[$sid]->new;
+
+		if ($extension == "com_banner") {
+			$name = "com_banners.category.{$id}";
+			$parent = 3;
+		}else if ($extension == "com_contact_detail") {
+			$name = "com_contact.category.{$id}";
+			$parent = 7;
+		}else if ($extension == "com_newsfeeds") {
+			$name = "com_newsfeeds.category.{$id}";
+			$parent = 19;
+		}else if ($extension == "com_weblinks") {
+			$name = "com_weblinks.category.{$id}";
+			$parent = 25;
+			$level = 2;
+		}else if (is_numeric($extension) || $extension == 'category') {
+			$name = "com_content.category.{$id}";
+
+			// Get parent and level
+			if ($parent !== false) {
+				$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
+				$this->db_new->setQuery($query);
+				$parent = $this->db_new->loadResult();
+				$level = 3;
+			}	else {
+				$level = 2;
+				$parent = 8;
+			}
+
+		}else if ($extension == "content") {
+			$id = $object->id;
+			$name = "com_content.article.{$id}";
 			$parent = 8;
 			$level = 2;
 		}
@@ -434,7 +465,7 @@ class jUpgrade
 		// Get new id
 		$assetid = $this->db_new->insertid();
 
-		if ($object->id) {
+		if ( $extension != "content" ) {
 			// updating the category asset_id;
 			$query = "UPDATE #__categories SET asset_id={$assetid}"
 			." WHERE id = {$object->sid}";
@@ -492,6 +523,23 @@ class jUpgrade
 		$prefix = $prefix[0];
 		return $prefix = trim($prefix, "'");
 
+	}
+
+	/**
+	 * Internal function to get original database prefix
+	 *
+	 * @return	an original database prefix
+	 * @since	0.5.3
+	 * @throws	Exception
+	 */
+	public function getCatIDList(){
+		 // Getting the categories id's
+		$query = "SELECT *"
+		." FROM j16_jupgrade_categories";
+		$this->db_new->setQuery( $query );
+		$categories = $this->db_new->loadObjectList('old');
+
+		return $categories;
 	}
 
 }

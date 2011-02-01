@@ -51,7 +51,8 @@ class jUpgradeContent extends jUpgrade
 			'`id`, `title`, NULL AS `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
 		 .'`sectionid`, `mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
 		 .'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
-		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, `access`, `hits`, NULL',
+		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
+     .'`access`, `hits` ',
 		 'LEFT JOIN j16_jupgrade_categories AS o ON o.old = c.catid',
 			null,
 			'id'
@@ -90,10 +91,13 @@ class jUpgradeContent extends jUpgrade
 		{
 			// Convert the array into an object.
 			$row = (object) $row;
-
+	
 			if (!$this->db_new->insertObject($table, $row)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
+
+			// set section value to identify asset
+			$row->section = 'content';
 
 			if (!$this->insertAsset($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_ASSET');

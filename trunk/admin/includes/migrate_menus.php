@@ -48,12 +48,8 @@ class jUpgradeMenu extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
-
-		 // Getting the categories id's
-		$query = "SELECT *"
-		." FROM j16_jupgrade_categories";
-		$this->db_new->setQuery( $query );
-		$categories = $this->db_new->loadObjectList('old');
+		// Getting the categories id's
+		$categories = $this->getCatIDList();
 
 		// Creating the query
 		$join = array();

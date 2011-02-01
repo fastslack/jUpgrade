@@ -50,7 +50,7 @@ class jUpgradeCategories extends jUpgrade
 		$where = "scope = 'content'";
 
 		$rows = parent::getSourceData(
-			'`id` AS sid, `title`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
+			'`id` AS sid, `title`, `alias`, \'category\' AS section, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
 		  null,
 			$where,
 			'id'
@@ -113,7 +113,7 @@ class jUpgradeCategories extends jUpgrade
 			$this->insertAsset($row);
 
 			 // Childen categories
-			$query = "SELECT `id` AS sid, `title`,`alias`,`description`,`published`,`checked_out`,`checked_out_time`,`access`,`params`"
+			$query = "SELECT `id` AS sid, `title`, `alias`, `section`, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`"
 			." FROM {$this->config_old['prefix']}categories"
 			." WHERE section = {$row->sid}"
 			." ORDER BY id ASC";
