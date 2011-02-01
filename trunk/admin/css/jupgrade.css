@@ -31,6 +31,40 @@ div#update:hover {
 	border:	1px solid #30559C;
 }
 
+div#info {
+	position: absolute;
+	float: right;
+	right: 50px;
+	width: 300px;
+	padding: 7px;
+	text-align: center;
+
+	//border: 1px;
+	//border-style:solid;
+	//border-color:#EFEFEF;
+}
+
+#info_title {
+	margin: 10px;
+	color: #677751;
+	font-family: 'Puritan', serif;
+	font-size: 25pt;
+	text-shadow: #000 2px -2px 2px;
+}
+
+#info_version {
+	color: #18232f;
+	font-family: 'Orbitron', serif;
+	font-size: 9pt;
+	text-shadow: #677751 1px -1px 1px;
+}
+
+#info_thanks {
+	margin: 10px;
+	font-family: 'Tinos', serif;
+	font-size: 10pt;
+}
+
 #checks, #download, #decompress, #install, #migration, #templates, #extensions, #done {
 	margin: 7px;
 	border:	2px dotted #e3e1e1;

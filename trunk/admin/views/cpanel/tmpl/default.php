@@ -36,12 +36,10 @@ if ($version == 'msie') {
 
 ?>
 <link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
-<!--
-			MOOTOOLS
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Orbitron">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Puritan">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tinos">
 
-
-<script type="text/javascript" src="../media/system/js/mootools.js"></script>
--->
 <script type="text/javascript">
 
 window.addEvent('domready', function() {
@@ -67,6 +65,22 @@ window.addEvent('domready', function() {
 <table width="100%">
 <tr>
 	<td width="100%" valign="top" align="center">
+		<div id="info">
+			<div id="info_title"><?php echo JText::_( 'jUpgrade' ); ?></div>
+			<div id="info_version"><?php echo JText::_( 'Version' ).' <b>'.$this->version.'</b>'; ?></div>
+			<div id="info_thanks">
+				<p>
+					<?php echo JText::_( 'Developed by' ); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2011<br>
+					Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br>
+				</p>
+				<p>
+					<a href="http://www.matware.com.ar/joomla/jupgrade.html">Project Site</a><br>
+					<a href="http://www.matware.com.ar/foros/jupgrade.html">Project Support</a><br>
+					<a href="http://www.joomstew.com/matias-and-beyond-2011">Want to donate?</a><br>
+				<p>
+
+			</div>
+		</div>
 		<div id="update">
 			<img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
 			<h2><?php echo JText::_( 'START UPGRADE' ); ?></h2>
