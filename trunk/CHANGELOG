@@ -29,3 +29,4 @@ $ -> Language fix or change
 
 7-Feb-2011 Andrew Eddie
  ! Added missing index.html files to some folders.
+ ^ Added PHP 5.2.4 check on installation.
