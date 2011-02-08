@@ -11,10 +11,9 @@
  * @link		http://www.matware.com.ar
  */
 
-define('_JEXEC',		1);
-define('JPATH_BASE',	dirname(__FILE__));
-define('DS',			DIRECTORY_SEPARATOR);
-
+define('_JEXEC', 1);
+define('JPATH_BASE', dirname(__FILE__));
+define('DS', DIRECTORY_SEPARATOR);
 require_once JPATH_BASE.'/defines.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
 
@@ -48,13 +47,15 @@ class jUpgradeContent extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
+		$where = "o.section = 0";
+
 		$rows = parent::getSourceData(
 			'`id`, `title`, NULL AS `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
-				.'`sectionid`, `mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
-				.'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
-				.'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
-				.'`access`, `hits` ',
-			'LEFT JOIN j16_jupgrade_categories AS o ON o.old = c.catid',
+		 .'`mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
+		 .'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
+		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
+     .'`access`, `hits` ',
+		 'LEFT JOIN j16_jupgrade_categories AS o ON o.old = c.catid',
 			null,
 			'id'
 		);
@@ -65,6 +66,12 @@ class jUpgradeContent extends jUpgrade
 			$row['attribs'] = $this->convertParams($row['attribs']);
 			$row['access'] = $row['access']+1;
 			$row['language'] = '*';
+
+			// Correct alias
+			if ($row['alias'] == "") {
+				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
+			}
+
 		}
 
 		return $rows;
@@ -92,13 +99,16 @@ class jUpgradeContent extends jUpgrade
 		{
 			// Convert the array into an object.
 			$row = (object) $row;
+	
+			//Cleanup
+			unset($row->extension);
 
 			if (!$this->db_new->insertObject($table, $row)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
 
 			// set section value to identify asset
-			$row->section = 'content';
+			$row->extension = 'article';
 
 			if (!$this->insertAsset($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_ASSET');
