@@ -2,16 +2,15 @@
 /**
  * jUpgrade
  *
- * @version		$Id$
- * @package		MatWare
+ * @version		  $Id$
+ * @package		  MatWare
  * @subpackage	com_jupgrade
- * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
- * @license		GNU General Public License version 2 or later.
- * @author		Matias Aguirre <maguirre@matware.com.ar>
- * @link		http://www.matware.com.ar
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @license		  GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// No direct access
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 
 // Make sure we can see all errors.
@@ -86,15 +85,15 @@ class jUpgrade
 
 		$jconfig = new JConfig();
 
-		$this->config['driver']		= 'mysql';
-		$this->config['host']		= $jconfig->host;
-		$this->config['user']		= $jconfig->user;
-		$this->config['password']	= $jconfig->password;
-		$this->config['database']	= $jconfig->db;
-		$this->config['prefix']		= $jconfig->dbprefix;
+		$this->config['driver']   = 'mysql';
+		$this->config['host']     = $jconfig->host;
+		$this->config['user']     = $jconfig->user;
+		$this->config['password'] = $jconfig->password;
+		$this->config['database'] = $jconfig->db;
+		$this->config['prefix']   = $jconfig->dbprefix;
 		//print_r($config);
 		$this->config_old = $this->config;
-		$this->config_old['prefix']	= $this->getPrefix();
+		$this->config_old['prefix'] = $this->getPrefix();
 
 		$this->db_new = JDatabase::getInstance($this->config);
 		$this->db_old = JDatabase::getInstance($this->config_old);
@@ -160,35 +159,39 @@ class jUpgrade
 		$query->from((string)$this->source);
 
 		// Check if 'where' clause is set
-		if (!empty($where)) {
+		if (!empty($where))
+		{
 			// Multiple conditions
-			if (is_array($where)) {
-				for ($i = 0; $i < count($where); $i++)
-				{
-					$query->where((string) $where[$i]);
+			if (is_array($where))
+			{
+				for($i=0;$i<count($where);$i++) {
+					$query->where((string)$where[$i]);
 				}
 			}
-			else if (is_string($where)) {
+			else if (is_string($where))
+			{			
 				$query->where((string)$where);
 			}
 
 		}
 
-		// Check if 'join' clause is set
-		if (!empty($join)) {
+		// Check if 'join' clause is set 
+		if (!empty($join))
+		{
 			// Multiple joins
-			if (is_array($join)) {
-				for ($i = 0; $i < count($join); $i++)
-				{
+			if (is_array($join))
+			{
+				for($i=0;$i<count($join);$i++) {
 					$pieces = explode("JOIN", $join[$i]);
 					$type = trim($pieces[0]);
 					$conditions = trim($pieces[1]);
 
 					$query->join((string)$type, (string)$conditions);
 				}
+
 			}
 			else if (is_string($join))
-			{
+			{			
 				$pieces = explode("JOIN", $join);
 				$type = trim($pieces[0]);
 				$conditions = trim($pieces[1]);
@@ -198,9 +201,8 @@ class jUpgrade
 		}
 
 		// Check if 'order' clause is set
-		if (!empty($order)) {
+		if (!empty($order))
 			$query->order($order);
-		}
 
 		// Debug
 		//print_r($query->__toString());
@@ -300,50 +302,35 @@ class jUpgrade
 	 */
 	public function insertCategory($object, $parent = false)
 	{
-		$title = $object->title;
-		$alias = $object->alias;
-		$description = $object->description;
-		$published = $object->published;
-		$access = $object->access + 1;
-		$checked_out = $object->checked_out;
-		$checked_out_time = $object->checked_out_time;
-		$params = $object->params;
-
-		// Correct alias
-		if ($alias == "") {
-			$alias = JFilterOutput::stringURLSafe($title);
-		}
+		// Get old id
+		$oldlist = new stdClass();
+		$oldlist->old = $object->sid;
+		unset($object->sid);
 
 		// Correct extension
-		$extension = $object->section;
-
-		if ($extension == "com_banner") {
-			$extension = "com_banners";
+		if ($object->extension == "com_banner") {
+			$object->extension = "com_banners";
 		}
-
-		if ($extension == "com_contact_detail") {
-			$extension = "com_contact";
+		if ($object->extension == "com_contact_detail") {
+			$object->extension = "com_contact";
 		}
-
-		if ($extension == "com_newsfeeds") {
-			$extension = "com_newsfeeds";
+		if ($object->extension == "com_newsfeeds") {
+			$object->extension = "com_newsfeeds";
 		}
-
-		if ($extension == "com_weblinks") {
-			$extension = "com_weblinks";
+		if ($object->extension == "com_weblinks") {
+			$object->extension = "com_weblinks";
 		}
-
-		if (is_numeric($extension) || $extension == "" || $extension == "category") {
-			$extension = "com_content";
+		if (is_numeric($object->extension) || $object->extension == "" || $object->extension == "category") {
+			$object->extension = "com_content";
 		}
 
 		// If has parent made $path and get parent id
 		if ($parent !== false) {
-			$path = JFilterOutput::stringURLSafe($parent)."/".$alias;
+			$object->path = JFilterOutput::stringURLSafe($parent)."/".$object->alias;
 
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
-			$parent_query = $this->db_new->loadResult();
+			$object->parent_id = $this->db_new->loadResult();
 
 			// Check for query error.
 			$error = $this->db_new->getErrorMsg();
@@ -352,39 +339,28 @@ class jUpgrade
 				throw new Exception($error);
 			}
 
-			$level = 2;
 		}
 		else {
-			$parent_query = 1;
-			$level = 1;
-			$path = $alias;
+			$object->parent_id = 1;
+			$object->path = $object->alias;
+			$oldlist->section = 1;
 		}
 
-		// Insert Category
-		$query = "INSERT INTO #__categories"
-		." (`parent_id`, `path`,`extension`,`title`,`alias`,`description`, `published`, `checked_out`, `checked_out_time`, `params`, `access`, `language`)"
-		." VALUES({$parent_query}, '{$path}', '{$extension}', '{$title}', '{$alias}', '{$description}', {$published}, '{$checked_out}', '{$checked_out_time}', '{$params}', {$access}, '*') ";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
-
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
+		// Insert the row
+		if (!$this->db_new->insertObject('#__categories', $object)) {
+			throw new Exception($this->db_new->getErrorMsg());
 		}
+
+		// Returning sid needed by insertAsset()
+		$object->sid = $oldlist->old;
 
 		// Get new id
-		$new = $this->db_new->insertid();
+		$oldlist->new = $this->db_new->insertid();
 
-		// Getting old id and save it
-		$old = $object->sid;
-
-		$query = "INSERT INTO #__jupgrade_categories"
-		." (`old`,`new`)"
-		." VALUES({$old}, {$new}) ";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
+		// Save old and new id
+		if (!$this->db_new->insertObject('#__jupgrade_categories', $oldlist)) {
+			throw new Exception($this->db_new->getErrorMsg());
+		}
 
 	 	return true;
 	}
@@ -399,64 +375,81 @@ class jUpgrade
 	 */
 	public function insertAsset($object, $parent = false)
 	{
+
+		// Init asset object
+		$asset = new stdClass();
+
 		// Getting the categories id's
 		$categories = $this->getCatIDList();
 
-		//
+		//	
 		// Correct extension
 		//
-		$extension = $object->section;
+		if ($object->extension != 'article') {
+			$sid = isset($object->sid) ? $object->sid : $object->id ;
+			$id = $categories[$sid]->new;
+			$updatetable = '#__categories';
 
-		$sid = isset($object->sid) ? $object->sid : $object->id ;
-		$id = $categories[$sid]->new;
+			if ($object->extension == "com_banner") {
+				$asset->name = "com_banners.category.{$id}";
+				$asset->parent_id = 3;
+			}
+			else if ($object->extension == "com_contact_detail") {
+				$asset->name = "com_contact.category.{$id}";
+				$asset->parent_id = 7;
+			}
+			else if ($object->extension == "com_newsfeeds") {
+				$asset->name = "com_newsfeeds.category.{$id}";
+				$asset->parent_id = 19;
+			}
+			else if ($object->extension == "com_weblinks") {
+				$asset->name = "com_weblinks.category.{$id}";
+				$asset->parent_id = 25;
+				$asset->level = 2;
+			}
+			else if (is_numeric($object->extension) || $object->extension == 'com_content') {
+				$asset->name = "com_content.category.{$id}";
 
-		if ($extension == "com_banner") {
-			$name = "com_banners.category.{$id}";
-			$parent = 3;
-		}
-		else if ($extension == "com_contact_detail") {
-			$name = "com_contact.category.{$id}";
-			$parent = 7;
-		}
-		else if ($extension == "com_newsfeeds") {
-			$name = "com_newsfeeds.category.{$id}";
-			$parent = 19;
-		}
-		else if ($extension == "com_weblinks") {
-			$name = "com_weblinks.category.{$id}";
-			$parent = 25;
-			$level = 2;
-		}
-		else if (is_numeric($extension) || $extension == 'category') {
-			$name = "com_content.category.{$id}";
-
-			// Get parent and level
-			if ($parent !== false) {
-				$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
-				$this->db_new->setQuery($query);
-				$parent = $this->db_new->loadResult();
-				$level = 3;
-			}	else {
-				$level = 2;
-				$parent = 8;
+				// Get parent and level
+				if ($parent !== false) {
+					$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
+					$this->db_new->setQuery($query);
+					$asset->parent_id = $this->db_new->loadResult();
+					$asset->level = 3;
+				}
+				else {
+					$asset->level = 2;
+					$asset->parent_id = 8;
+				}
 			}
 
 		}
-		else if ($extension == "content") {
+		else if ($object->extension == "article") {
+			$updatetable = '#__content';
 			$id = $object->id;
-			$name = "com_content.article.{$id}";
-			$parent = 8;
-			$level = 2;
+			$asset->name = "com_content.article.{$id}";
+			$asset->parent_id = 8;
+			$asset->level = 2;
 		}
 
 		// Setting rules values
-		$rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
-		$title = mysql_real_escape_string($object->title);
+		$asset->rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
+		$asset->title = mysql_real_escape_string($object->title);
 
-		// Insert Asset
-		$query = "INSERT INTO #__assets"
-		." (`parent_id`, `name`, `title`, `level`, `rules`)"
-		." VALUES({$parent}, '{$name}', '{$title}', '{$level}', '{$rules}') ";
+		// Insert the asset
+		if (!$this->db_new->insertObject('#__assets', $asset)) {
+			throw new Exception($this->db_new->getErrorMsg());
+		}
+
+		// Returning sid needed by childen categories
+		$object->sid = $sid;
+
+		// Get new id
+		$assetid = $this->db_new->insertid();
+
+		// updating the category asset_id;
+		$query = "UPDATE {$updatetable} SET asset_id={$assetid}"
+		." WHERE id = {$id}";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
 
@@ -466,25 +459,7 @@ class jUpgrade
 		if ($error) {
 			throw new Exception($error);
 			return false;
-		}
-
-		// Get new id
-		$assetid = $this->db_new->insertid();
-
-		if ($extension != "content") {
-			// updating the category asset_id;
-			$query = "UPDATE #__categories SET asset_id={$assetid}"
-			." WHERE id = {$object->sid}";
-			$this->db_new->setQuery($query);
-			$this->db_new->query();
-
-			// Check for query error.
-			$error = $this->db_new->getErrorMsg();
-
-			if ($error) {
-				throw new Exception($error);
-			}
-		}
+		}	
 
 		return true;
 	}
