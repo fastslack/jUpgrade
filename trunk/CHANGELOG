@@ -27,6 +27,9 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
-7-Feb-2011 Andrew Eddie
+08-Feb-2011 Andrew Eddie
+ ! Code formatting, trim trailing white space, set SVN properties.
+
+07-Feb-2011 Andrew Eddie
  ! Added missing index.html files to some folders.
  ^ Added PHP 5.2.4 check on installation.

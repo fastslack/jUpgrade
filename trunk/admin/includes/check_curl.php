@@ -2,10 +2,13 @@
 /**
  * jUpgrade
  *
- * @author      Matias Aguirre
- * @email       maguirre@matware.com.ar
- * @url         http://www.matware.com.ar
- * @license     GNU/GPL
+ * @version		$Id$
+ * @package		MatWare
+ * @subpackage	com_jupgrade
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
 define('_JEXEC',		1);
@@ -13,18 +16,14 @@ define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.DS.'defines.php';
-require_once JPATH_BASE.DS.'jupgrade.class.php';
-
+require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/jupgrade.class.php';
 
 $ext = get_loaded_extensions();
 
 if (in_array("curl", $ext)) {
-  echo "LOADED";
-}else{
+	echo "LOADED";
+}
+else {
 	echo "NOT_LOADED";
 }
-
-
-
-?>

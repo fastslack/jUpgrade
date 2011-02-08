@@ -5,9 +5,10 @@
  * @version		$Id$
  * @package		MatWare
  * @subpackage	com_jupgrade
- * @author      Matias Aguirre <maguirre@matware.com.ar>
- * @link        http://www.matware.com.ar
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
 define('_JEXEC',		1);
@@ -15,8 +16,8 @@ define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.DS.'defines.php';
-require_once JPATH_BASE.DS.'jupgrade.class.php';
+require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/jupgrade.class.php';
 
 /**
  * Upgrade class for Menus
@@ -70,7 +71,7 @@ class jUpgradeMenu extends jUpgrade
 
 		// Getting number of rows
 		$count = count($rows);
-	
+
 		// Do some custom post processing on the list.
 		foreach ($rows as $key => &$row)
 		{
@@ -88,7 +89,7 @@ class jUpgradeMenu extends jUpgrade
 			// Fixing menus URL's
 			if ($row['link'] == 'index.php?option=com_content&view=frontpage') {
 				$row['link'] = 'index.php?option=com_content&view=featured';
-			}else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section&layout=blog')) ) {
+			}else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section&layout=blog'))) {
 				$ex = explode('&', $row['link']);
 				$id = substr($ex[3], 3);
 				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
@@ -105,7 +106,7 @@ class jUpgradeMenu extends jUpgrade
 			$strip[$key] = $row;
 
 			$newrows = array_diff_key($newrows, $strip);
-			
+
 			foreach ($newrows as $key => &$newrow) {
 				if ($newrow['alias'] != $row['alias']) {
 					$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
@@ -205,5 +206,3 @@ $menu->upgrade();
 // Migrate the menu types.
 $menutypes = new jUpgradeMenuTypes;
 $menutypes->upgrade();
-
-?>

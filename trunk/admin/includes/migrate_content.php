@@ -2,20 +2,21 @@
 /**
  * jUpgrade
  *
- * @version		  $Id$
- * @package		  MatWare
+ * @version		$Id$
+ * @package		MatWare
  * @subpackage	com_jupgrade
- * @author      Matias Aguirre <maguirre@matware.com.ar>
- * @link        http://www.matware.com.ar
- * @license		  GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
 define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.DS.'defines.php';
-require_once JPATH_BASE.DS.'jupgrade.class.php';
+require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/jupgrade.class.php';
 
 /**
  * Upgrade class for content
@@ -49,11 +50,11 @@ class jUpgradeContent extends jUpgrade
 	{
 		$rows = parent::getSourceData(
 			'`id`, `title`, NULL AS `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
-		 .'`sectionid`, `mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
-		 .'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
-		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
-     .'`access`, `hits` ',
-		 'LEFT JOIN j16_jupgrade_categories AS o ON o.old = c.catid',
+				.'`sectionid`, `mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
+				.'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
+				.'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
+				.'`access`, `hits` ',
+			'LEFT JOIN j16_jupgrade_categories AS o ON o.old = c.catid',
 			null,
 			'id'
 		);
@@ -91,7 +92,7 @@ class jUpgradeContent extends jUpgrade
 		{
 			// Convert the array into an object.
 			$row = (object) $row;
-	
+
 			if (!$this->db_new->insertObject($table, $row)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
@@ -172,4 +173,3 @@ $content->upgrade();
 // Migrate the Frontpage Content.
 $frontpage = new jUpgradeContentFrontpage;
 $frontpage->upgrade();
-

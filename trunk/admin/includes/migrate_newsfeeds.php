@@ -5,9 +5,10 @@
  * @version		$Id$
  * @package		MatWare
  * @subpackage	com_jupgrade
- * @author      Matias Aguirre <maguirre@matware.com.ar>
- * @link        http://www.matware.com.ar
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
 define('_JEXEC',		1);
@@ -15,8 +16,8 @@ define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.DS.'defines.php';
-require_once JPATH_BASE.DS.'jupgrade.class.php';
+require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/jupgrade.class.php';
 
 /**
  * Upgrade class for Newsfeeds
@@ -44,7 +45,7 @@ class jUpgradeNewsfeeds extends jUpgrade
 	{
 		$rows = parent::getSourceData(
 			'`catid`,`id`,`name`,`alias`,`link`,`filename`,`published`,`numarticles`,`cache_time`, '
-     .' `checked_out`,`checked_out_time`,`ordering`,`rtl`',
+				.' `checked_out`,`checked_out_time`,`ordering`,`rtl`',
 			null,
 			'id'
 		);
@@ -133,7 +134,7 @@ class jUpgradeNewsfeedsCategories extends jUpgrade
 			if (!$this->insertCategory($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_CATEGORY');
 			}
-	
+
 			// Insert asset
 			if (!$this->insertAsset($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_ASSET');
@@ -179,5 +180,3 @@ $newsfeeds->upgrade();
 // Migrate the categories of newsfeeds.
 $newsfeedsCat = new jUpgradeNewsfeedsCategories;
 $newsfeedsCat->upgrade();
-
-?>

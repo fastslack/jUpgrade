@@ -5,9 +5,10 @@
  * @version		$Id$
  * @package		MatWare
  * @subpackage	com_jupgrade
- * @author      Matias Aguirre <maguirre@matware.com.ar>
- * @link        http://www.matware.com.ar
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
 define('_JEXEC',		1);
@@ -79,19 +80,12 @@ class jUpgradeExtensions extends jUpgrade
 // Search for 3rd party extensions
 $extensions = new jUpgradeExtensions;
 
-
-
-
-//TODO: Make search method 
+//TODO: Make search method
 
 $search = $extensions->search();
-
 
 /*
 if ($search) {
 	echo "DO SOMETHING";
 }
 */
-
-
-?>

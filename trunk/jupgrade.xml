@@ -22,10 +22,10 @@
 	<files folder="site">
 		<filename>index.html</filename>
 	</files>
-	
+
 	<administration>
 		<menu img="components/com_jupgrade/images/jupgrade.png">jUpgrade</menu>
-		
+
 		<files folder="admin">
 			<folder>controllers</folder>
 			<folder>css</folder>
@@ -36,14 +36,14 @@
 			<folder>libraries</folder>
 			<folder>sql</folder>
 			<folder>views</folder>
-			
+
 			<filename>admin.jupgrade.php</filename>
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
 			<filename>index.html</filename>
 			<filename>install.php</filename>
 		</files>
-		
+
 		<languages folder="admin">
 			<language tag="es-ES">languages/es-ES.com_jupgrade.ini</language>
 			<language tag="it-IT">languages/it-IT.com_jupgrade.ini</language>

@@ -2,13 +2,17 @@
 /**
  * jUpgrade
  *
- * @author      Matias Aguirre
- * @email       maguirre@matware.com.ar
- * @url         http://www.matware.com.ar
- * @license     GNU/GPL
+ * @version		$Id$
+ * @package		MatWare
+ * @subpackage	com_jupgrade
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
  */
 
-defined('_JEXEC') or die('Restricted access');
+// No direct access.
+defined('_JEXEC') or die;
 
 $version = "v{$this->version}";
 

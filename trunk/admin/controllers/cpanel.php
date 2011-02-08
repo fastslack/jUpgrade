@@ -2,44 +2,46 @@
 /**
  * jUpgrade
  *
- * @version			$Id$
- * @package			MatWare
+ * @version		$Id$
+ * @package		MatWare
  * @subpackage	com_jupgrade
- * @author      Matias Aguirre <maguirre@matware.com.ar>
- * @link        http://www.matware.com.ar
- * @license			GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die();
+// No direct access.
+defined('_JEXEC') or die;
 
 /**
  * cPanel Controller
  *
- * @package    Joomla.Tutorials
- * @subpackage Components
+ * @package		MatWare
+ * @subpackage	com_jupgrade
  */
 class jupgradeControllerCpanel extends jupgradeController
 {
 	/**
-	 * constructor (registers additional tasks to methods)
-	 * @return void
+	 * Display the view.
+	 *
+	 * @return	void
 	 */
-	function __construct()
+	function display()
 	{
-		parent::__construct();
+		JRequest::setVar( 'view', 'cpanel' );
+		parent::display();
 	}
 
-  function display() {
-    JRequest::setVar( 'view', 'cpanel' );
-    parent::display();
-  }
-
-  function help() {
+	/**
+	 * Redirect to the help site.
+	 *
+	 * return	void
+	 */
+	function help()
+	{
 		$msg = "";
 		$link = "http://www.matware.com.ar/foros.html";
-		$this->setRedirect($link, $msg);   
-  }
-
+		$this->setRedirect($link, $msg);
+	}
 }
-?>

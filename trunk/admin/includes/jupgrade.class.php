@@ -2,15 +2,16 @@
 /**
  * jUpgrade
  *
- * @version		  $Id$
- * @package		  MatWare
+ * @version		$Id$
+ * @package		MatWare
  * @subpackage	com_jupgrade
- * @author      Matias Aguirre <maguirre@matware.com.ar>
- * @link        http://www.matware.com.ar
- * @license		  GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
-// Check to ensure this file is included in Joomla!
+// No direct access
 defined('_JEXEC') or die;
 
 // Make sure we can see all errors.
@@ -39,12 +40,12 @@ class jUpgrade
 	function __construct()
 	{
 		// Base includes
-		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'import.php';
-		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'methods.php';
-		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'factory.php';
-		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'import.php';
-		require_once JPATH_LIBRARIES.DS.'joomla'.DS.'config.php';
-		require_once JPATH_ROOT.DS.'jupgrade'.DS.'configuration.php';
+		require_once JPATH_LIBRARIES.'/joomla/import.php';
+		require_once JPATH_LIBRARIES.'/joomla/methods.php';
+		require_once JPATH_LIBRARIES.'/joomla/factory.php';
+		require_once JPATH_LIBRARIES.'/joomla/import.php';
+		require_once JPATH_LIBRARIES.'/joomla/config.php';
+		require_once JPATH_ROOT.'/jupgrade/configuration.php';
 
 		// Base includes
 		jimport('joomla.base.object');
@@ -85,15 +86,15 @@ class jUpgrade
 
 		$jconfig = new JConfig();
 
-		$this->config['driver']   = 'mysql';
-		$this->config['host']     = $jconfig->host;
-		$this->config['user']     = $jconfig->user;
-		$this->config['password'] = $jconfig->password;
-		$this->config['database'] = $jconfig->db;
-		$this->config['prefix']   = $jconfig->dbprefix;
+		$this->config['driver']		= 'mysql';
+		$this->config['host']		= $jconfig->host;
+		$this->config['user']		= $jconfig->user;
+		$this->config['password']	= $jconfig->password;
+		$this->config['database']	= $jconfig->db;
+		$this->config['prefix']		= $jconfig->dbprefix;
 		//print_r($config);
 		$this->config_old = $this->config;
-		$this->config_old['prefix'] = $this->getPrefix();
+		$this->config_old['prefix']	= $this->getPrefix();
 
 		$this->db_new = JDatabase::getInstance($this->config);
 		$this->db_old = JDatabase::getInstance($this->config_old);
@@ -159,40 +160,35 @@ class jUpgrade
 		$query->from((string)$this->source);
 
 		// Check if 'where' clause is set
-		if (!empty($where))
-		{
+		if (!empty($where)) {
 			// Multiple conditions
-			if (is_array($where))
-			{
-				for($i=0;$i<count($where);$i++) {
-					$query->where((string)$where[$i]);
+			if (is_array($where)) {
+				for ($i = 0; $i < count($where); $i++)
+				{
+					$query->where((string) $where[$i]);
 				}
-
 			}
-			else if (is_string($where))
-			{			
+			else if (is_string($where)) {
 				$query->where((string)$where);
 			}
 
 		}
 
-		// Check if 'join' clause is set 
-		if (!empty($join))
-		{
+		// Check if 'join' clause is set
+		if (!empty($join)) {
 			// Multiple joins
-			if (is_array($join))
-			{
-				for($i=0;$i<count($join);$i++) {
+			if (is_array($join)) {
+				for ($i = 0; $i < count($join); $i++)
+				{
 					$pieces = explode("JOIN", $join[$i]);
 					$type = trim($pieces[0]);
 					$conditions = trim($pieces[1]);
 
 					$query->join((string)$type, (string)$conditions);
 				}
-
 			}
 			else if (is_string($join))
-			{			
+			{
 				$pieces = explode("JOIN", $join);
 				$type = trim($pieces[0]);
 				$conditions = trim($pieces[1]);
@@ -202,8 +198,9 @@ class jUpgrade
 		}
 
 		// Check if 'order' clause is set
-		if (!empty($order))
+		if (!empty($order)) {
 			$query->order($order);
+		}
 
 		// Debug
 		//print_r($query->__toString());
@@ -303,7 +300,6 @@ class jUpgrade
 	 */
 	public function insertCategory($object, $parent = false)
 	{
-		
 		$title = $object->title;
 		$alias = $object->alias;
 		$description = $object->description;
@@ -324,15 +320,19 @@ class jUpgrade
 		if ($extension == "com_banner") {
 			$extension = "com_banners";
 		}
+
 		if ($extension == "com_contact_detail") {
 			$extension = "com_contact";
 		}
+
 		if ($extension == "com_newsfeeds") {
 			$extension = "com_newsfeeds";
 		}
+
 		if ($extension == "com_weblinks") {
 			$extension = "com_weblinks";
 		}
+
 		if (is_numeric($extension) || $extension == "" || $extension == "category") {
 			$extension = "com_content";
 		}
@@ -353,7 +353,8 @@ class jUpgrade
 			}
 
 			$level = 2;
-		}	else {
+		}
+		else {
 			$parent_query = 1;
 			$level = 1;
 			$path = $alias;
@@ -396,12 +397,12 @@ class jUpgrade
 	 * @param   string  The parent title
 	 * @since	0.4.
 	 */
-	public function insertAsset($object, $parent = false) {
-
+	public function insertAsset($object, $parent = false)
+	{
 		// Getting the categories id's
 		$categories = $this->getCatIDList();
 
-		//	
+		//
 		// Correct extension
 		//
 		$extension = $object->section;
@@ -412,17 +413,21 @@ class jUpgrade
 		if ($extension == "com_banner") {
 			$name = "com_banners.category.{$id}";
 			$parent = 3;
-		}else if ($extension == "com_contact_detail") {
+		}
+		else if ($extension == "com_contact_detail") {
 			$name = "com_contact.category.{$id}";
 			$parent = 7;
-		}else if ($extension == "com_newsfeeds") {
+		}
+		else if ($extension == "com_newsfeeds") {
 			$name = "com_newsfeeds.category.{$id}";
 			$parent = 19;
-		}else if ($extension == "com_weblinks") {
+		}
+		else if ($extension == "com_weblinks") {
 			$name = "com_weblinks.category.{$id}";
 			$parent = 25;
 			$level = 2;
-		}else if (is_numeric($extension) || $extension == 'category') {
+		}
+		else if (is_numeric($extension) || $extension == 'category') {
 			$name = "com_content.category.{$id}";
 
 			// Get parent and level
@@ -436,7 +441,8 @@ class jUpgrade
 				$parent = 8;
 			}
 
-		}else if ($extension == "content") {
+		}
+		else if ($extension == "content") {
 			$id = $object->id;
 			$name = "com_content.article.{$id}";
 			$parent = 8;
@@ -452,7 +458,7 @@ class jUpgrade
 		." (`parent_id`, `name`, `title`, `level`, `rules`)"
 		." VALUES({$parent}, '{$name}', '{$title}', '{$level}', '{$rules}') ";
 		$this->db_new->setQuery($query);
-		$this->db_new->query();	
+		$this->db_new->query();
 
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();
@@ -460,12 +466,12 @@ class jUpgrade
 		if ($error) {
 			throw new Exception($error);
 			return false;
-		}	
+		}
 
 		// Get new id
 		$assetid = $this->db_new->insertid();
 
-		if ( $extension != "content" ) {
+		if ($extension != "content") {
 			// updating the category asset_id;
 			$query = "UPDATE #__categories SET asset_id={$assetid}"
 			." WHERE id = {$object->sid}";
@@ -477,8 +483,7 @@ class jUpgrade
 
 			if ($error) {
 				throw new Exception($error);
-				return false;
-			}	
+			}
 		}
 
 		return true;
@@ -491,7 +496,8 @@ class jUpgrade
 	 * @since	0.4.5
 	 * @throws	Exception
 	 */
-	public function print_a($subject){
+	public function print_a($subject)
+	{
 		echo str_replace("=>","&#8658;",str_replace("Array","<font color=\"red\"><b>Array</b></font>",nl2br(str_replace(" "," &nbsp; ",print_r($subject,true)))));
 	}
 
@@ -503,8 +509,8 @@ class jUpgrade
 	 * @since	0.5.3
 	 * @throws	Exception
 	 */
-	public function getPrefix(){
-
+	public function getPrefix()
+	{
 		// configuration.php path
 		$filename = JPATH_ROOT.DS.'configuration.php';
 
@@ -518,7 +524,7 @@ class jUpgrade
 		preg_match($pattern, $contents, $matches);
 		$prefix = $matches[1];
 
-		// Strip all trash 
+		// Strip all trash
 		$prefix = explode(";", $prefix);
 		$prefix = $prefix[0];
 		return $prefix = trim($prefix, "'");
@@ -532,14 +538,14 @@ class jUpgrade
 	 * @since	0.5.3
 	 * @throws	Exception
 	 */
-	public function getCatIDList(){
+	public function getCatIDList()
+	{
 		 // Getting the categories id's
 		$query = "SELECT *"
 		." FROM j16_jupgrade_categories";
-		$this->db_new->setQuery( $query );
+		$this->db_new->setQuery($query);
 		$categories = $this->db_new->loadObjectList('old');
 
 		return $categories;
 	}
-
 }

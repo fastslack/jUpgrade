@@ -5,16 +5,17 @@
  * @version		$Id$
  * @package		MatWare
  * @subpackage	com_jupgrade
- * @author      Matias Aguirre <maguirre@matware.com.ar>
- * @link        http://www.matware.com.ar
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		GNU General Public License version 2 or later.
+ * @author		Matias Aguirre <maguirre@matware.com.ar>
+ * @link		http://www.matware.com.ar
  */
 
-define( '_JEXEC', 1 );
-define( 'JPATH_BASE', dirname(__FILE__) );
-define( 'DS', DIRECTORY_SEPARATOR );
-require_once ( JPATH_BASE .DS.'defines.php' );
-require_once ( JPATH_BASE .DS.'jupgrade.class.php' );
+define('_JEXEC', 1);
+define('JPATH_BASE', dirname(__FILE__));
+define('DS', DIRECTORY_SEPARATOR);
+require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/jupgrade.class.php';
 
 /**
  * Upgrade class for categories
@@ -99,7 +100,7 @@ class jUpgradeCategories extends jUpgrade
 
 		if ($error) {
 			throw new Exception($error);
-		}	
+		}
 
 		//
 		// Insert the categories
@@ -117,7 +118,7 @@ class jUpgradeCategories extends jUpgrade
 			." FROM {$this->config_old['prefix']}categories"
 			." WHERE section = {$row->sid}"
 			." ORDER BY id ASC";
-			$this->db_old->setQuery( $query );
+			$this->db_old->setQuery($query);
 			$categories = $this->db_old->loadObjectList();
 
 			for($y=0;$y<count($categories);$y++){
@@ -166,5 +167,3 @@ class jUpgradeCategories extends jUpgrade
 // Migrate the Categories.
 $categories = new jUpgradeCategories;
 $categories->upgrade();
-
-?>
