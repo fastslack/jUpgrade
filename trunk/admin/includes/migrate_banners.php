@@ -11,11 +11,9 @@
  * @link		http://www.matware.com.ar
  */
 
-define('_JEXEC',		1);
-//define('JPATH_BASE',	dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-define('JPATH_BASE',	dirname(__FILE__));
-define('DS',			DIRECTORY_SEPARATOR);
-
+define('_JEXEC', 1);
+define('JPATH_BASE', dirname(__FILE__));
+define('DS', DIRECTORY_SEPARATOR);
 require_once JPATH_BASE.'/defines.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
 
@@ -63,9 +61,6 @@ class jUpgradeBanners extends jUpgrade
 		foreach ($rows as &$row)
 		{
 			$row['params'] = $this->convertParams($row['params']);
-
-			// Remove unused fields.
-			unset($row['gid']);
 		}
 
 		return $rows;
@@ -100,7 +95,7 @@ class jUpgradeBannersCategories extends jUpgrade
 		$where = "section = 'com_banner'";
 
 		$rows = parent::getSourceData(
-			'`id` AS sid, `title`, `alias`, `section`, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
+			'`id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
 		  null,
 			$where,
 			'id'
@@ -110,9 +105,13 @@ class jUpgradeBannersCategories extends jUpgrade
 		foreach ($rows as &$row)
 		{
 			$row['params'] = $this->convertParams($row['params']);
+			$row['access'] = $row['access']+1;
+			$row['language'] = '*';
 
-			// Remove unused fields.
-			unset($row['gid']);
+			// Correct alias
+			if ($row['alias'] == "") {
+				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
+			}
 		}
 
 		return $rows;
@@ -143,7 +142,7 @@ class jUpgradeBannersCategories extends jUpgrade
 			if (!$this->insertCategory($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_CATEGORY');
 			}
-
+	
 			// Insert asset
 			if (!$this->insertAsset($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_ASSET');
@@ -167,13 +166,6 @@ class jUpgradeBannersCategories extends jUpgrade
 
 			if (!$table->rebuild()) {
 				echo JError::raiseError(500, $table->getError());
-			}
-
-			// Rebuild the assets table
-			$assets = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->db_new));
-
-			if (!$assets->rebuild()) {
-				echo JError::raiseError(500, $assets->getError());
 			}
 
 		}
