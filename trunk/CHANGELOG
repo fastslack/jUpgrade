@@ -27,6 +27,11 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+08-Feb-2011 Matias Aguirre
+ + Adding contact, weblinks, newsfeeds and banners categories migration
+ ^ Assets and categories rewrited
+ # Content migration fix
+
 08-Feb-2011 Andrew Eddie
  ! Code formatting, trim trailing white space, set SVN properties.
 
