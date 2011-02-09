@@ -125,9 +125,18 @@ class jUpgradeCategories extends jUpgrade
 
 			for($y=0;$y<count($categories);$y++){
 
+				// Correct some values
 				$categories[$y]->params = $this->convertParams($categories[$y]->params);
 				$categories[$y]->title = mysql_real_escape_string($categories[$y]->title);
+				$categories[$y]->access = $categories[$y]->access+1;
+				$categories[$y]->language = '*';
 
+				// Correct alias
+				if ($categories[$y]->alias == "") {
+					$categories[$y]->alias = JFilterOutput::stringURLSafe($categories[$y]->title);
+				}
+
+				// Inserting category and asset
 				$this->insertCategory($categories[$y], $row->title);
 				$this->insertAsset($categories[$y], $row->title);
 
