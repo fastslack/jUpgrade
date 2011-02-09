@@ -278,7 +278,7 @@ class jUpgrade
 	protected function cleanDestinationData($table)
 	{
 		// Get the table
-		if ($table != '') {
+		if ($table == '') {
 			$table	= empty($this->destination) ? $this->source : $this->destination;
 		}
 

@@ -60,7 +60,7 @@ class jUpgradeMenu extends jUpgrade
 		$where = "m.name != 'Home' AND m.alias != 'home'";
 
 		$rows = parent::getSourceData(
-			 ' m.menutype, m.name AS title, m.alias, m.link, m.type,'
+			 ' m.id AS sid, m.menutype, m.name AS title, m.alias, m.link, m.type,'
 			.' m.published, m.parent AS parent_id, e.extension_id AS component_id,'
 			.' m.sublevel AS level, m.ordering, m.checked_out, m.checked_out_time, m.browserNav,'
 			.' m.access, m.params, m.lft, m.rgt, m.home',
@@ -89,7 +89,8 @@ class jUpgradeMenu extends jUpgrade
 			// Fixing menus URL's
 			if ($row['link'] == 'index.php?option=com_content&view=frontpage') {
 				$row['link'] = 'index.php?option=com_content&view=featured';
-			}else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section&layout=blog'))) {
+			}
+			else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section&layout=blog'))) {
 				$ex = explode('&', $row['link']);
 				$id = substr($ex[3], 3);
 				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
@@ -110,7 +111,8 @@ class jUpgradeMenu extends jUpgrade
 			foreach ($newrows as $key => &$newrow) {
 				if ($newrow['alias'] != $row['alias']) {
 					$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
-				}else{
+				}
+				else{
 					$row['alias'] = JFilterOutput::stringURLSafe($row['title'])."-".rand();
 					break;
 				}
@@ -140,6 +142,73 @@ class jUpgradeMenu extends jUpgrade
 				$object->menu_image = '';
 			}
 		}
+	}
+
+	/**
+	 * Sets the data in the destination database.
+	 *
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
+	 */
+	protected function setDestinationData()
+	{
+		// Truncate j16_jupgrade_menus table
+		$clean	= $this->cleanDestinationData('j16_jupgrade_menus');
+
+		// Get the source data.
+		$rows	= $this->getSourceData();
+		$table	= empty($this->destination) ? $this->source : $this->destination;
+
+		// 
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			// Get oldlist values
+			$oldlist = new stdClass();
+			$oldlist->old = $row->sid;
+			unset($row->sid);
+
+			// Inserting the menu
+			if (!$this->db_new->insertObject($table, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+
+			// Get new id
+			$oldlist->new = $this->db_new->insertid();
+
+			// Save old and new id
+			if (!$this->db_new->insertObject('#__jupgrade_menus', $oldlist)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+
+		}
+
+		// Updating the parent id's
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			// Getting the new parent id
+			if ($row->parent_id != 1) {
+				$query = "SELECT new"
+				." FROM j16_jupgrade_menus"
+				." WHERE old = {$row->parent_id}"
+				." LIMIT 1";
+				$this->db_new->setQuery($query);
+				$row->parent_id = $this->db_new->loadResult();	
+			}
+
+			$query = "UPDATE j16_menu SET parent_id='{$row->parent_id}' WHERE menutype='{$row->menutype}'"
+				." AND title = '{$row->title}' AND link = '{$row->link}'";
+			$this->db_new->setQuery($query);
+			$this->db_new->query();
+
+		}
+
 	}
 
 	/**
@@ -197,7 +266,6 @@ class jUpgradeMenuTypes extends jUpgrade
 		return $rows;
 	}
 }
-
 
 // Migrate the menu.
 $menu = new jUpgradeMenu;
