@@ -63,6 +63,12 @@ class jUpgradeCategories extends jUpgrade
 			$row['params'] = $this->convertParams($row['params']);
 			$row['access'] = $row['access']+1;
 			$row['language'] = '*';
+
+			// Correct alias
+			if ($row['alias'] == "") {
+				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
+			}
+
 		}
 
 		return $rows;
@@ -81,16 +87,7 @@ class jUpgradeCategories extends jUpgrade
 		$rows	= $this->getSourceData();
 
 		// Truncate j16_jupgrade_categories table
-		$query = "TRUNCATE TABLE `j16_jupgrade_categories`";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
-
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
-		}
+		$clean	= $this->cleanDestinationData('j16_jupgrade_categories');
 
 		// Insert uncategorized id
 		$query = "INSERT INTO `j16_jupgrade_categories` (`old`, `new`) VALUES (0, 2)";

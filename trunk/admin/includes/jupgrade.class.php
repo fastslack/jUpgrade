@@ -275,10 +275,12 @@ class jUpgrade
 	 * @since	0.5.1
 	 * @throws	Exception
 	 */
-	protected function cleanDestinationData()
+	protected function cleanDestinationData($table)
 	{
 		// Get the table
-		$table	= empty($this->destination) ? $this->source : $this->destination;
+		if ($table != '') {
+			$table	= empty($this->destination) ? $this->source : $this->destination;
+		}
 
 		$query = "TRUNCATE TABLE {$table}";
 		$this->db_new->setQuery($query);
