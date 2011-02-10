@@ -13,20 +13,19 @@
 var debug_val = 0;
 
 // Init some variables
-var migrate_global = 0;
+var migrate_global = 1;
 var skip_download = 0;
 var skip_decompress = 0;
 
 steps = new Array();
-steps[0] = "users";
-steps[1] = "modules";
-steps[2] = "categories";
-steps[3] = "content";
-steps[4] = "menus";
-steps[5] = "banners";
-steps[6] = "contacts";
-steps[7] = "newsfeeds";
-steps[8] = "polls";
+steps[1] = "users";
+steps[2] = "modules";
+steps[3] = "categories";
+steps[4] = "content";
+steps[5] = "menus";
+steps[6] = "banners";
+steps[7] = "contacts";
+steps[8] = "newsfeeds";
 steps[9] = "weblinks";
 
 /**
@@ -313,7 +312,7 @@ function migrate(event){
 
 	pb4 = new dwProgressBar({
 		container: $('pb4'),
-		startPercentage: 1,
+		startPercentage: 5,
 		speed: 1000,
 		boxID: 'pb4-box',
 		percentageID: 'pb4-perc',
