@@ -444,7 +444,7 @@ class jUpgrade
 		}
 
 		// Returning sid needed by childen categories
-		$object->sid = $sid;
+		$object->sid = isset($sid) ? $sid : $object->id ;
 
 		// Get new id
 		$assetid = $this->db_new->insertid();
