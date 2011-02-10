@@ -58,6 +58,7 @@ window.addEvent('domready', function() {
 
 	$('update').skip_download = <?php echo $params->get("skip_download") ? $params->get("skip_download") : 0; ?>;
 	$('update').skip_decompress =  <?php echo $params->get("skip_decompress") ? $params->get("skip_decompress") : 0; ?>;
+	$('update').debug =  <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>;
 
 	$('update').addEvent('click', checks);
 
@@ -88,10 +89,6 @@ window.addEvent('domready', function() {
 				<div id="update">
 					<img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
 					<h2><?php echo JText::_('START UPGRADE'); ?></h2>
-				</div>
-
-				<div>
-					<div id="debug"></div>
 				</div>
 
 				<div id="checks">
@@ -146,6 +143,11 @@ window.addEvent('domready', function() {
 						<a href="<?php echo JURI::root(); ?>jupgrade/administrator/" target="_blank"><?php echo JText::_('Administrator'); ?></a>
 					</p>
 				</div>
+
+				<div>
+					<div id="debug"></div>
+				</div>
+
 			</td>
 		</tr>
 	</tbody>

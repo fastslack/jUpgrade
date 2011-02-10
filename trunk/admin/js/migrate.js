@@ -10,7 +10,7 @@
  */
 
 // Debug
-var debug = 0;
+var debug_val = 0;
 
 // Init some variables
 var migrate_global = 0;
@@ -38,6 +38,8 @@ steps[9] = "weblinks";
 function checks(event){
 
 	//alert(this.debug);
+	debug_val = this.debug;
+
 	var skip = new Array();
 	skip['skip_download'] = this.skip_download;
 	skip['skip_decompress'] = this.skip_decompress;
@@ -335,11 +337,10 @@ var _changeText = function(msg) {
 	text.innerHTML = 'Migrating ' + file;
 	migrate_global = migrate_global+1;
 
-	if (debug == 1) {
+	if (debug_val == 1) {
 		text = document.getElementById('debug');
-		text.innerHTML = text.innerHTML + ';';
+		text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+file+']</b><br><br>' + msg;
 	}
-
 }
 
 /**
