@@ -275,10 +275,10 @@ class jUpgrade
 	 * @since	0.5.1
 	 * @throws	Exception
 	 */
-	protected function cleanDestinationData($table)
+	protected function cleanDestinationData($table = false)
 	{
 		// Get the table
-		if ($table == '') {
+		if ($table == false) {
 			$table	= empty($this->destination) ? $this->source : $this->destination;
 		}
 
