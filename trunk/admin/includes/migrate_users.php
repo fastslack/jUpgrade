@@ -140,6 +140,8 @@ class jUpgradeUsergroups extends jUpgrade
 			// Custom where clause.
 			// We only want to get groups that we don't know about from custom group management extensions.
 			// Our assumption is the core groups have not been tampered with (if they were, Joomla would not run well).
+			'*',
+			null,
 			$this->db_old->nameQuote('id').' > 30'
 		);
 
@@ -152,8 +154,10 @@ class jUpgradeUsergroups extends jUpgrade
 		foreach ($rows as &$row)
 		{
 			// Note, if we are here, these are custom groups we didn't know about.
-			if ($row['parent_id'] <= 30) {
-				$row['parent_id'] = $map[$row['parent_id']];
+			if (isset($row['parent_id'])) {
+				if ($row['parent_id'] <= 30) {
+					$row['parent_id'] = $map[$row['parent_id']];
+				}
 			}
 
 			// Use the old groups name for the new title.
