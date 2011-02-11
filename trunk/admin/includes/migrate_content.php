@@ -63,9 +63,9 @@ class jUpgradeContent extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['title']->title = mysql_real_escape_string($row['title']);
-			$row['introtext']->description = mysql_real_escape_string($row['introtext']);
-			$row['fulltext']->description = mysql_real_escape_string($row['fulltext']);
+			$row['title'] = mysql_real_escape_string($row['title']);
+			$row['introtext'] = mysql_real_escape_string($row['introtext']);
+			$row['fulltext'] = mysql_real_escape_string($row['fulltext']);
 			$row['attribs'] = $this->convertParams($row['attribs']);
 			$row['access'] = $row['access']+1;
 			$row['language'] = '*';

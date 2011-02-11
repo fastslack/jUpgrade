@@ -60,8 +60,8 @@ class jUpgradeCategories extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['title']->title = mysql_real_escape_string($row['title']);
-			$row['description']->description = mysql_real_escape_string($row['description']);
+			$row['title'] = mysql_real_escape_string($row['title']);
+			$row['description'] = mysql_real_escape_string($row['description']);
 			$row['params'] = $this->convertParams($row['params']);
 			$row['access'] = $row['access']+1;
 			$row['language'] = '*';
