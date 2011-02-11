@@ -53,6 +53,8 @@
 			<language tag="de-DE">languages/de-DE.com_jupgrade.ini</language>
 			<language tag="nb-NO">languages/nb-NO.com_jupgrade.ini</language>
 			<language tag="sv-SE">languages/sv-SE.com_jupgrade.ini</language>
+			<language tag="el-GR">languages/el-GR.com_jupgrade.ini</language>
+			<language tag="fr-FR">languages/fr-FR.com_jupgrade.ini</language>
 		</languages>
 	</administration>
 </install>
