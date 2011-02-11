@@ -122,19 +122,7 @@ var progress = function(event)  {
 
 				if(ex[1] < ex[2]){
           pb1.set(ex[0].toInt());
-
-					if (debug == 1) {
-						text = document.getElementById('debug');
-						text.innerHTML = text.innerHTML + '.';
-					}
-
 				}else if(ex[1] == ex[2]){
-
-					if (debug == 1) {
-						text = document.getElementById('debug');
-						text.innerHTML = text.innerHTML + ',';
-					}
-
           pb1.set(ex[0].toInt());
           //$clear(progressID);
 					return false;
@@ -334,7 +322,7 @@ var _changeText = function(msg) {
 	pb4.set(migrate_global*11);
 	text = document.getElementById('status');
 	text.innerHTML = 'Migrating ' + file;
-	migrate_global = migrate_global+1;
+	migrate_global = ++migrate_global;
 
 	if (debug_val == 1) {
 		text = document.getElementById('debug');
@@ -359,7 +347,7 @@ var _doMigration = function(event)  {
 		onSuccess: _changeText
 	}).send('components/com_jupgrade/includes/migrate_'+file+'.php', null);  
 
-	if (migrate_global == 9) {
+	if (migrate_global >= 9) {
 		pb4.finish();
 
 		// Shutdown periodical
