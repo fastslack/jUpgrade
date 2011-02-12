@@ -34,14 +34,10 @@ div#update:hover {
 div#info {
 	position: absolute;
 	float: right;
-	right: 50px;
+	right: 30px;
 	width: 300px;
 	padding: 7px;
 	text-align: center;
-
-	//border: 1px;
-	//border-style:solid;
-	//border-color:#EFEFEF;
 }
 
 #info_title {

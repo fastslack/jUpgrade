@@ -82,6 +82,7 @@ window.addEvent('domready', function() {
 							<a href="http://www.matware.com.ar/joomla/jupgrade.html">Project Site</a><br>
 							<a href="http://www.matware.com.ar/foros/jupgrade.html">Project Support</a><br>
 							<a href="http://www.joomstew.com/matias-and-beyond-2011">Want to donate?</a><br>
+							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a>
 						<p>
 					</div>
 				</div>
