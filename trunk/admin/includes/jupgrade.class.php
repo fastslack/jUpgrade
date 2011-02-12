@@ -38,6 +38,9 @@ class jUpgrade
 
 	function __construct()
 	{
+		// Set timelimit to 0
+		set_time_limit(0);
+
 		// Base includes
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
 		require_once JPATH_LIBRARIES.'/joomla/methods.php';
