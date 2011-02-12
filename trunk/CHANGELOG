@@ -27,11 +27,21 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+12-Feb-2011 Matias Aguirre
+ ^ Adding slashes in single quote only
+ ^ Change tables charset to UTF-8
+ + Set timelimit to 0 to prevent stuck's
+
+11-Feb-2011 Matias Aguirre
+ + Adding real escape in categories and content fields
+ - Remove migrate.js debug in download
+
 10-Feb-2011 Matias Aguirre
  + Adding debug option
  - Remove polls (not present in Joomla 1.6)
  # Fixed usergroups query and notice
  # Small fix if sid not exits in categories
+ $ Adding el-GR and fr-FR languages
 
 09-Feb-2011 Matias Aguirre
  # Fixed parent_id in menus migration
