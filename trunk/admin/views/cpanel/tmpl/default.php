@@ -81,14 +81,19 @@ window.addEvent('domready', function() {
 						<p>
 							<a href="http://www.matware.com.ar/joomla/jupgrade.html">Project Site</a><br>
 							<a href="http://www.matware.com.ar/foros/jupgrade.html">Project Support</a><br>
-							<a href="http://www.joomstew.com/matias-and-beyond-2011">Want to donate?</a><br>
-							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a>
-						<p>
+							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a><br>
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+							<input type="hidden" name="cmd" value="_s-xclick">
+							<input type="hidden" name="hosted_button_id" value="CZUMWRZ5E8DKS">
+							<input id="donate" type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+							<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" style="border: none;">
+							</form>
+						</p>
 					</div>
 				</div>
 
 				<div id="update">
-					<img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
+					<br /><img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
 					<h2><?php echo JText::_('START UPGRADE'); ?></h2>
 				</div>
 

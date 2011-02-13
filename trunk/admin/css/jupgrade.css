@@ -16,6 +16,7 @@
 
 div#update {
 	width: 400px;
+	height: 220px;
 	padding: 3px;
 	text-align: center;
 	border: 1px;
@@ -38,6 +39,10 @@ div#info {
 	width: 300px;
 	padding: 7px;
 	text-align: center;
+}
+
+#donate {
+	border: none;
 }
 
 #info_title {
