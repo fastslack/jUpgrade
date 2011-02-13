@@ -56,7 +56,7 @@ class jUpgradeContent extends jUpgrade
 		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
      .'`access`, `hits` ',
 		 'LEFT JOIN j16_jupgrade_categories AS o ON o.old = c.catid',
-			null,
+		 $where,
 			'id'
 		);
 
@@ -102,7 +102,7 @@ class jUpgradeContent extends jUpgrade
 		{
 			// Convert the array into an object.
 			$row = (object) $row;
-	
+
 			//Cleanup
 			unset($row->extension);
 
