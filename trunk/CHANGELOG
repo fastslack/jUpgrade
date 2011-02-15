@@ -27,6 +27,12 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+15-Feb-2011 Matias Aguirre
+ # Fix categories section/extension issues
+ ^ Using addStyleSheet function to add css's
+ ^ Convert section field to VARCHAR(255) in j16_jupgrade_categories table
+ - Assets rebuild in content migration not needed any more
+
 12-Feb-2011 Matias Aguirre
  ^ Adding slashes in single quote only
  ^ Change tables charset to UTF-8
