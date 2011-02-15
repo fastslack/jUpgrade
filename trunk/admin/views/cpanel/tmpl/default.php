@@ -37,12 +37,11 @@ else{
 	$document->addScript('components/com_jupgrade/js/migrate.js');
 }
 
+$document->addStyleSheet("components/com_jupgrade/css/jupgrade.css");
+$document->addStyleSheet("http://fonts.googleapis.com/css?family=Orbitron");
+$document->addStyleSheet("http://fonts.googleapis.com/css?family=Puritan");
+$document->addStyleSheet("http://fonts.googleapis.com/css?family=Tinos");
 ?>
-<link rel="stylesheet" type="text/css" href="components/com_jupgrade/css/jupgrade.css" />
-<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Orbitron">
-<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Puritan">
-<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tinos">
-
 <script type="text/javascript">
 
 window.addEvent('domready', function() {
