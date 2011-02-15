@@ -377,9 +377,8 @@ class jUpgrade
 	 */
 	public function insertAsset($object, $parent = false)
 	{
-
-		// Init asset object
-		$asset = new stdClass();
+		// Getting the asset table
+		$table = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->db_new));
 
 		// Getting the categories id's
 		$categories = $this->getCatIDList();
@@ -393,35 +392,35 @@ class jUpgrade
 			$updatetable = '#__categories';
 
 			if ($object->extension == "com_banners") {
-				$asset->name = "com_banners.category.{$id}";
-				$asset->parent_id = 3;
+				$table->name = "com_banners.category.{$id}";
+				$table->parent_id = 3;
 			}
 			else if ($object->extension == "com_contact_details") {
-				$asset->name = "com_contact.category.{$id}";
-				$asset->parent_id = 7;
+				$table->name = "com_contact.category.{$id}";
+				$table->parent_id = 7;
 			}
 			else if ($object->extension == "com_newsfeeds") {
-				$asset->name = "com_newsfeeds.category.{$id}";
-				$asset->parent_id = 19;
+				$table->name = "com_newsfeeds.category.{$id}";
+				$table->parent_id = 19;
 			}
 			else if ($object->extension == "com_weblinks") {
-				$asset->name = "com_weblinks.category.{$id}";
-				$asset->parent_id = 25;
-				$asset->level = 2;
+				$table->name = "com_weblinks.category.{$id}";
+				$table->parent_id = 25;
+				$table->level = 2;
 			}
 			else if (is_numeric($object->extension) || $object->extension == 'com_content') {
-				$asset->name = "com_content.category.{$id}";
+				$table->name = "com_content.category.{$id}";
 
 				// Get parent and level
 				if ($parent !== false) {
 					$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
 					$this->db_new->setQuery($query);
-					$asset->parent_id = $this->db_new->loadResult();
-					$asset->level = 3;
+					$table->parent_id = $this->db_new->loadResult();
+					$table->level = 3;
 				}
 				else {
-					$asset->level = 2;
-					$asset->parent_id = 8;
+					$table->level = 2;
+					$table->parent_id = 8;
 				}
 			}
 
@@ -429,19 +428,17 @@ class jUpgrade
 		else if ($object->extension == "article") {
 			$updatetable = '#__content';
 			$id = $object->id;
-			$asset->name = "com_content.article.{$id}";
-			$asset->parent_id = 8;
-			$asset->level = 2;
+			$table->name = "com_content.article.{$id}";
+			$table->parent_id = 8;
+			$table->level = 2;
 		}
 
 		// Setting rules values
-		$asset->rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[]}';
-		$asset->title = mysql_real_escape_string($object->title);
+		$table->rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
+		$table->title = mysql_real_escape_string($object->title);
 
 		// Insert the asset
-		if (!$this->db_new->insertObject('#__assets', $asset)) {
-			throw new Exception($this->db_new->getErrorMsg());
-		}
+		$table->store();
 
 		// Returning sid needed by childen categories
 		$object->sid = isset($sid) ? $sid : $object->id ;
