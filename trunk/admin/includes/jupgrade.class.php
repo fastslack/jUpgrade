@@ -316,15 +316,7 @@ class jUpgrade
 		if ($object->extension == "com_banner") {
 			$object->extension = "com_banners";
 		}
-		if ($object->extension == "com_contact_detail") {
-			$object->extension = "com_contact";
-		}
-		if ($object->extension == "com_newsfeeds") {
-			$object->extension = "com_newsfeeds";
-		}
-		if ($object->extension == "com_weblinks") {
-			$object->extension = "com_weblinks";
-		}
+
 		if (is_numeric($object->extension) || $object->extension == "" || $object->extension == "category") {
 			$object->extension = "com_content";
 		}
@@ -348,7 +340,6 @@ class jUpgrade
 		else {
 			$object->parent_id = 1;
 			$object->path = $object->alias;
-			$oldlist->section = 1;
 		}
 
 		// Insert the row
@@ -359,8 +350,9 @@ class jUpgrade
 		// Returning sid needed by insertAsset()
 		$object->sid = $oldlist->old;
 
-		// Get new id
+		// Get new id and set section
 		$oldlist->new = $this->db_new->insertid();
+		$oldlist->section = $object->extension;
 
 		// Save old and new id
 		if (!$this->db_new->insertObject('#__jupgrade_categories', $oldlist)) {
@@ -395,11 +387,11 @@ class jUpgrade
 			$id = $categories[$sid]->new;
 			$updatetable = '#__categories';
 
-			if ($object->extension == "com_banner") {
+			if ($object->extension == "com_banners") {
 				$asset->name = "com_banners.category.{$id}";
 				$asset->parent_id = 3;
 			}
-			else if ($object->extension == "com_contact_detail") {
+			else if ($object->extension == "com_contact_details") {
 				$asset->name = "com_contact.category.{$id}";
 				$asset->parent_id = 7;
 			}
