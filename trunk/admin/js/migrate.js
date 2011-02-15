@@ -326,7 +326,7 @@ var _changeText = function(msg) {
 
 	if (debug_val == 1) {
 		text = document.getElementById('debug');
-		text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+file+']</b><br><br>' + msg;
+		text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+migrate_global+'] ['+file+']</b><br><br>' + msg;
 	}
 }
 
