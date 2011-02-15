@@ -57,10 +57,16 @@ class jUpgradeBanners extends jUpgrade
 			'bid'
 		);
 
+		// Getting the categories id's
+		$categories = $this->getCatIDList();
+
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
+			$row['name'] = str_replace("'", "\'", $row['name']);
 			$row['params'] = $this->convertParams($row['params']);
+			$row['description'] = str_replace("'", "\'", $row['description']);
+			$row['language'] = '*';
 		}
 
 		return $rows;
@@ -174,10 +180,10 @@ class jUpgradeBannersCategories extends jUpgrade
 }
 
 
-// Migrate the banners.
-$banners = new jUpgradeBanners;
-$banners->upgrade();
-
 // Migrate the categories of banners.
 $bannersCat = new jUpgradeBannersCategories;
 $bannersCat->upgrade();
+
+// Migrate the banners.
+$banners = new jUpgradeBanners;
+$banners->upgrade();

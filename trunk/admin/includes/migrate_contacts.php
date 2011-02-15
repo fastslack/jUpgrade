@@ -94,6 +94,8 @@ class jUpgradeContactsCategories extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
+			$row['title'] = str_replace("'", "\'", $row['title']);
+			$row['description'] = str_replace("'", "\'", $row['description']);
 			$row['params'] = $this->convertParams($row['params']);
 			$row['access'] = $row['access']+1;
 			$row['language'] = '*';

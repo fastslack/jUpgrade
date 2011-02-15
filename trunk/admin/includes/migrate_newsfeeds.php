@@ -51,7 +51,7 @@ class jUpgradeNewsfeeds extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['params'] = $this->convertParams($row['params']);
+			$row['name'] = str_replace("'", "\'", $row['name']);
 		}
 
 		return $rows;
