@@ -47,7 +47,7 @@ class jUpgradeContent extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
-		$where = "o.section = 0";
+		$where = "o.section REGEXP '^[\-\+]?[[:digit:]]*\.?[[:digit:]]*$'";
 
 		$rows = parent::getSourceData(
 			'`id`, `title`, NULL AS `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '

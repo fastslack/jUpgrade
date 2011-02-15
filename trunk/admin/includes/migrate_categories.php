@@ -51,7 +51,7 @@ class jUpgradeCategories extends jUpgrade
 		$where = "scope = 'content'";
 
 		$rows = parent::getSourceData(
-			'`id` AS sid, `title`, `alias`, \'category\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
+			'`id` AS sid, `title`, `alias`, \'com_section\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
 		  null,
 			$where,
 			'id'

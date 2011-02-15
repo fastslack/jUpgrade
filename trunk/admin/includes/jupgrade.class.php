@@ -309,6 +309,7 @@ class jUpgrade
 	{
 		// Get old id
 		$oldlist = new stdClass();
+		$oldlist->section = $object->extension;
 		$oldlist->old = $object->sid;
 		unset($object->sid);
 
@@ -340,6 +341,11 @@ class jUpgrade
 		else {
 			$object->parent_id = 1;
 			$object->path = $object->alias;
+
+			// Fixing extension name if it's section
+			if ($object->extension == 'com_section') {
+				$object->extension = "com_content";
+			}
 		}
 
 		// Insert the row
@@ -350,9 +356,8 @@ class jUpgrade
 		// Returning sid needed by insertAsset()
 		$object->sid = $oldlist->old;
 
-		// Get new id and set section
+		// Get new id 
 		$oldlist->new = $this->db_new->insertid();
-		$oldlist->section = $object->extension;
 
 		// Save old and new id
 		if (!$this->db_new->insertObject('#__jupgrade_categories', $oldlist)) {
