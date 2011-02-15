@@ -133,27 +133,6 @@ class jUpgradeContent extends jUpgrade
 		}
 
 	}
-
-	/**
-	 * The public entry point for the class.
-	 *
-	 * @return	void
-	 * @since	0.5.5
-	 * @throws	Exception
-	 */
-	public function upgrade()
-	{
-		if (parent::upgrade()) {
-			// Rebuild the assets table
-			$assets = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->db_new));
-
-			if (!$assets->rebuild()) {
-				echo JError::raiseError(500, $assets->getError());
-			}
-
-		}
-	}
-
 }
 
 /**
