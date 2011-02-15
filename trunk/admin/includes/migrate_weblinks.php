@@ -48,10 +48,16 @@ class jUpgradeWeblinks extends jUpgrade
 			'id'
 		);
 
+		// Getting the categories id's
+		$categories = $this->getCatIDList('com_weblinks');
+
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
 			$row['params'] = $this->convertParams($row['params']);
+
+			$cid = $row['catid'];
+			$row['catid'] = &$categories[$cid]->new;
 		}
 
 		return $rows;
@@ -96,7 +102,7 @@ class jUpgradeWeblinksCategories extends jUpgrade
 		foreach ($rows as &$row)
 		{
 			$row['params'] = $this->convertParams($row['params']);
-			$row['access'] = $row['access']+1;
+			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
 			$row['language'] = '*';
 
 			// Correct alias
@@ -164,10 +170,10 @@ class jUpgradeWeblinksCategories extends jUpgrade
 }
 
 
-// Migrate the weblinks.
-$weblinks = new jUpgradeWeblinks;
-$weblinks->upgrade();
-
 // Migrate the categories of weblinks.
 $weblinksCat = new jUpgradeWeblinksCategories;
 $weblinksCat->upgrade();
+
+// Migrate the weblinks.
+$weblinks = new jUpgradeWeblinks;
+$weblinks->upgrade();

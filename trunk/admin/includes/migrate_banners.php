@@ -49,16 +49,16 @@ class jUpgradeBanners extends jUpgrade
 	protected function &getSourceData()
 	{
 		$rows = parent::getSourceData(
-			'`bid` AS id,`cid`,`type`,`name`,`alias`, `imptotal` ,`impmade`, `clicks`, '
-		 .'`clickurl`, `checked_out`, `checked_out_time`, `showBanner` AS state,'
-		 .' `custombannercode`, `description`, `sticky`, `ordering`, `publish_up`, '
-		 .' `publish_down`, `params`',
+			'`bid` AS id, `cid`, `type`,`name`,`alias`, `imptotal` ,`impmade`, `clicks`, '
+		 .'`catid`, `clickurl`, `checked_out`, `checked_out_time`, `showBanner` AS state, '
+		 .'`custombannercode`, `description`, `sticky`, `ordering`, `publish_up`, '
+		 .'`publish_down`, `params`',
 			null,
 			'bid'
 		);
 
 		// Getting the categories id's
-		$categories = $this->getCatIDList();
+		$categories = $this->getCatIDList('com_banner');
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
@@ -66,6 +66,10 @@ class jUpgradeBanners extends jUpgrade
 			$row['name'] = str_replace("'", "\'", $row['name']);
 			$row['params'] = $this->convertParams($row['params']);
 			$row['description'] = str_replace("'", "\'", $row['description']);
+
+			$cid = $row['catid'];
+			$row['catid'] = &$categories[$cid]->new;
+
 			$row['language'] = '*';
 		}
 

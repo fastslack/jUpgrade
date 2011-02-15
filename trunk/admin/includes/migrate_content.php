@@ -67,7 +67,7 @@ class jUpgradeContent extends jUpgrade
 			$row['introtext'] = str_replace("'", "\'", $row['introtext']);
 			$row['fulltext'] = str_replace("'", "\'", $row['fulltext']);
 			$row['attribs'] = $this->convertParams($row['attribs']);
-			$row['access'] = $row['access']+1;
+			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
 			$row['language'] = '*';
 
 			// Correct alias

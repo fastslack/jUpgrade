@@ -515,11 +515,16 @@ class jUpgrade
 	 * @since	0.5.3
 	 * @throws	Exception
 	 */
-	public function getCatIDList()
+	public function getCatIDList($section = false)
 	{
 		 // Getting the categories id's
 		$query = "SELECT *"
 		." FROM j16_jupgrade_categories";
+
+		if ($section !== false) {
+			$query .= " WHERE section = '{$section}'";
+		}
+
 		$this->db_new->setQuery($query);
 		$categories = $this->db_new->loadObjectList('old');
 
