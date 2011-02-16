@@ -2,20 +2,14 @@
 /**
  * jUpgrade
  *
- * @version		$Id$
- * @package		MatWare
+ * @version		  $Id$
+ * @package		  MatWare
  * @subpackage	com_jupgrade
- * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
- * @license		GNU General Public License version 2 or later.
- * @author		Matias Aguirre <maguirre@matware.com.ar>
- * @link		http://www.matware.com.ar
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @copyright		Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		  GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-define('_JEXEC', 1);
-define('JPATH_BASE', dirname(__FILE__));
-define('DS', DIRECTORY_SEPARATOR);
-require_once JPATH_BASE.'/defines.php';
-require_once JPATH_BASE.'/jupgrade.class.php';
 
 /**
  * Upgrade class for modules
@@ -124,13 +118,3 @@ class jUpgradeModulesMenu extends jUpgrade
 		return $rows;
 	}
 }
-
-
-
-// Migrate the Modules.
-$modules = new jUpgradeModules;
-$modules->upgrade();
-
-// Migrate the Modules Menus.
-$modulesmenu = new jUpgradeModulesMenu;
-$modulesmenu->upgrade();

@@ -11,12 +11,6 @@
  * @link		http://www.matware.com.ar
  */
 
-define('_JEXEC', 1);
-define('JPATH_BASE', dirname(__FILE__));
-define('DS', DIRECTORY_SEPARATOR);
-require_once JPATH_BASE.'/defines.php';
-require_once JPATH_BASE.'/jupgrade.class.php';
-
 /**
  * Upgrade class for Banners
  *
@@ -180,14 +174,4 @@ class jUpgradeBannersCategories extends jUpgrade
 
 		}
 	}
-
 }
-
-
-// Migrate the categories of banners.
-$bannersCat = new jUpgradeBannersCategories;
-$bannersCat->upgrade();
-
-// Migrate the banners.
-$banners = new jUpgradeBanners;
-$banners->upgrade();

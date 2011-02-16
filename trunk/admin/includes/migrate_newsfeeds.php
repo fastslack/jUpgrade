@@ -11,12 +11,6 @@
  * @link		http://www.matware.com.ar
  */
 
-define('_JEXEC', 1);
-define('JPATH_BASE', dirname(__FILE__));
-define('DS', DIRECTORY_SEPARATOR);
-require_once JPATH_BASE.'/defines.php';
-require_once JPATH_BASE.'/jupgrade.class.php';
-
 /**
  * Upgrade class for Newsfeeds
  *
@@ -170,12 +164,3 @@ class jUpgradeNewsfeedsCategories extends jUpgrade
 	}
 
 }
-
-
-// Migrate the categories of newsfeeds.
-$newsfeedsCat = new jUpgradeNewsfeedsCategories;
-$newsfeedsCat->upgrade();
-
-// Migrate the newsfeeds.
-$newsfeeds = new jUpgradeNewsfeeds;
-$newsfeeds->upgrade();

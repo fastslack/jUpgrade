@@ -7,6 +7,7 @@
  * @subpackage	com_jupgrade
  * @author      Matias Aguirre <maguirre@matware.com.ar>
  * @link        http://www.matware.com.ar
+ * @copyright		Copyright 2006 - 2011 Matias Aguire. All rights reserved.
  * @license		  GNU General Public License version 2 or later; see LICENSE.txt
  */
 

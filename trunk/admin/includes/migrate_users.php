@@ -2,22 +2,14 @@
 /**
  * jUpgrade
  *
- * @version		$Id$
- * @package		MatWare
+ * @version			$Id$
+ * @package		  MatWare
  * @subpackage	com_jupgrade
- * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
- * @license		GNU General Public License version 2 or later.
- * @author		Matias Aguirre <maguirre@matware.com.ar>
- * @link		http://www.matware.com.ar
+ * @author      Matias Aguirre <maguirre@matware.com.ar>
+ * @link        http://www.matware.com.ar
+ * @copyright		Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @license		  GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-define('_JEXEC',		1);
-//define('JPATH_BASE',	dirname(dirname(dirname(dirname(dirname(__FILE__))))));
-define('JPATH_BASE',	dirname(__FILE__));
-define('DS',			DIRECTORY_SEPARATOR);
-
-require_once JPATH_BASE.'/defines.php';
-require_once JPATH_BASE.'/jupgrade.class.php';
 
 /**
  * Upgrade class for Users
@@ -284,17 +276,3 @@ class jUpgradeUsergroupMap extends jUpgrade
 		return $map;
 	}
 }
-
-// TODO: Maybe these should be 3 migration files.
-
-// Migrate the users.
-$u1 = new jUpgradeUsers;
-$u1->upgrade();
-
-// Migrate the usergroups.
-$u2 = new jUpgradeUsergroups;
-$u2->upgrade();
-
-// Migrate the user-to-usergroup mapping.
-$u2 = new jUpgradeUsergroupMap;
-$u2->upgrade();

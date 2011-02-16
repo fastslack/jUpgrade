@@ -13,20 +13,8 @@
 var debug_val = 0;
 
 // Init some variables
-var migrate_global = 1;
 var skip_download = 0;
 var skip_decompress = 0;
-
-steps = new Array();
-steps[1] = "users";
-steps[2] = "modules";
-steps[3] = "categories";
-steps[4] = "content";
-steps[5] = "menus";
-steps[6] = "banners";
-steps[7] = "contacts";
-steps[8] = "newsfeeds";
-steps[9] = "weblinks";
 
 /**
  * Function to check PHP modules required for jUpgrade
@@ -264,19 +252,25 @@ function install(event){
 		displayText: false
 	});
 
-  var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
+  var d = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
     method: 'get',
     onComplete: function( response ) {
-     // alert(response);
-			pb3.set(50);
+			pb3.set(33);
 
-			var d2 = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
+			var d2 = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
 				method: 'get',
 				onComplete: function( response ) {
-				  //alert(response);
-					pb3.set(100);
-					pb3.finish();
-					migrate();
+					pb3.set(66);
+
+					var d = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
+						method: 'get',
+						onComplete: function( response ) {
+							pb3.set(100);
+							pb3.finish();
+							migrate();
+						}
+					}).request();
+
 				}
 			}).request();
 
@@ -308,55 +302,49 @@ function migrate(event){
 		displayText: false
 	});
 
-	migration_periodical = _doMigration.periodical(2500)
+	migration_periodical = _doMigration.periodical(2500);
 
 };
-
-/**
- * Internal function to change the text
- *
- * @return	bool	
- * @since	0.4.
- */
-var _changeText = function(msg) {
-	pb4.set(migrate_global*11);
-	text = document.getElementById('status');
-	text.innerHTML = 'Migrating ' + file;
-	migrate_global = ++migrate_global;
-
-	if (debug_val == 1) {
-		text = document.getElementById('debug');
-		text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+migrate_global+'] ['+file+']</b><br><br>' + msg;
-	}
-}
 
 /**
  * Internal function run the differents php files to migrate
  *
  * @return	bool	
- * @since	0.4.
+ * @since	0.5.7
  */
-var _doMigration = function(event)  {
+var request = new Request({
+  url: 'components/com_jupgrade/includes/controller.php',
+  method: 'get',
+  update: 'refresh-me',
+  onComplete: function(response) {
+		var ex = explode(';|;', response);
+		var msg = ex[0];
+		var id = ex[1];
+		var file = ex[2];
 
-	file = steps[migrate_global];
-	//alert('INIT==> '+migrate_global+' <=> '+file);
+		pb4.set(id*11);
+		text = document.getElementById('status');
+		text.innerHTML = 'Migrating ' + file;
 
-	var myXHR = new XHR({  
-		method: 'get',
-		//async: false,
-		onSuccess: _changeText
-	}).send('components/com_jupgrade/includes/migrate_'+file+'.php', null);  
+		if (debug_val == 1) {
+			text = document.getElementById('debug');
+			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
+		}
+	
+		if (id >= 9) {
+			pb4.finish();
 
-	if (migrate_global >= 9) {
-		pb4.finish();
+			// Shutdown periodical
+			$clear(migration_periodical);
 
-		// Shutdown periodical
-		$clear(migration_periodical);
+			// Run templates step
+			templates();
+		}
+  }
+});
 
-		// Run templates step
-		templates();
-
-	}
+var _doMigration = function() {
+  request.send();
 };
 
 /**
