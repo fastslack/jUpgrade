@@ -2,7 +2,7 @@
 /**
  * jUpgrade
  *
- * @version		  $Id: jupgrade.class.php 20716 2011-02-15 11:12:27Z maguirre $
+ * @version		  $Id: cleanup.php 20716 2011-02-15 11:12:27Z maguirre $
  * @package		  MatWare
  * @subpackage	com_jupgrade
  * @author      Matias Aguirre <maguirre@matware.com.ar>
