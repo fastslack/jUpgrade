@@ -444,11 +444,8 @@ class jUpgrade
 		// Returning sid needed by childen categories
 		$object->sid = isset($sid) ? $sid : $object->id ;
 
-		// Get new id
-		$assetid = $this->db_new->insertid();
-
 		// updating the category asset_id;
-		$query = "UPDATE {$updatetable} SET asset_id={$assetid}"
+		$query = "UPDATE {$updatetable} SET asset_id = {$table->id}"
 		." WHERE id = {$id}";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
