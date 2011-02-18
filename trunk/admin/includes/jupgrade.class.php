@@ -512,7 +512,7 @@ class jUpgrade
 	 */
 	public function getCatIDList($section = false)
 	{
-		 // Getting the categories id's
+		// Getting the categories id's
 		$query = "SELECT *"
 		." FROM j16_jupgrade_categories";
 
@@ -523,6 +523,46 @@ class jUpgrade
 		$this->db_new->setQuery($query);
 		$categories = $this->db_new->loadObjectList('old');
 
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+			return false;
+		}	
+
 		return $categories;
 	}
+
+	/**
+	 * Internal function to get the component settings
+	 *
+	 * @return	an object with global settings
+	 * @since	0.5.7
+	 * @throws	Exception
+	 */
+	public function getParams()
+	{
+		// Getting the categories id's
+		$query = "SELECT params
+							FROM jos_components AS c
+							WHERE c.option = 'com_jupgrade'";
+
+		$this->db_old->setQuery($query);
+		$params = $this->db_old->loadResult();
+
+		// Check for query error.
+		$error = $this->db_old->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+			return false;
+		}	
+
+		$temp	= new JParameter($params);
+		$object	= $temp->toObject();
+
+		return $object;
+	}
+
 }

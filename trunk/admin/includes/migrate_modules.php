@@ -27,10 +27,27 @@ class jUpgradeModules extends jUpgrade
 	protected $source = '#__modules';
 
 	/**
-	 * @var		string	The name of the destination database table.
-	 * @since	0.4.5
+	 * Get the mapping of the old positions to the new positions in the template.
+	 *
+	 * @return	array	An array with keys of the old names and values being the new names.
+	 * @since	0.5.7
 	 */
-	protected $destination = '#__modules';
+	public static function getPositionsMap()
+	{
+		$map = array(
+			// Old	=> // New
+			'search'				=> 'position-0',
+			'top'						=> 'position-1',
+			'breadcrumbs'		=> 'position-2',
+			'left'					=> 'position-6',
+			'right'					=> 'position-7',
+			'search'				=> 'position-8',
+			'footer'				=> 'position-9',
+			'header'				=> 'position-15'
+		);
+
+		return $map;
+	}
 
 	/**
 	 * Get the raw data for this part of the upgrade.
@@ -42,18 +59,27 @@ class jUpgradeModules extends jUpgrade
 	protected function &getSourceData()
 	{
 
-		$query = "`title`,NULL AS `note`, `ordering`,`position`,"
-						." `checked_out`,`checked_out_time`,`published`,`module`,"
-						." `access`,`showtitle`,`params`,`client_id`,NULL AS `language`";
+		$select = "`title`, `content`, `ordering`, `position`,"
+						." `checked_out`, `checked_out_time`, `published`, `module`,"
+						." `access`, `showtitle`, `params`, `client_id`";
 
-		$where = "iscore = 0 AND id > 19";
+		$where = array();
+		$where[] = "client_id != 1";
+		$where[] = "module IN ('mod_breadcrumbs', 'mod_footer', 'mod_mainmenu', 'mod_related_items', 'mod_stats', 'mod_wrapper', 'mod_archive', 'mod_custom', 'mod_latestnews', 'mod_mostread', 'mod_search', 'mod_syndicate', 'mod_banners', 'mod_feed', 'mod_login', 'mod_newsflash', 'mod_random_image', 'mod_whosonline' )";
 
 		$rows = parent::getSourceData(
-			$query,
+			$select,
 		  null,
 			$where,
 			'id'
 		);
+
+		// Set up the mapping table for the old positions to the new positions.
+		$map = self::getPositionsMap();
+		$map_keys = array_keys($map);
+
+		// Getting the component parameter with global settings
+		$params = $this->getParams();
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
@@ -66,10 +92,29 @@ class jUpgradeModules extends jUpgrade
 			## Language
 			$row['language'] = "*";
 
-			## Module
+			## Module field changes
 			if ($row['module'] == "mod_mainmenu") {
 				$row['module'] = "mod_menu";
 			}
+			else if ($row['module'] == "mod_archive") {
+				$row['module'] = "mod_articles_archive";
+			}
+			else if ($row['module'] == "mod_latestnews") {
+				$row['module'] = "mod_articles_latest";
+			}
+			else if ($row['module'] == "mod_mostread") {
+				$row['module'] = "mod_articles_popular";
+			}
+			else if ($row['module'] == "mod_newsflash") {
+				$row['module'] = "mod_articles_news";
+			}
+
+			## Change positions
+			if ($params->positions == 0) {
+				if (in_array($row['position'], $map_keys)) {
+						$row['position'] = $map[$row['position']];
+				}
+			}	
 
 		}
 

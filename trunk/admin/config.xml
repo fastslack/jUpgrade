@@ -13,6 +13,10 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="positions" type="list" default="0" label="Keep original positions?" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param name="debug" type="list" default="0" label="Debug" description="">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
