@@ -57,6 +57,7 @@
 			<language tag="fr-FR">languages/fr-FR.com_jupgrade.ini</language>
 			<language tag="nl-NL">languages/nl-NL.com_jupgrade.ini</language>
 			<language tag="pl-PL">languages/pl-PL.com_jupgrade.ini</language>
+			<language tag="ro-RO">languages/ro-RO.com_jupgrade.ini</language>
 		</languages>
 	</administration>
 </install>
