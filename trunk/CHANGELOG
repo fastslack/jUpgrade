@@ -27,8 +27,16 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+18-Feb-2011 Matias Aguirre
+ ^ Fixing asset_id in categories migration
+ + Replace section link in menu migration
+ + Change position and name in modules migration
+ + Adding module menu mapping support
+ $ Adding pl-PL languages
+
 16-Feb-2011 Matias Aguirre
  ^ Rewrite migrations steps process for better compatibility
+ $ Adding nl-NL languages
 
 15-Feb-2011 Matias Aguirre
  # Fix categories section/extension issues
