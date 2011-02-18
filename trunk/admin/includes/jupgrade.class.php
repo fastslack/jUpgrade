@@ -382,7 +382,7 @@ class jUpgrade
 		$table = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->db_new));
 
 		// Getting the categories id's
-		$categories = $this->getCatIDList();
+		$categories = $this->getMapList();
 
 		//	
 		// Correct extension
@@ -510,11 +510,11 @@ class jUpgrade
 	 * @since	0.5.3
 	 * @throws	Exception
 	 */
-	public function getCatIDList($section = false)
+	public function getMapList($table = 'categories', $section = false)
 	{
 		// Getting the categories id's
 		$query = "SELECT *"
-		." FROM j16_jupgrade_categories";
+		." FROM j16_jupgrade_{$table}";
 
 		if ($section !== false) {
 			$query .= " WHERE section = '{$section}'";

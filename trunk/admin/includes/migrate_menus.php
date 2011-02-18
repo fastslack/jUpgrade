@@ -42,8 +42,8 @@ class jUpgradeMenu extends jUpgrade
 	protected function &getSourceData()
 	{
 		// Getting the categories id's
-		$categories = $this->getCatIDList();
-		$sections = $this->getCatIDList('com_section');
+		$categories = $this->getMapList();
+		$sections = $this->getMapList('categories', 'com_section');
 
 		// Creating the query
 		$join = array();

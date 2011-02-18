@@ -59,7 +59,7 @@ class jUpgradeModules extends jUpgrade
 	protected function &getSourceData()
 	{
 
-		$select = "`title`, `content`, `ordering`, `position`,"
+		$select = "`id` AS `sid`, `title`, `content`, `ordering`, `position`,"
 						." `checked_out`, `checked_out_time`, `published`, `module`,"
 						." `access`, `showtitle`, `params`, `client_id`";
 
@@ -120,6 +120,46 @@ class jUpgradeModules extends jUpgrade
 
 		return $rows;
 	}
+
+	/**
+	 * Sets the data in the destination database.
+	 *
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
+	 */
+	protected function setDestinationData()
+	{
+		// Get the source data.
+		$rows	= $this->getSourceData();
+		$table	= empty($this->destination) ? $this->source : $this->destination;
+
+		// 
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			// Get old id 
+			$oldlist = new stdClass();
+			$oldlist->old = $row->sid;
+			unset($row->sid);
+
+			if (!$this->db_new->insertObject($table, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+
+			// Get new id 
+			$oldlist->new = $this->db_new->insertid();
+
+			// Save old and new id
+			if (!$this->db_new->insertObject('#__jupgrade_modules', $oldlist)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+
+		}
+	}
+
 }
 
 /**
@@ -135,7 +175,7 @@ class jUpgradeModulesMenu extends jUpgrade
 	 * @var		string	The name of the source database table.
 	 * @since	0.4.5
 	 */
-	protected $source = '#__modules_menu';
+	protected $source = '#__modules_menu AS m';
 
 	/**
 	 * @var		string	The name of the destination database table.
@@ -152,13 +192,38 @@ class jUpgradeModulesMenu extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
+		// Getting the map id's for modules and menus
+		$modules = $this->getMapList('modules');
+		$menus = $this->getMapList('menus');
+		
+		// Getting the menus keys to prevent 'Notice: Undefined index'
+		$menus_keys = array_keys($menus);
 
+		$where = "m.moduleid NOT IN (1, 16, 17, 18)";
+
+		// Getting the data
 		$rows = parent::getSourceData(
 			'*',
 		  null,
-			null,
-			'moduleid'
+			$where,
+			'm.moduleid'
 		);
+
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row)
+		{
+			if (in_array($row['menuid'], $menus_keys)) {
+				$moduleid_new = $modules[$row['moduleid']]->new;
+				$menuid_new = $menus[$row['menuid']]->new;
+
+				//echo "<b> MODULE ID:</b> {$moduleid_new} <==> <b> MENU ID:</b> {$menuid_new}";
+				//echo "<br><br>.................<br><br>";
+
+				$row['moduleid'] = $moduleid_new == '' ? 0 : $moduleid_new;
+			  $row['menuid'] = $menuid_new == '' ? 0 : $menuid_new;
+			}
+		}
+
 
 		return $rows;
 	}

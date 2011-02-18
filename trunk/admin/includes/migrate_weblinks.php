@@ -43,7 +43,7 @@ class jUpgradeWeblinks extends jUpgrade
 		);
 
 		// Getting the categories id's
-		$categories = $this->getCatIDList('com_weblinks');
+		$categories = $this->getMapList('categories', 'com_weblinks');
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)

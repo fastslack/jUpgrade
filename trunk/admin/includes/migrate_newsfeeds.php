@@ -43,7 +43,7 @@ class jUpgradeNewsfeeds extends jUpgrade
 		);
 
 		// Getting the categories id's
-		$categories = $this->getCatIDList('com_newsfeeds');
+		$categories = $this->getMapList('categories', 'com_newsfeeds');
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
