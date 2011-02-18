@@ -43,6 +43,7 @@ class jUpgradeMenu extends jUpgrade
 	{
 		// Getting the categories id's
 		$categories = $this->getCatIDList();
+		$sections = $this->getCatIDList('com_section');
 
 		// Creating the query
 		$join = array();
@@ -86,6 +87,11 @@ class jUpgradeMenu extends jUpgrade
 				$ex = explode('&', $row['link']);
 				$id = substr($ex[3], 3);
 				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
+			}
+			else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section'))) {
+				$ex = explode('&', $row['link']);
+				$id = substr($ex[2], 3);
+				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$sections[$id]->new;
 			}
 
 			// Joomla 1.6 database structure not allow to have duplicated aliases
