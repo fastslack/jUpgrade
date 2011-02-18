@@ -43,3 +43,13 @@ INSERT INTO `j16_jupgrade_steps` VALUES(6, 'banners', 0);
 INSERT INTO `j16_jupgrade_steps` VALUES(7, 'contacts', 0);
 INSERT INTO `j16_jupgrade_steps` VALUES(8, 'newsfeeds', 0);
 INSERT INTO `j16_jupgrade_steps` VALUES(9, 'weblinks', 0);
+
+--
+-- Table structure for table `j16_jupgrade_modules`
+--
+
+DROP TABLE IF EXISTS `j16_jupgrade_modules`;
+CREATE TABLE IF NOT EXISTS `j16_jupgrade_modules` (
+  `old` int(11) NOT NULL,
+  `new` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
