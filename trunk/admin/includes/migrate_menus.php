@@ -86,6 +86,11 @@ class jUpgradeMenu extends jUpgrade
 				$id = substr($ex[3], 3);
 				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
 			}
+			else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=category&layout=blog'))) {
+				$ex = explode('&', $row['link']);
+				$id = substr($ex[3], 3);
+				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
+			}
 			else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section'))) {
 				$ex = explode('&', $row['link']);
 				$id = substr($ex[2], 3);
