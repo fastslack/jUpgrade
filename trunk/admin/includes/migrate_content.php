@@ -69,6 +69,11 @@ class jUpgradeContent extends jUpgrade
 				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
 			}
 
+			// Correct state
+			if ($row['state'] == -1) {
+				$row['state'] = 2;
+			}
+
 		}
 
 		return $rows;
