@@ -27,6 +27,12 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+22-Feb-2011 Matias Aguirre
+ + Initial support for Internet Explorer
+ + Category/blog view link fixed
+ # Content archive migration fixed
+ # 'Home menu' bug fixed
+
 18-Feb-2011 Matias Aguirre
  ^ Fixing asset_id in categories migration
  + Replace section link in menu migration
