@@ -10,24 +10,11 @@
  */
 
 // Debug
-var debug = 0;
+var debug_val = 0;
 
 // Init some variables
-var migrate_global = 0;
 var skip_download = 0;
 var skip_decompress = 0;
-
-steps = new Array();
-steps[0] = "users";
-steps[1] = "modules";
-steps[2] = "categories";
-steps[3] = "content";
-steps[4] = "menus";
-steps[5] = "banners";
-steps[6] = "contacts";
-steps[7] = "newsfeeds";
-steps[8] = "polls";
-steps[9] = "weblinks";
 
 /**
  * Function to check PHP modules required for jUpgrade
@@ -38,6 +25,8 @@ steps[9] = "weblinks";
 function checks(event){
 
 	//alert(this.debug);
+	debug_val = this.debug;
+
 	var skip = new Array();
 	skip['skip_download'] = this.skip_download;
 	skip['skip_decompress'] = this.skip_decompress;
@@ -66,8 +55,9 @@ function checks(event){
 
   var c = new Ajax( 'components/com_jupgrade/includes/check_dirs.php', {
     method: 'get',
+		noCache: true,
     onComplete: function( response ) {
-      //alert(response);
+      //alert('>>'+response+'<<');
 
 			if (response != 'OK') {
 				pb0.set(100);
@@ -79,6 +69,7 @@ function checks(event){
 
 				var c2 = new Ajax( 'components/com_jupgrade/includes/check_curl.php', {
 					method: 'get',
+					noCache: true,
 					onComplete: function( response ) {
 						//alert(response);
 
@@ -111,6 +102,7 @@ var progress = function(event)  {
 
   var a = new Ajax( 'components/com_jupgrade/includes/getfilesize.php', {
     method: 'get',
+		noCache: true,
     onComplete: function( msg ) {
 				var ex = explode(',', msg);
 
@@ -121,19 +113,7 @@ var progress = function(event)  {
 
 				if(ex[1] < ex[2]){
           pb1.set(ex[0].toInt());
-
-					if (debug == 1) {
-						text = document.getElementById('debug');
-						text.innerHTML = text.innerHTML + '.';
-					}
-
 				}else if(ex[1] == ex[2]){
-
-					if (debug == 1) {
-						text = document.getElementById('debug');
-						text.innerHTML = text.innerHTML + ',';
-					}
-
           pb1.set(ex[0].toInt());
           //$clear(progressID);
 					return false;
@@ -177,6 +157,7 @@ var download = function (skip){
 	}else{
 		var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
 		  method: 'get',
+			noCache: true,
 		  onRequest: function( response ) {	
 				//alert(response);		
 		    progressID = progress.periodical(100);
@@ -235,6 +216,7 @@ function decompress(skip){
 	}else{
 		var d = new Ajax( 'components/com_jupgrade/includes/decompress.php', {
 		  method: 'get',
+			noCache: true,
 		  onComplete: function( response ) {
 		    //alert(response);
 				pb2.set(100);
@@ -275,19 +257,28 @@ function install(event){
 		displayText: false
 	});
 
-  var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
+  var d = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
     method: 'get',
+		noCache: true,
     onComplete: function( response ) {
-     // alert(response);
-			pb3.set(50);
+			pb3.set(33);
 
-			var d2 = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
+			var d2 = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
 				method: 'get',
+				noCache: true,
 				onComplete: function( response ) {
-				  //alert(response);
-					pb3.set(100);
-					pb3.finish();
-					migrate();
+					pb3.set(66);
+
+					var d = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
+						method: 'get',
+						noCache: true,
+						onComplete: function( response ) {
+							pb3.set(100);
+							pb3.finish();
+							migrate();
+						}
+					}).request();
+
 				}
 			}).request();
 
@@ -295,6 +286,7 @@ function install(event){
   }).request();
 
 };
+
 
 /**
  * Start the migration
@@ -311,7 +303,7 @@ function migrate(event){
 
 	var pb4 = new dwProgressBar({
 		container: $('pb4'),
-		startPercentage: 1,
+		startPercentage: 5,
 		speed: 1000,
 		boxID: 'pb4-box',
 		percentageID: 'pb4-perc',
@@ -319,56 +311,59 @@ function migrate(event){
 		displayText: false
 	});
 
-	migration_periodical = _doMigration.periodical(2500)
+	migration_periodical = _doMigration.periodical(2500);
 
 };
-
-/**
- * Internal function to change the text
- *
- * @return	bool	
- * @since	0.4.
- */
-var _changeText = function(msg) {
-	pb4.set(migrate_global*11);
-	text = document.getElementById('status');
-	text.innerHTML = 'Migrating ' + file;
-	migrate_global = migrate_global+1;
-
-	if (debug == 1) {
-		text = document.getElementById('debug');
-		text.innerHTML = text.innerHTML + ';';
-	}
-
-}
 
 /**
  * Internal function run the differents php files to migrate
  *
  * @return	bool	
- * @since	0.4.
+ * @since	0.5.7
  */
-var _doMigration = function(event)  {
+var request = new Request({
+  url: 'components/com_jupgrade/includes/controller.php',
+  method: 'get',
+	data: { 'do' : '1' },
+	noCache: true
+});
 
-	file = steps[migrate_global];
-	//alert('INIT==> '+migrate_global+' <=> '+file);
+/**
+ * Internal function that gets the migrations variables
+ *
+ * @return	bool	
+ * @since	0.5.8
+ */
+var getResponse = function(response) {
+	var ex = explode(';|;', response);
+	var msg = ex[0];
+	var id = ex[1];
+	var file = ex[2];
 
-	var myXHR = new XHR({  
-		method: 'get',
-		//async: false,
-		onSuccess: _changeText
-	}).send('components/com_jupgrade/includes/migrate_'+file+'.php', null);  
+	//pb4.set(id*11);
+	text = document.getElementById('status');
+	text.innerHTML = 'Migrating ' + file;
 
-	if (migrate_global == 9) {
-		pb4.finish();
+	if (debug_val == 1) {
+		text = document.getElementById('debug');
+		text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>'+msg+'';
+	}
+
+	if (id >= 9) {
+
+		//pb4.finish();
 
 		// Shutdown periodical
 		$clear(migration_periodical);
 
 		// Run templates step
 		templates();
-
 	}
+}
+
+var _doMigration = function() {
+	request.addEvent('success', getResponse);
+  request.send();
 };
 
 /**
