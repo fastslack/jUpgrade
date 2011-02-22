@@ -56,7 +56,7 @@ function checks(event){
   var c = new Ajax( 'components/com_jupgrade/includes/check_dirs.php', {
     method: 'get',
     onComplete: function( response ) {
-      //alert(response);
+      //alert('>>'+response+'<<');
 
 			if (response != 'OK') {
 				pb0.set(100);
@@ -315,7 +315,7 @@ function migrate(event){
 var request = new Request({
   url: 'components/com_jupgrade/includes/controller.php',
   method: 'get',
-  update: 'refresh-me',
+	noCache: true,
   onComplete: function(response) {
 		var ex = explode(';|;', response);
 		var msg = ex[0];
