@@ -100,6 +100,7 @@ var progress = function(event)  {
 
   var a = new Ajax( 'components/com_jupgrade/includes/getfilesize.php', {
     method: 'get',
+		noCache: true,
     onComplete: function( msg ) {
 				var ex = explode(',', msg);
 
@@ -254,16 +255,19 @@ function install(event){
 
   var d = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
     method: 'get',
+		noCache: true,
     onComplete: function( response ) {
 			pb3.set(33);
 
 			var d2 = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
 				method: 'get',
+				noCache: true,
 				onComplete: function( response ) {
 					pb3.set(66);
 
 					var d = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
 						method: 'get',
+						noCache: true,
 						onComplete: function( response ) {
 							pb3.set(100);
 							pb3.finish();
