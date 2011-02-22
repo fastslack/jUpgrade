@@ -50,15 +50,13 @@ class jUpgradeMenu extends jUpgrade
 		$join[] = 'LEFT JOIN #__components AS c ON c.id = m.componentid';
 		$join[] = 'LEFT JOIN j16_extensions AS e ON e.name = c.option';
 
-		$where = "m.name != 'Home' AND m.alias != 'home'";
-
 		$rows = parent::getSourceData(
 			 ' m.id AS sid, m.menutype, m.name AS title, m.alias, m.link, m.type,'
 			.' m.published, m.parent AS parent_id, e.extension_id AS component_id,'
 			.' m.sublevel AS level, m.ordering, m.checked_out, m.checked_out_time, m.browserNav,'
 			.' m.access, m.params, m.lft, m.rgt, m.home',
 			$join,
-			$where,
+			null,
 			'm.id'
 		);
 
