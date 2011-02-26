@@ -15,11 +15,24 @@ define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.'/defines.php';
+// Includes
+require_once JPATH_BASE.'/defines_old.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
 
+// jUpgrade class
+$jupgrade = new jUpgrade;
+
+// Getting the component parameter with global settings
+$params = $jupgrade->getParams();
+
+// Define filenames
 $sizefile = JPATH_ROOT.'/tmp/size.tmp';
 $zipfile = JPATH_ROOT.'/tmp/joomla16.zip';
+
+// downloading Molajo instead Joomla zip
+if ($params->mode == 1) {
+	$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
+}
 
 if (file_exists($zipfile)) {
    $size = filesize($zipfile);

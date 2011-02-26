@@ -15,14 +15,41 @@ define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.'/defines.php';
+// Includes
+require_once JPATH_BASE.'/defines_old.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
 
+// jUpgrade class
+$jupgrade = new jUpgrade;
 
-//$file = "http://localhost/joomla16.zip";
-$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla16.zip";
+// Getting the component parameter with global settings
+$params = $jupgrade->getParams();
+
+// Define filenames
 $sizefile = JPATH_ROOT.'/tmp/size.tmp';
+$molajofile = JPATH_ROOT.'/tmp/molajo16.zip';
+$joomlafile = JPATH_ROOT.'/tmp/joomla16.zip';
+
+// Cleanup
+if (file_exists($sizefile)) {
+	unlink($sizefile);
+}
+if (file_exists($molajofile)) {
+	unlink($molajofile);
+}
+if (file_exists($joomlafile)) {
+	unlink($joomlafile);
+}
+
+// Setting names
+$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla16.zip";
 $zipfile = JPATH_ROOT.'/tmp/joomla16.zip';
+
+// downloading Molajo instead Joomla zip
+if ($params->mode == 1) {
+	$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/molajo16.zip";
+	$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
+}
 
 /*
 	Getting the size of the zip

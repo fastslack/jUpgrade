@@ -14,8 +14,8 @@
 define('_JEXEC', 1);
 define('JPATH_BASE', dirname(__FILE__));
 define('DS', DIRECTORY_SEPARATOR);
-require_once JPATH_BASE.'/defines.php';
 
+require_once JPATH_BASE.'/defines.php';
 require_once JPATH_LIBRARIES.'/joomla/methods.php';
 require_once JPATH_LIBRARIES.'/joomla/factory.php';
 require_once JPATH_LIBRARIES.'/joomla/import.php';
@@ -23,25 +23,43 @@ require_once JPATH_LIBRARIES.'/joomla/error/error.php';
 require_once JPATH_LIBRARIES.'/joomla/base/object.php';
 require_once JPATH_LIBRARIES.'/joomla/database/database.php';
 require_once JPATH_INSTALLATION.'/models/database.php';
-//require_once JPATH_INSTALLATION.'/helpers/database.php';
 
-require(JPATH_ROOT.DS."configuration.php");
+// jUpgrade class
+require_once JPATH_BASE.'/jupgrade.class.php';
 
+// jUpgrade class
+$jupgrade = new jUpgrade;
+
+// Getting the component parameter with global settings
+$params = $jupgrade->getParams();
+
+// getting config
 $jconfig = new JConfig();
-//print_r($jconfig);
 
 $config = array();
 $config['dbo'] = & JInstallationHelperDatabase::getDBO('mysql', $jconfig->host, $jconfig->user, $jconfig->password, $jconfig->db, 'j16_');
 
+// getting helper
 $installHelper = new JInstallationModelDatabase($config);
 
-//print_r($installHelper);
+// installing global database
+$schema = JPATH_INSTALLATION.'/sql/mysql/joomla.sql';
 
-$dbscheme = JPATH_INSTALLATION.'/sql/mysql/joomla.sql';
-
-if ($installHelper->populateDatabase($config['dbo'], $dbscheme, $errors) > 0) {
-	return 0;
-}
-else {
+if (!$installHelper->populateDatabase($config['dbo'], $schema) > 0) {
 	return 1;
+	exit;
 }
+
+// installing Molajo database
+if ($params->mode == 1) {
+
+	$schema = JPATH_INSTALLATION.'/sql/mysql/joomla2.sql';
+
+	if (!$installHelper->populateDatabase($config['dbo'], $schema) > 0) {
+		return 1;
+		exit;
+	}
+}
+
+
+
