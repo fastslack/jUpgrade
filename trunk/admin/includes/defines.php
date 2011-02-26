@@ -14,26 +14,14 @@
 // no direct access
 defined('_JEXEC') or die;
 
-/**
-* Joomla! Application define
-*/
-
-//Global definitions
-//Joomla framework path definitions
 $parts = explode(DS, JPATH_BASE);
 
-//print_r($parts);
 $newparts = array();
 for($i=0;$i<count($parts)-4;$i++){
-	//echo $parts[$i] . "\n";
 	$newparts[] = $parts[$i];
-
 }
 
-//print_r(implode(DS, $newparts));
-//Defines
 define('JPATH_ROOT',			implode(DS, $newparts));
-
 define('JPATH_SITE',			JPATH_ROOT.'/jupgrade');
 define('JPATH_CONFIGURATION', 	JPATH_ROOT.'/jupgrade');
 define('JPATH_ADMINISTRATOR', 	JPATH_ROOT.'/jupgrade/administrator');
