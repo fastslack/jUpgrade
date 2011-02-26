@@ -253,17 +253,27 @@ function install(event){
 		displayText: false
 	});
 
-  var d = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
+  var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
     method: 'get',
 		noCache: true,
     onComplete: function( response ) {
 			pb3.set(33);
 
-			var d2 = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
+			if (debug_val == 1) {
+				text = document.getElementById('debug');
+				text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_config]</b><br><br>' +response;
+			}
+
+			var d2 = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
 				method: 'get',
 				noCache: true,
 				onComplete: function( response ) {
 					pb3.set(66);
+
+					if (debug_val == 1) {
+						text = document.getElementById('debug');
+						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
+					}
 
 					var d = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
 						method: 'get',
@@ -271,6 +281,12 @@ function install(event){
 						onComplete: function( response ) {
 							pb3.set(100);
 							pb3.finish();
+
+							if (debug_val == 1) {
+								text = document.getElementById('debug');
+								text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_db]</b><br><br>' +response;
+							}
+
 							migrate();
 						}
 					}).request();
