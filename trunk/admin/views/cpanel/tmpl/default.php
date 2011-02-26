@@ -18,6 +18,9 @@ $version = "v{$this->version}";
 
 JHTML::_('behavior.mootools');
 
+// Check if "System - Mootools Upgrade" is enabled
+$mtupgrade = JPluginHelper::isEnabled( 'system', 'mtupgrade' );
+
 // TODO: Move $params to $this->params
 $params		= JComponentHelper::getParams('com_jupgrade');
 $document	= JFactory::getDocument();
@@ -59,7 +62,13 @@ window.addEvent('domready', function() {
 	$('update').skip_decompress =  <?php echo $params->get("skip_decompress") ? $params->get("skip_decompress") : 0; ?>;
 	$('update').debug =  <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>;
 
+<?php
+	if ($mtupgrade == true){
+?>
 	$('update').addEvent('click', checks);
+<?php
+	}
+?>
 
 });
 
@@ -90,6 +99,16 @@ window.addEvent('domready', function() {
 						</p>
 					</div>
 				</div>
+
+<?php
+	if ($mtupgrade == false){
+?>
+				<div id="error">
+					<a href="index.php?option=com_plugins"><?php echo JText::_('Mootools 1.2 not loaded. Please enable "System - Mootools Upgrade" plugin.'); ?></a>
+				</div>
+<?php
+	}
+?>
 
 				<div id="update">
 					<br /><img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />

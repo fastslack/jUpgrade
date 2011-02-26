@@ -14,6 +14,15 @@
     background: url(../images/icon-48-jupgrade.png) no-repeat left;
 }
 
+div#error {
+	width: 400px;
+	height: 15px;
+	padding: 5px;
+	margin: 5px 0px 5px 0px;
+	text-align: center;
+	text-decoration:blink;
+}
+
 div#update {
 	width: 400px;
 	height: 220px;
