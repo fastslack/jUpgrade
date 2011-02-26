@@ -214,7 +214,12 @@ function decompress(skip){
 		var d = new Ajax( 'components/com_jupgrade/includes/decompress.php', {
 		  method: 'get',
 		  onComplete: function( response ) {
-		    //alert(response);
+
+				if (debug_val == 1) {
+					text = document.getElementById('debug');
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[decompress]</b><br><br>' +response;
+				}
+
 				pb2.set(100);
 				pb2.finish();
 
