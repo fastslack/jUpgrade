@@ -21,8 +21,10 @@ JHTML::_('behavior.mootools');
 // Check if "System - Mootools Upgrade" is enabled
 $mtupgrade = JPluginHelper::isEnabled( 'system', 'mtupgrade' );
 
-// TODO: Move $params to $this->params
-$params		= JComponentHelper::getParams('com_jupgrade');
+// get params
+$params		= $this->params;
+
+// get document to add scripts
 $document	= JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/functions.js');
 $document->addScript('components/com_jupgrade/js/dwProgressBar.js');

@@ -42,9 +42,12 @@ class jupgradeViewCpanel extends JView
  		$xml = new JSimpleXML;
  		$xml->loadFile($xmlfile);
 		$attrib = $xml->document->version[0];
-		//print_r($attrib->data());
+
+		// get params
+		$params		= JComponentHelper::getParams('com_jupgrade');
 
 		$this->assignRef('version',	$attrib->data());
+		$this->assignRef('params',	$params);
 
 		parent::display($tpl);
 	}
