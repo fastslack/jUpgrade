@@ -27,6 +27,13 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+26-Feb-2011 Matias Aguirre
+ + Adding Molajo revision 727
+ + Check if "System - Mootools Upgrade" is enabled
+ # Run install_config.php before cleanup database
+ $ et-EE and hu-HU languages added
+ ^ Moving params to view
+
 22-Feb-2011 Matias Aguirre
  + Initial support for Internet Explorer
  + Category/blog view link fixed
