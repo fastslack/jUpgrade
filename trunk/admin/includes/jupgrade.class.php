@@ -173,13 +173,13 @@ class jUpgrade
 				}
 			}
 			else if (is_string($where))
-			{			
+			{
 				$query->where((string)$where);
 			}
 
 		}
 
-		// Check if 'join' clause is set 
+		// Check if 'join' clause is set
 		if (!empty($join))
 		{
 			// Multiple joins
@@ -195,7 +195,7 @@ class jUpgrade
 
 			}
 			else if (is_string($join))
-			{			
+			{
 				$pieces = explode("JOIN", $join);
 				$type = trim($pieces[0]);
 				$conditions = trim($pieces[1]);
@@ -357,7 +357,7 @@ class jUpgrade
 		// Returning sid needed by insertAsset()
 		$object->sid = $oldlist->old;
 
-		// Get new id 
+		// Get new id
 		$oldlist->new = $this->db_new->insertid();
 
 		// Save old and new id
@@ -384,7 +384,7 @@ class jUpgrade
 		// Getting the categories id's
 		$categories = $this->getMapList();
 
-		//	
+		//
 		// Correct extension
 		//
 		if ($object->extension != 'article') {
@@ -456,7 +456,7 @@ class jUpgrade
 		if ($error) {
 			throw new Exception($error);
 			return false;
-		}	
+		}
 
 		return true;
 	}
@@ -529,7 +529,7 @@ class jUpgrade
 		if ($error) {
 			throw new Exception($error);
 			return false;
-		}	
+		}
 
 		return $categories;
 	}
@@ -545,7 +545,7 @@ class jUpgrade
 	{
 		// Getting the categories id's
 		$query = "SELECT params
-							FROM jos_components AS c
+							FROM #__components AS c
 							WHERE c.option = 'com_jupgrade'";
 
 		$this->db_old->setQuery($query);
@@ -557,7 +557,7 @@ class jUpgrade
 		if ($error) {
 			throw new Exception($error);
 			return false;
-		}	
+		}
 
 		$temp	= new JParameter($params);
 		$object	= $temp->toObject();
@@ -566,3 +566,4 @@ class jUpgrade
 	}
 
 }
+
