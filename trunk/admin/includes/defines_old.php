@@ -2,7 +2,7 @@
 /**
  * jUpgrade
  *
- * @version		$Id: defines.php 20605 2011-02-08 00:25:11Z eddieajau $
+ * @version		$Id$
  * @package		MatWare
  * @subpackage	com_jupgrade
  * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.

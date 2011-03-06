@@ -2,7 +2,7 @@
 /**
  * jUpgrade
  *
- * @version		  $Id: controller.php 20716 2011-02-15 11:12:27Z maguirre $
+ * @version		  $Id$
  * @package		  MatWare
  * @subpackage	com_jupgrade
  * @author      Matias Aguirre <maguirre@matware.com.ar>
