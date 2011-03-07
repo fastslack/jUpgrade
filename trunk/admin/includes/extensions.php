@@ -31,7 +31,7 @@ class jUpgradeExtensions extends jUpgrade
 	 * @var		string	The name of the source database table.
 	 * @since	0.4.5
 	 */
-	public $source = '#__components';
+	public $source = '#__components AS c';
 
 	/**
 	 * @var		string	The name of the destination database table.
@@ -41,51 +41,37 @@ class jUpgradeExtensions extends jUpgrade
 
 
 	/**
-	 * Search for 3rd party extensions
+	 * Get the raw data for this part of the upgrade.
 	 *
-	 * @return	bool	True if everything is ok
+	 * @return	array	Returns a reference to the source data array.
 	 * @since	0.4.5
 	 * @throws	Exception
 	 */
-	public function search()
+	protected function &getSourceData()
 	{
+		$where = array();
+		$where[] = "id > 33";
+		$where[] = "c.option != 'com_jupgrade'";
 
-		$updater = JUpdater::getInstance();
-//print_r($updater);
-
-/*
 		$rows = parent::getSourceData(
-			'`bid` AS id,`cid`,`type`,`name`,`alias`, `imptotal` ,`impmade`, `clicks`, '
-		 .'`clickurl`, `checked_out`, `checked_out_time`, `showBanner` AS state,'
-		 .' `custombannercode`, `description`, `sticky`, `ordering`, `publish_up`, '
-		 .' `publish_down`, `params`',
-			null,
-			'bid'
+			'id, name, \'component\' AS type, `option` AS element',
+		 null,
+		 $where,
+			'id'
 		);
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['params'] = $this->convertParams($row['params']);
-
-			// Remove unused fields.
-			unset($row['gid']);
+			unset($row['id']);
 		}
-*/
-		//return $rows;
+
+		return $rows;
 	}
 
 }
 
 // Search for 3rd party extensions
 $extensions = new jUpgradeExtensions;
+$extensions->upgrade();
 
-//TODO: Make search method
-
-$search = $extensions->search();
-
-/*
-if ($search) {
-	echo "DO SOMETHING";
-}
-*/
