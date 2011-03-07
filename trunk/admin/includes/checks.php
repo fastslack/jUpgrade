@@ -2,7 +2,7 @@
 /**
  * jUpgrade
  *
- * @version		$Id:
+ * @version		$Id
  * @package		MatWare
  * @subpackage	com_jupgrade
  * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
