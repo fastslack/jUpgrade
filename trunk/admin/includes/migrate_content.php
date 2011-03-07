@@ -57,9 +57,8 @@ class jUpgradeContent extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['title'] = str_replace("'", "\'", $row['title']);
-			$row['introtext'] = str_replace("'", "\'", $row['introtext']);
-			$row['fulltext'] = str_replace("'", "\'", $row['fulltext']);
+			$row['introtext'] = str_replace("'", "&#39;", $row['introtext']);
+			$row['fulltext'] = str_replace("'", "&#39;", $row['fulltext']);
 			$row['attribs'] = $this->convertParams($row['attribs']);
 			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
 			$row['language'] = '*';
@@ -155,3 +154,4 @@ class jUpgradeContentFrontpage extends jUpgrade
 	protected $source = '#__content_frontpage';
 
 }
+

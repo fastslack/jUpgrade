@@ -48,7 +48,6 @@ class jUpgradeNewsfeeds extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['name'] = str_replace("'", "\'", $row['name']);
 			$row['access'] = empty($row['access']) ? 1 : $row['access'] + 1;
 			$row['language'] = '*';
 
@@ -135,7 +134,7 @@ class jUpgradeNewsfeedsCategories extends jUpgrade
 			if (!$this->insertCategory($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_CATEGORY');
 			}
-	
+
 			// Insert asset
 			if (!$this->insertAsset($row)) {
 				throw new Exception('JUPGRADE_ERROR_INSERTING_ASSET');
@@ -164,3 +163,4 @@ class jUpgradeNewsfeedsCategories extends jUpgrade
 	}
 
 }
+
