@@ -19,7 +19,7 @@ var skip_decompress = 0;
 /**
  * Function to check PHP modules required for jUpgrade
  *
- * @return	bool	
+ * @return	bool
  * @since	0.5.0
  */
 function checks(event){
@@ -41,7 +41,7 @@ function checks(event){
 
 	var pb0 = new dwProgressBar({
 		container: $('pb0'),
-		startPercentage: 1,
+		startPercentage: 50,
 		speed: 1000,
 		boxID: 'pb0-box',
 		percentageID: 'pb0-perc',
@@ -51,9 +51,9 @@ function checks(event){
 
 
 	text = document.getElementById('checkstatus');
-	text.innerHTML = 'Checking directories';
+	text.innerHTML = 'Checking...';
 
-  var c = new Ajax( 'components/com_jupgrade/includes/check_dirs.php', {
+  var c = new Ajax( 'components/com_jupgrade/includes/checks.php', {
     method: 'get',
     onComplete: function( response ) {
       //alert('>>'+response+'<<');
@@ -61,30 +61,13 @@ function checks(event){
 			if (response != 'OK') {
 				pb0.set(100);
 				pb0.finish();
-				text.innerHTML = '<span id="checktext">'+response+' is unwritable</span>';
-
-			}else	if (response == 'OK') {
-				pb0.set(50);
-
-				var c2 = new Ajax( 'components/com_jupgrade/includes/check_curl.php', {
-					method: 'get',
-					onComplete: function( response ) {
-						//alert(response);
-
-						pb0.set(100);
-						pb0.finish();
-
-						if (response == 'LOADED') {
-							text.innerHTML = 'Check DONE';
-							download(skip);
-						}else if (response == 'NOT_LOADED'){
-							text.innerHTML = '<span id="checktext">Error: curl not loaded</span>';
-						}
-					}
-				}).request();
-
+				text.innerHTML = '<span id="checktext">'+response+'</span>';
+			}else{
+				pb0.set(100);
+				pb0.finish();
+				text.innerHTML = 'Checking DONE';
+				download(skip);
 			}
-
     }
   }).request();
 
@@ -93,7 +76,7 @@ function checks(event){
 /**
  * Function to change the progressbar
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 var progress = function(event)  {
@@ -124,7 +107,7 @@ var progress = function(event)  {
 /**
  * Function to download Joomla 1.6 using AJAX
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 var download = function (skip){
@@ -155,8 +138,8 @@ var download = function (skip){
 	}else{
 		var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
 		  method: 'get',
-		  onRequest: function( response ) {	
-				//alert(response);		
+		  onRequest: function( response ) {
+				//alert(response);
 		    progressID = progress.periodical(100);
 		  },
 		  onComplete: function( response ) {
@@ -184,7 +167,7 @@ var download = function (skip){
 /**
  * Function to decompress the downloaded file
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function decompress(skip){
@@ -236,9 +219,9 @@ function decompress(skip){
 };
 
 /**
- * Install Joomla 1.6 
+ * Install Joomla 1.6
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function install(event){
@@ -307,7 +290,7 @@ function install(event){
 /**
  * Start the migration
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function migrate(event){
@@ -334,7 +317,7 @@ function migrate(event){
 /**
  * Internal function run the differents php files to migrate
  *
- * @return	bool	
+ * @return	bool
  * @since	0.5.7
  */
 var request = new Request({
@@ -355,7 +338,7 @@ var request = new Request({
 			text = document.getElementById('debug');
 			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
 		}
-	
+
 		if (id >= 9) {
 			pb4.finish();
 
@@ -375,7 +358,7 @@ var _doMigration = function() {
 /**
  * Upgrading template
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.8
  */
 function templates(event){
@@ -419,7 +402,7 @@ function templates(event){
 /**
  * Migrate the 3rd party extensions
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function extensions(event){
@@ -463,7 +446,7 @@ function extensions(event){
 /**
  * Show done message
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function done(event){
