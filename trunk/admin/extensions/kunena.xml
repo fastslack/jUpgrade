@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jupgrade>
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<!-- List all the table names excluding the database prefix -->
+		<table name="fb_announcement" />
+		<table name="fb_attachments" />
+	</tables>
+	
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder path="administrator/components/com_kunena" />
+		<folder path="components/com_kunena" />
+		<folder path="modules/mod_fblatest" />
+	</folders>
+
+	<!-- Any extra individual files to copy to the new site. -->
+	<files>
+	</files>
+</jupgrade>
