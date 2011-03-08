@@ -7,6 +7,10 @@
 		<table name="fb_attachments" />
 	</tables>
 	
+	<categories>
+		<category section="com_kunena" />
+	</categories>
+	
 	<!-- The folders to copy to the new site. -->
 	<folders>
 		<folder path="administrator/components/com_kunena" />
