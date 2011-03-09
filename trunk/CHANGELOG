@@ -27,6 +27,15 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+09-Mar-2011 Matias Aguirre
+ # Fixed menu alias link 
+
+08-Mar-2011 Matias Aguirre
+ # Fixed the jos_ prefix when we get params
+ # Fixed simple quotes in content and categories
+ + Better checkings
+ $ Update pt-BR translation
+
 26-Feb-2011 Matias Aguirre
  + Adding Molajo revision 727
  + Check if "System - Mootools Upgrade" is enabled
