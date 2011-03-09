@@ -66,8 +66,6 @@ class jUpgradeMenu extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as $key => &$row)
 		{
-			// Converting params to JSON
-			$row['params'] = $this->convertParams($row['params']);
 			// Fixing parent id
 			$row['parent_id'] = $row['parent_id'] == 0 ? $row['parent_id']+1 : $row['parent_id'];
 			// Fixing access
@@ -96,6 +94,14 @@ class jUpgradeMenu extends jUpgrade
 				$id = substr($ex[2], 3);
 				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$sections[$id]->new;
 			}
+			else if (strlen(strstr($row['link'], 'index.php?Itemid=')) && $row['type'] == 'menulink') {
+				$ex = explode('?', $row['link']);
+				$id = substr($ex[1], 7);
+			
+				$row['params'] = $row['params'] . "\naliasoptions=".$id;
+				$row['type'] = 'alias';
+				$row['link'] = 'index.php?Itemid=';
+			}
 
 			// Joomla 1.6 database structure not allow to have duplicated aliases
 			$newrows = $rows;
@@ -119,8 +125,8 @@ class jUpgradeMenu extends jUpgrade
 				}
 			}
 
-			// Correct path
-			//$row['path'] = JFilterOutput::stringURLSafe($parent)."/".$alias;
+			// Converting params to JSON
+			$row['params'] = $this->convertParams($row['params']);
 
 		}
 
@@ -203,7 +209,21 @@ class jUpgradeMenu extends jUpgrade
 				$row->parent_id = $this->db_new->loadResult();	
 			}
 
-			$query = "UPDATE j16_menu SET parent_id='{$row->parent_id}' WHERE menutype='{$row->menutype}'"
+			// Change the itemid in menu alias
+			if ($row->type == 'alias') {
+				$tmp = json_decode($row->params);
+
+				$query = "SELECT new"
+				." FROM j16_jupgrade_menus"
+				." WHERE old = {$tmp->aliasoptions}"
+				." LIMIT 1";
+				$this->db_new->setQuery($query);
+				$tmp->aliasoptions = $this->db_new->loadResult();	
+
+				$row->params = json_encode($tmp);
+			}
+
+			$query = "UPDATE j16_menu SET parent_id='{$row->parent_id}', params = '{$row->params}' WHERE menutype='{$row->menutype}'"
 				." AND title = '{$row->title}' AND link = '{$row->link}'";
 			$this->db_new->setQuery($query);
 			$this->db_new->query();
