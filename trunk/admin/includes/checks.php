@@ -15,7 +15,7 @@ define('_JEXEC',		1);
 define('JPATH_BASE',	dirname(__FILE__));
 define('DS',			DIRECTORY_SEPARATOR);
 
-require_once JPATH_BASE.'/defines.php';
+require_once JPATH_BASE.'/defines_old.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
 
 // jUpgrade class
