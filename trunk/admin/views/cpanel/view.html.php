@@ -38,6 +38,9 @@ class jupgradeViewCpanel extends JView
 		JToolBarHelper::custom('help', 'help.png', 'help_f2.png', 'Help', false, false);
 		JToolBarHelper::spacer();
 
+		// Set timelimit to 0
+		set_time_limit(0);
+
 		$xmlfile = JPATH_COMPONENT.'/jupgrade.xml';
  		$xml = new JSimpleXML;
  		$xml->loadFile($xmlfile);
