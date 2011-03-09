@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<params>
+		<param name="mode" type="list" default="0" label="Distribution" description="">
+			<option value="0">Joomla</option>
+			<option value="1">Molajo</option>
+		</param>
+		<param name="skip_download" type="list" default="0" label="Skip download" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="skip_decompress" type="list" default="0" label="Skip decompress" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="positions" type="list" default="0" label="Keep original positions?" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="debug" type="list" default="0" label="Debug" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+	</params>
+</config>

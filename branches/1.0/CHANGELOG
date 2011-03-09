@@ -1,0 +1,97 @@
+0. Metadata
+-----------
+File version:	$Id$
+Copyright:		Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+License:		GNU General Public License version 2 or later.
+
+1. Copyright and disclaimer
+---------------------------
+This application is opensource software released under the GPL.  Please
+see source code and the LICENSE file
+
+
+2. Changelog
+------------
+This is a non-exhaustive (but still near complete) changelog for
+Joomla! 1.6, including alpha and beta versions.
+Our thanks to all those people who've contributed bug reports and
+code fixes.
+
+Legend:
+
+* -> Security Fix
+# -> Issue Fix
+$ -> Language fix or change
++ -> Addition
+^ -> Change
+- -> Removed
+! -> Note
+
+08-Mar-2011 Matias Aguirre
+ # Fixed the jos_ prefix when we get params
+ # Fixed simple quotes in content and categories
+ + Better checkings
+ $ Update pt-BR translation
+
+26-Feb-2011 Matias Aguirre
+ + Adding Molajo revision 727
+ + Check if "System - Mootools Upgrade" is enabled
+ # Run install_config.php before cleanup database
+ $ et-EE and hu-HU languages added
+ ^ Moving params to view
+
+22-Feb-2011 Matias Aguirre
+ + Initial support for Internet Explorer
+ + Category/blog view link fixed
+ # Content archive migration fixed
+ # 'Home menu' bug fixed
+
+18-Feb-2011 Matias Aguirre
+ ^ Fixing asset_id in categories migration
+ + Replace section link in menu migration
+ + Change position and name in modules migration
+ + Adding module menu mapping support
+ + Adding j16_jupgrade_modules table in install.sql
+ $ Adding pl-PL languages
+ $ Adding ro-RO languages
+
+16-Feb-2011 Matias Aguirre
+ ^ Rewrite migrations steps process for better compatibility
+ $ Adding nl-NL languages
+
+15-Feb-2011 Matias Aguirre
+ # Fix categories section/extension issues
+ ^ Using addStyleSheet function to add css's
+ ^ Convert section field to VARCHAR(255) in j16_jupgrade_categories table
+ - Assets rebuild in content migration not needed any more
+
+12-Feb-2011 Matias Aguirre
+ ^ Adding slashes in single quote only
+ ^ Change tables charset to UTF-8
+ + Set timelimit to 0 to prevent stuck's
+
+11-Feb-2011 Matias Aguirre
+ + Adding real escape in categories and content fields
+ - Remove migrate.js debug in download
+
+10-Feb-2011 Matias Aguirre
+ + Adding debug option
+ - Remove polls (not present in Joomla 1.6)
+ # Fixed usergroups query and notice
+ # Small fix if sid not exits in categories
+ $ Adding el-GR and fr-FR languages
+
+09-Feb-2011 Matias Aguirre
+ # Fixed parent_id in menus migration
+
+08-Feb-2011 Matias Aguirre
+ + Adding contact, weblinks, newsfeeds and banners categories migration
+ ^ Assets and categories rewrited
+ # Content migration fix
+
+08-Feb-2011 Andrew Eddie
+ ! Code formatting, trim trailing white space, set SVN properties.
+
+07-Feb-2011 Andrew Eddie
+ ! Added missing index.html files to some folders.
+ ^ Added PHP 5.2.4 check on installation.

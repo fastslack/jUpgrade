@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.22" method="upgrade">
+	<name>jUpgrade</name>
+	<author>Matias Aguirre</author>
+	<authorEmail>maguirre@matware.com.ar</authorEmail>
+	<authorUrl>http://www.matware.com.ar</authorUrl>
+	<copyright>Copyright 2006 - 2011 Matias Aguirre. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later.</license>
+	<creationDate>2011-02-07</creationDate>
+	<version>1.0.1</version>
+	<description></description>
+
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">sql/install.sql</file>
+		</sql>
+	</install>
+
+	<installfile>install.php</installfile>
+
+	<files folder="site">
+		<filename>index.html</filename>
+	</files>
+
+	<administration>
+		<menu img="components/com_jupgrade/images/jupgrade.png">jUpgrade</menu>
+
+		<files folder="admin">
+			<folder>controllers</folder>
+			<folder>css</folder>
+			<folder>images</folder>
+			<folder>includes</folder>
+			<folder>js</folder>
+			<folder>languages</folder>
+			<folder>libraries</folder>
+			<folder>sql</folder>
+			<folder>views</folder>
+
+			<filename>admin.jupgrade.php</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>install.php</filename>
+		</files>
+
+		<languages folder="admin">
+			<language tag="es-ES">languages/es-ES.com_jupgrade.ini</language>
+			<language tag="it-IT">languages/it-IT.com_jupgrade.ini</language>
+			<language tag="pt-BR">languages/pt-BR.com_jupgrade.ini</language>
+			<language tag="en-GB">languages/en-GB.com_jupgrade.ini</language>
+			<language tag="pt-PT">languages/pt-PT.com_jupgrade.ini</language>
+			<language tag="de-DE">languages/de-DE.com_jupgrade.ini</language>
+			<language tag="nb-NO">languages/nb-NO.com_jupgrade.ini</language>
+			<language tag="sv-SE">languages/sv-SE.com_jupgrade.ini</language>
+			<language tag="el-GR">languages/el-GR.com_jupgrade.ini</language>
+			<language tag="fr-FR">languages/fr-FR.com_jupgrade.ini</language>
+			<language tag="nl-NL">languages/nl-NL.com_jupgrade.ini</language>
+			<language tag="pl-PL">languages/pl-PL.com_jupgrade.ini</language>
+			<language tag="ro-RO">languages/ro-RO.com_jupgrade.ini</language>
+			<language tag="et-EE">languages/et-EE.com_jupgrade.ini</language>
+			<language tag="hu-HU">languages/hu-HU.com_jupgrade.ini</language>
+		</languages>
+	</administration>
+</install>
+
