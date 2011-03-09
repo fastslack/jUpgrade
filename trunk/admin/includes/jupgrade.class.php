@@ -521,7 +521,7 @@ class jUpgrade
 		}
 
 		$this->db_new->setQuery($query);
-		$categories = $this->db_new->loadObjectList('old');
+		$data = $this->db_new->loadObjectList('old');
 
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();
@@ -531,7 +531,7 @@ class jUpgrade
 			return false;
 		}
 
-		return $categories;
+		return $data;
 	}
 
 	/**
