@@ -67,7 +67,7 @@ class jUpgradeMenu extends jUpgrade
 		foreach ($rows as $key => &$row)
 		{
 			// Fixing name
-			$row['name'] = str_replace("'", "&#39;", $row['name']);
+			$row['title'] = str_replace("'", "&#39;", $row['title']);
 			// Fixing parent id
 			$row['parent_id'] = $row['parent_id'] == 0 ? $row['parent_id']+1 : $row['parent_id'];
 			// Fixing access
