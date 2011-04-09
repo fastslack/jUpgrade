@@ -13,13 +13,14 @@
 var debug_val = 0;
 
 // Init some variables
+var skip_checks = 0;
 var skip_download = 0;
 var skip_decompress = 0;
 
 /**
  * Function to check PHP modules required for jUpgrade
  *
- * @return	bool	
+ * @return	bool
  * @since	0.5.0
  */
 function checks(event){
@@ -28,74 +29,61 @@ function checks(event){
 	debug_val = this.debug;
 
 	var skip = new Array();
+	skip['skip_checks'] = this.skip_checks;
 	skip['skip_download'] = this.skip_download;
 	skip['skip_decompress'] = this.skip_decompress;
 
-  var mySlideUpdate = new Fx.Slide('update');
-  mySlideUpdate.toggle();
+	var mySlideUpdate = new Fx.Slide('update');
+	mySlideUpdate.toggle();
 
-  var mySlideChecks = new Fx.Slide('checks');
-  mySlideChecks.hide();
-  $('checks').setStyle('display', 'block');
-  mySlideChecks.toggle();
+	// Check skip from settings
+	if (skip['skip_checks'] != 1) {
 
-	var pb0 = new dwProgressBar({
-		container: $('pb0'),
-		startPercentage: 1,
-		speed: 1000,
-		boxID: 'pb0-box',
-		percentageID: 'pb0-perc',
-		displayID: 'text',
-		displayText: false
-	});
+		var mySlideChecks = new Fx.Slide('checks');
+		mySlideChecks.hide();
+		$('checks').setStyle('display', 'block');
+		mySlideChecks.toggle();
 
+		var pb0 = new dwProgressBar({
+			container: $('pb0'),
+			startPercentage: 50,
+			speed: 1000,
+			boxID: 'pb0-box',
+			percentageID: 'pb0-perc',
+			displayID: 'text',
+			displayText: false
+		});
 
-	text = document.getElementById('checkstatus');
-	text.innerHTML = 'Checking directories';
+		text = document.getElementById('checkstatus');
+		text.innerHTML = 'Checking...';
 
-  var c = new Ajax( 'components/com_jupgrade/includes/check_dirs.php', {
-    method: 'get',
-		noCache: true,
-    onComplete: function( response ) {
-      //alert('>>'+response+'<<');
+		var c = new Ajax( 'components/com_jupgrade/includes/checks.php', {
+		  method: 'get',
+		  onComplete: function( response ) {
+		    //alert('>>'+response+'<<');
 
-			if (response != 'OK') {
-				pb0.set(100);
-				pb0.finish();
-				text.innerHTML = '<span id="checktext">'+response+' is unwritable</span>';
-
-			}else	if (response == 'OK') {
-				pb0.set(50);
-
-				var c2 = new Ajax( 'components/com_jupgrade/includes/check_curl.php', {
-					method: 'get',
-					noCache: true,
-					onComplete: function( response ) {
-						//alert(response);
-
-						pb0.set(100);
-						pb0.finish();
-
-						if (response == 'LOADED') {
-							text.innerHTML = 'Check DONE';
-							download(skip);
-						}else if (response == 'NOT_LOADED'){
-							text.innerHTML = '<span id="checktext">Error: curl not loaded</span>';
-						}
-					}
-				}).request();
-
-			}
-
-    }
-  }).request();
+				if (response != 'OK') {
+					pb0.set(100);
+					pb0.finish();
+					text.innerHTML = '<span id="checktext">'+response+'</span>';
+				}else{
+					pb0.set(100);
+					pb0.finish();
+					text.innerHTML = 'Checking DONE';
+					download(skip);
+				}
+		  }
+		}).request();
+	}else{
+		download(skip);
+	}
 
 };
 
 /**
  * Function to change the progressbar
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 var progress = function(event)  {
@@ -126,7 +114,7 @@ var progress = function(event)  {
 /**
  * Function to download Joomla 1.6 using AJAX
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 var download = function (skip){
@@ -157,9 +145,8 @@ var download = function (skip){
 	}else{
 		var a = new Ajax( 'components/com_jupgrade/includes/download.php', {
 		  method: 'get',
-			noCache: true,
-		  onRequest: function( response ) {	
-				//alert(response);		
+		  onRequest: function( response ) {
+				//alert(response);
 		    progressID = progress.periodical(100);
 		  },
 		  onComplete: function( response ) {
@@ -187,7 +174,7 @@ var download = function (skip){
 /**
  * Function to decompress the downloaded file
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function decompress(skip){
@@ -216,9 +203,13 @@ function decompress(skip){
 	}else{
 		var d = new Ajax( 'components/com_jupgrade/includes/decompress.php', {
 		  method: 'get',
-			noCache: true,
 		  onComplete: function( response ) {
-		    //alert(response);
+
+				if (debug_val == 1) {
+					text = document.getElementById('debug');
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[decompress]</b><br><br>' +response;
+				}
+
 				pb2.set(100);
 				pb2.finish();
 
@@ -235,9 +226,9 @@ function decompress(skip){
 };
 
 /**
- * Install Joomla 1.6 
+ * Install Joomla 1.6
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function install(event){
@@ -257,17 +248,27 @@ function install(event){
 		displayText: false
 	});
 
-  var d = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
+  var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
     method: 'get',
 		noCache: true,
     onComplete: function( response ) {
 			pb3.set(33);
 
-			var d2 = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
+			if (debug_val == 1) {
+				text = document.getElementById('debug');
+				text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_config]</b><br><br>' +response;
+			}
+
+			var d2 = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
 				method: 'get',
 				noCache: true,
 				onComplete: function( response ) {
 					pb3.set(66);
+
+					if (debug_val == 1) {
+						text = document.getElementById('debug');
+						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
+					}
 
 					var d = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
 						method: 'get',
@@ -275,6 +276,12 @@ function install(event){
 						onComplete: function( response ) {
 							pb3.set(100);
 							pb3.finish();
+
+							if (debug_val == 1) {
+								text = document.getElementById('debug');
+								text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_db]</b><br><br>' +response;
+							}
+
 							migrate();
 						}
 					}).request();
@@ -287,11 +294,10 @@ function install(event){
 
 };
 
-
 /**
  * Start the migration
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function migrate(event){
@@ -318,58 +324,48 @@ function migrate(event){
 /**
  * Internal function run the differents php files to migrate
  *
- * @return	bool	
+ * @return	bool
  * @since	0.5.7
  */
 var request = new Request({
   url: 'components/com_jupgrade/includes/controller.php',
   method: 'get',
-	data: { 'do' : '1' },
-	noCache: true
+	noCache: true,
+  onComplete: function(response) {
+		var ex = explode(';|;', response);
+		var msg = ex[0];
+		var id = ex[1];
+		var file = ex[2];
+
+		pb4.set(id*11);
+		text = document.getElementById('status');
+		text.innerHTML = 'Migrating ' + file;
+
+		if (debug_val == 1) {
+			text = document.getElementById('debug');
+			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
+		}
+
+		if (id >= 9) {
+			pb4.finish();
+
+			// Shutdown periodical
+			$clear(migration_periodical);
+
+			// Run templates step
+			templates();
+		}
+  }
 });
 
-/**
- * Internal function that gets the migrations variables
- *
- * @return	bool	
- * @since	0.5.8
- */
-var getResponse = function(response) {
-	var ex = explode(';|;', response);
-	var msg = ex[0];
-	var id = ex[1];
-	var file = ex[2];
-
-	//pb4.set(id*11);
-	text = document.getElementById('status');
-	text.innerHTML = 'Migrating ' + file;
-
-	if (debug_val == 1) {
-		text = document.getElementById('debug');
-		text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>'+msg+'';
-	}
-
-	if (id >= 9) {
-
-		//pb4.finish();
-
-		// Shutdown periodical
-		$clear(migration_periodical);
-
-		// Run templates step
-		templates();
-	}
-}
-
 var _doMigration = function() {
-	request.addEvent('success', getResponse);
   request.send();
 };
 
 /**
  * Upgrading template
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.8
  */
 function templates(event){
@@ -413,7 +409,7 @@ function templates(event){
 /**
  * Migrate the 3rd party extensions
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function extensions(event){
@@ -457,7 +453,7 @@ function extensions(event){
 /**
  * Show done message
  *
- * @return	bool	
+ * @return	bool
  * @since	0.4.
  */
 function done(event){

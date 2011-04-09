@@ -13,6 +13,7 @@
 var debug_val = 0;
 
 // Init some variables
+var skip_checks = 0;
 var skip_download = 0;
 var skip_decompress = 0;
 
