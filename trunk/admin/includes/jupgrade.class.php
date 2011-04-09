@@ -565,5 +565,24 @@ class jUpgrade
 		return $object;
 	}
 
+	/**
+	 * Internal function to get the component settings
+	 *
+	 * @return	an object with global settings
+	 * @since	0.5.7
+	 * @throws	Exception
+	 */
+	public function getRequirements()
+	{
+		$requirements = array();
+
+		$requirements['phpMust'] = '5.2';
+		$requirements['phpIs'] = PHP_VERSION;
+
+		$requirements['mysqlMust'] = '5.0';
+		$requirements['mysqlIs'] = mysql_get_server_info();
+
+		return $requirements;
+	}
 }
 

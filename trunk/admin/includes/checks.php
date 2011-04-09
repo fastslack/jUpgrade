@@ -18,10 +18,19 @@ define('DS',			DIRECTORY_SEPARATOR);
 require_once JPATH_BASE.'/defines_old.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
 
-// jUpgrade class
+/**
+ * Initialize jupgrade class
+ */
 $jupgrade = new jUpgrade;
 
-// Check for tables
+/**
+ * Requirements
+ */
+$requirements = $jupgrade->getRequirements();
+
+/**
+ * Checking tables
+ */
 $query = "SHOW TABLES";
 $jupgrade->db_new->setQuery($query);
 $tables = $jupgrade->db_new->loadResultArray();
@@ -46,7 +55,9 @@ if (!in_array('j16_jupgrade_steps', $tables)) {
 	exit;
 }
 
-// Check if j16_jupgrade_steps is fine
+/**
+ * Check if j16_jupgrade_steps is fine
+ */
 $query = "SELECT COUNT(id) FROM `j16_jupgrade_steps`";
 $jupgrade->db_new->setQuery($query);
 $nine = $jupgrade->db_new->loadResult();
@@ -56,7 +67,9 @@ if ($nine != 9) {
 	exit;
 }
 
-// Check Curl
+/**
+ * Check Curl
+ */
 $ext = get_loaded_extensions();
 
 if (!in_array("curl", $ext)) {
@@ -64,7 +77,9 @@ if (!in_array("curl", $ext)) {
 	exit;
 }
 
-// Check dirs
+/**
+ * Check dirs
+ */
 if (!is_writable(JPATH_ROOT)) {
 	echo "407: ".JPATH_ROOT." is unwritable";
 	exit;
@@ -77,5 +92,20 @@ if (!is_writable($tmp)) {
 	exit;
 }
 
+/**
+ * Compare the PHP version
+ */
+if (!version_compare($requirements['phpMust'], $requirements['phpIs'], '<')) {
+	echo "409: PHP 5.2+ or greater is required";
+	exit;
+}
+
+/**
+ * Compare the MYSQL version
+ */
+if (!version_compare($requirements['mysqlMust'], $requirements['mysqlIs'])) {
+	echo "410: MySQL 5.0+ or greater is required";
+	exit;
+}
 echo "OK";
 
