@@ -28,48 +28,54 @@ function checks(event){
 	debug_val = this.debug;
 
 	var skip = new Array();
+	skip['skip_checks'] = this.skip_checks;
 	skip['skip_download'] = this.skip_download;
 	skip['skip_decompress'] = this.skip_decompress;
 
-  var mySlideUpdate = new Fx.Slide('update');
-  mySlideUpdate.toggle();
+	var mySlideUpdate = new Fx.Slide('update');
+	mySlideUpdate.toggle();
 
-  var mySlideChecks = new Fx.Slide('checks');
-  mySlideChecks.hide();
-  $('checks').setStyle('display', 'block');
-  mySlideChecks.toggle();
+	// Check skip from settings
+	if (skip['skip_checks'] != 1) {
 
-	var pb0 = new dwProgressBar({
-		container: $('pb0'),
-		startPercentage: 50,
-		speed: 1000,
-		boxID: 'pb0-box',
-		percentageID: 'pb0-perc',
-		displayID: 'text',
-		displayText: false
-	});
+		var mySlideChecks = new Fx.Slide('checks');
+		mySlideChecks.hide();
+		$('checks').setStyle('display', 'block');
+		mySlideChecks.toggle();
 
+		var pb0 = new dwProgressBar({
+			container: $('pb0'),
+			startPercentage: 50,
+			speed: 1000,
+			boxID: 'pb0-box',
+			percentageID: 'pb0-perc',
+			displayID: 'text',
+			displayText: false
+		});
 
-	text = document.getElementById('checkstatus');
-	text.innerHTML = 'Checking...';
+		text = document.getElementById('checkstatus');
+		text.innerHTML = 'Checking...';
 
-  var c = new Ajax( 'components/com_jupgrade/includes/checks.php', {
-    method: 'get',
-    onComplete: function( response ) {
-      //alert('>>'+response+'<<');
+		var c = new Ajax( 'components/com_jupgrade/includes/checks.php', {
+		  method: 'get',
+		  onComplete: function( response ) {
+		    //alert('>>'+response+'<<');
 
-			if (response != 'OK') {
-				pb0.set(100);
-				pb0.finish();
-				text.innerHTML = '<span id="checktext">'+response+'</span>';
-			}else{
-				pb0.set(100);
-				pb0.finish();
-				text.innerHTML = 'Checking DONE';
-				download(skip);
-			}
-    }
-  }).request();
+				if (response != 'OK') {
+					pb0.set(100);
+					pb0.finish();
+					text.innerHTML = '<span id="checktext">'+response+'</span>';
+				}else{
+					pb0.set(100);
+					pb0.finish();
+					text.innerHTML = 'Checking DONE';
+					download(skip);
+				}
+		  }
+		}).request();
+	}else{
+		download(skip);
+	}
 
 };
 
