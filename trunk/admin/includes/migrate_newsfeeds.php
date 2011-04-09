@@ -48,6 +48,7 @@ class jUpgradeNewsfeeds extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
+			$row['name'] = str_replace("'", "&#39;", $row['name']);
 			$row['access'] = empty($row['access']) ? 1 : $row['access'] + 1;
 			$row['language'] = '*';
 

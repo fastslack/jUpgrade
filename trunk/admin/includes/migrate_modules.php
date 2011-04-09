@@ -86,6 +86,9 @@ class jUpgradeModules extends jUpgrade
 		{
 			$row['params'] = $this->convertParams($row['params']);
 
+			## Fix title
+			$row['title'] = str_replace("'", "&#39;", $row['title']);
+
 			## Fix access
 			$row['access'] = $row['access']+1;
 

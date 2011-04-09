@@ -327,6 +327,9 @@ class jUpgrade
 		if ($parent !== false) {
 			$object->path = JFilterOutput::stringURLSafe($parent)."/".$object->alias;
 
+			// Fixing title quote
+			$parent = str_replace("'", "&#39;", $parent);
+
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
 			$object->parent_id = $this->db_new->loadResult();
@@ -414,6 +417,9 @@ class jUpgrade
 
 				// Get parent and level
 				if ($parent !== false) {
+					// Fixing title quote
+					$parent = str_replace("'", "&#39;", $parent);
+
 					$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
 					$this->db_new->setQuery($query);
 					$table->parent_id = $this->db_new->loadResult();
