@@ -60,6 +60,7 @@ window.addEvent('domready', function() {
 	$('extensions').setStyle('display', 'none');
 	$('done').setStyle('display', 'none');
 
+	$('update').skip_checks = <?php echo $params->get("skip_checks") ? $params->get("skip_checks") : 0; ?>;
 	$('update').skip_download = <?php echo $params->get("skip_download") ? $params->get("skip_download") : 0; ?>;
 	$('update').skip_decompress =  <?php echo $params->get("skip_decompress") ? $params->get("skip_decompress") : 0; ?>;
 	$('update').debug =  <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>;

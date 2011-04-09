@@ -40,7 +40,9 @@ class jUpgrade
 	function __construct()
 	{
 		// Set timelimit to 0
-		set_time_limit(0);
+		if(!ini_get('safe_mode')) { 
+			set_time_limit(0);
+		}
 
 		// Base includes
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
@@ -300,6 +302,59 @@ class jUpgrade
 	}
 
 	/**
+	 * Copy table to old site to new site
+	 *
+	 * @return	void
+	 * @since	0.5.1
+	 * @throws	Exception
+	 */
+	protected function copyTable($from, $to) {
+
+		// Check if table exists
+		$database = $this->config['database'];
+
+		$query = "SELECT COUNT(*) AS count
+      FROM information_schema.tables
+      WHERE table_schema = '$database'
+      AND table_name = '$from'";
+
+		$this->db_new->setQuery($query);
+		$res = $this->db_new->loadResult();
+
+		//
+	  if($res == 0) {
+      $success = false;
+	  } else {
+      $query = "CREATE TABLE {$to} LIKE {$from}";
+			$this->db_new->setQuery($query);
+			//$this->db_new->query();
+
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+
+      $query = "INSERT INTO {$to} SELECT * FROM {$from}";
+			$this->db_new->setQuery($query);
+			//$this->db_new->query();
+
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+
+      $success = true;
+	  }
+	 
+	  return $success;
+	}
+
+
+	/**
 	 * Inserts a category
 	 *
 	 * @access  public
@@ -326,6 +381,9 @@ class jUpgrade
 		// If has parent made $path and get parent id
 		if ($parent !== false) {
 			$object->path = JFilterOutput::stringURLSafe($parent)."/".$object->alias;
+
+			// Fixing title quote
+			$parent = str_replace("'", "&#39;", $parent);
 
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
@@ -414,6 +472,9 @@ class jUpgrade
 
 				// Get parent and level
 				if ($parent !== false) {
+					// Fixing title quote
+					$parent = str_replace("'", "&#39;", $parent);
+
 					$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
 					$this->db_new->setQuery($query);
 					$table->parent_id = $this->db_new->loadResult();
@@ -521,7 +582,7 @@ class jUpgrade
 		}
 
 		$this->db_new->setQuery($query);
-		$categories = $this->db_new->loadObjectList('old');
+		$data = $this->db_new->loadObjectList('old');
 
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();
@@ -531,7 +592,7 @@ class jUpgrade
 			return false;
 		}
 
-		return $categories;
+		return $data;
 	}
 
 	/**
@@ -565,5 +626,24 @@ class jUpgrade
 		return $object;
 	}
 
+	/**
+	 * Internal function to get the component settings
+	 *
+	 * @return	an object with global settings
+	 * @since	0.5.7
+	 * @throws	Exception
+	 */
+	public function getRequirements()
+	{
+		$requirements = array();
+
+		$requirements['phpMust'] = '5.2';
+		$requirements['phpIs'] = PHP_VERSION;
+
+		$requirements['mysqlMust'] = '5.0';
+		$requirements['mysqlIs'] = mysql_get_server_info();
+
+		return $requirements;
+	}
 }
 

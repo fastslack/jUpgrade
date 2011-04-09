@@ -119,8 +119,8 @@ class jUpgradeCategories extends jUpgrade
 
 				// Correct some values
 				$categories[$y]->params = $this->convertParams($categories[$y]->params);
-				$categories[$y]->title = str_replace("'", "\'", $categories[$y]->title);
-				$categories[$y]->description = str_replace("'", "\'", $categories[$y]->description);
+				$categories[$y]->title = str_replace("'", "&#39;", $categories[$y]->title);
+				$categories[$y]->description = str_replace("'", "&#39;", $categories[$y]->description);
 				$categories[$y]->access = $categories[$y]->access+1;
 				$categories[$y]->language = '*';
 

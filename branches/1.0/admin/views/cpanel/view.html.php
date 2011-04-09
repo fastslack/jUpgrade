@@ -39,7 +39,9 @@ class jupgradeViewCpanel extends JView
 		JToolBarHelper::spacer();
 
 		// Set timelimit to 0
-		set_time_limit(0);
+		if(!ini_get('safe_mode')) { 
+			set_time_limit(0);
+		}
 
 		$xmlfile = JPATH_COMPONENT.'/jupgrade.xml';
  		$xml = new JSimpleXML;
