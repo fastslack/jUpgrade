@@ -300,6 +300,59 @@ class jUpgrade
 	}
 
 	/**
+	 * Copy table to old site to new site
+	 *
+	 * @return	void
+	 * @since	0.5.1
+	 * @throws	Exception
+	 */
+	protected function copyTable($from, $to) {
+
+		// Check if table exists
+		$database = $this->config['database'];
+
+		$query = "SELECT COUNT(*) AS count
+      FROM information_schema.tables
+      WHERE table_schema = '$database'
+      AND table_name = '$from'";
+
+		$this->db_new->setQuery($query);
+		$res = $this->db_new->loadResult();
+
+		//
+	  if($res == 0) {
+      $success = false;
+	  } else {
+      $query = "CREATE TABLE {$to} LIKE {$from}";
+			$this->db_new->setQuery($query);
+			//$this->db_new->query();
+
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+
+      $query = "INSERT INTO {$to} SELECT * FROM {$from}";
+			$this->db_new->setQuery($query);
+			//$this->db_new->query();
+
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+
+      $success = true;
+	  }
+	 
+	  return $success;
+	}
+
+
+	/**
 	 * Inserts a category
 	 *
 	 * @access  public
