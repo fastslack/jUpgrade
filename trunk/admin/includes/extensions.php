@@ -11,13 +11,6 @@
  * @link		http://www.matware.com.ar
  */
 
-define('_JEXEC',		1);
-define('JPATH_BASE',	dirname(__FILE__));
-define('DS',			DIRECTORY_SEPARATOR);
-
-require_once JPATH_BASE.'/defines.php';
-require_once JPATH_BASE.'/jupgrade.class.php';
-
 /**
  * Upgrade class for 3rd party extensions
  *
@@ -39,6 +32,12 @@ class jUpgradeExtensions extends jUpgrade
 	 */
 	public $destination = '#__extensions';
 
+	/**
+	 * count adapters
+	 * @var int
+	 * @since	1.1.0
+	 */
+	public $count = 0;
 
 	/**
 	 * Get the raw data for this part of the upgrade.
@@ -63,15 +62,25 @@ class jUpgradeExtensions extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
+			//echo $row['element']."\n";
+
+			$element = substr($row['element'], 4);
+			//echo $element."\n";
+
+			// 
+			$filename = dirname(__FILE__).DS.'adapters'.DS.strtolower($element).'.php';
+
+			if (file_exists($filename)) {
+				$query = "INSERT INTO j16_jupgrade_steps (name, status, extension) VALUES('{$element}', 0, 1 )";
+				$this->db_new->setQuery($query);
+				$this->db_new->query();
+	
+				$this->count = $this->count+1;
+			}
+
 			unset($row['id']);
 		}
 
 		return $rows;
 	}
-
 }
-
-// Search for 3rd party extensions
-$extensions = new jUpgradeExtensions;
-$extensions->upgrade();
-

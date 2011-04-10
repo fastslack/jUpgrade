@@ -62,7 +62,7 @@ $query = "SELECT COUNT(id) FROM `j16_jupgrade_steps`";
 $jupgrade->db_new->setQuery($query);
 $nine = $jupgrade->db_new->loadResult();
 
-if ($nine != 9) {
+if ($nine < 10) {
 	echo "405: j16_jupgrade_steps is not valid";
 	exit;
 }
