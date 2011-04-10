@@ -419,9 +419,9 @@ function extensions(event){
   $('extensions').setStyle('display', 'block');
   mySlideExt.toggle();
 
-	var pb6 = new dwProgressBar({
+	pb6 = new dwProgressBar({
 		container: $('pb6'),
-		startPercentage: 100,
+		startPercentage: 50,
 		speed: 1000,
 		boxID: 'pb6-box',
 		percentageID: 'pb6-perc',
@@ -429,13 +429,14 @@ function extensions(event){
 		displayText: false
 	});
 
-	pb6.finish();
+	extension_periodical = _doExtensionsMigration.periodical(5500);
 
-	done();
+	//pb6.finish();
+	//done();
 
 /*
 	TODO: Run the jUpgradeExtension class
-
+*
   var d = new Ajax( 'components/com_jupgrade/includes/extensions.php', {
     method: 'get',
     onComplete: function( response ) {
@@ -449,6 +450,46 @@ function extensions(event){
 
 };
 
+/**
+ * Internal function run the differents adapters of 3rd party extensions
+ *
+ * @return	bool
+ * @since	1.1.0
+ */
+var ext_request = new Request({
+  url: 'components/com_jupgrade/includes/extensions_controller.php',
+  method: 'get',
+	noCache: true,
+  onComplete: function(response) {
+		var ex = explode(';|;', response);
+		var msg = ex[0];
+		var id = ex[1];
+		var file = ex[2];
+
+		pb6.set(100);
+		text = document.getElementById('status_ext');
+		text.innerHTML = 'Migrating ' + file;
+
+		if (debug_val == 1) {
+			text = document.getElementById('debug');
+			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
+		}
+
+		if (id >= 12 || id == '') {
+			pb6.finish();
+
+			// Shutdown periodical
+			$clear(extension_periodical);
+
+			// Run templates step
+			done();
+		}
+  }
+});
+
+var _doExtensionsMigration = function() {
+  ext_request.send();
+};
 
 /**
  * Show done message
@@ -469,4 +510,3 @@ function done(event){
   }).request();
 
 };
-

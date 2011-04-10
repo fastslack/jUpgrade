@@ -148,7 +148,7 @@ window.addEvent('domready', function() {
 				<div id="migration">
 					<p class="text"><?php echo JText::_('Upgrading progress...'); ?></p>
 					<div id="pb4"></div>
-					<div><i><small><span id="status"><?php echo JText::_('Preparing for migration...'); ?></span></i></small></div>
+					<div><i><small><span id="status"><?php echo JText::_('Preparing for migration'); ?></span></i></small></div>
 				</div>
 
 				<div id="templates">
@@ -159,7 +159,7 @@ window.addEvent('domready', function() {
 				<div id="extensions">
 					<p class="text"><?php echo JText::_('Upgrading 3rd extensions...'); ?></p>
 					<div id="pb6"></div>
-					<div><span id="status_ext"><?php echo JText::_('COMING SOON'); ?></span></div>
+					<div><i><small><span id="status_ext"><?php echo JText::_('Preparing for 3rd extensions migration'); ?></span></i></small></div>
 				</div>
 
 				<div id="done">

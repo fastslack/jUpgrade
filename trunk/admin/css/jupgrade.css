@@ -89,12 +89,6 @@ div#info {
 	font-size: 11pt;
 }
 
-#status_ext {
-	color: red;
-	font-size: 11pt;
-	font-weight: bolder;
-}
-
 #pb0-box, #pb1-box, #pb2-box, #pb3-box, #pb4-box, #pb5-box, #pb6-box {
   background:url(../images/progress-bar-back.gif) no-repeat scroll right center transparent;
   width:200px;
