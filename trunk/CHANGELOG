@@ -27,6 +27,12 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+09-Apr-2011 Matias Aguirre
+ # Fixing single quote in all migrations 
+ ^ Skip checks option added
+ ^ Better checks for PHP and MySQL
+ $ Update zh-TW  translation
+
 09-Mar-2011 Matias Aguirre
  # Fixed menu alias link 
 
