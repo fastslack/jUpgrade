@@ -346,7 +346,7 @@ var request = new Request({
 			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
 		}
 
-		if (id >= 9) {
+		if (id >= 9 || id == '') {
 			pb4.finish();
 
 			// Shutdown periodical
@@ -465,6 +465,7 @@ var ext_request = new Request({
 		var msg = ex[0];
 		var id = ex[1];
 		var file = ex[2];
+		var lastid = ex[3];
 
 		pb6.set(100);
 		text = document.getElementById('status_ext');
@@ -475,7 +476,7 @@ var ext_request = new Request({
 			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
 		}
 
-		if (id >= 12 || id == '') {
+		if (id == lastid) {
 			pb6.finish();
 
 			// Shutdown periodical

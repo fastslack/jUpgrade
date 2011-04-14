@@ -66,4 +66,12 @@ $jupgrade->db_new->query();
 // Check for query error.
 $error = $jupgrade->db_new->getErrorMsg();
 
-echo ";|;".$step->id.";|;".$step->name;
+// Check the lastes step id
+$query = "SELECT id FROM j16_jupgrade_steps ORDER BY id DESC LIMIT 1";
+$jupgrade->db_new->setQuery($query);
+$lastid = $jupgrade->db_new->loadResult();
+
+// Check for query error.
+$error = $jupgrade->db_new->getErrorMsg();
+
+echo ";|;".$step->id.";|;".$step->name.";|;".$lastid;

@@ -35,5 +35,10 @@ $query = "UPDATE j16_jupgrade_steps SET status = 0";
 $jupgrade->db_new->setQuery($query);
 $jupgrade->db_new->query();
 
+// Cleanup 3rd extensions
+$query = "DELETE FROM j16_jupgrade_steps WHERE id > 10";
+$jupgrade->db_new->setQuery($query);
+$jupgrade->db_new->query();
+
 // Check for query error.
 $error = $jupgrade->db_new->getErrorMsg();
