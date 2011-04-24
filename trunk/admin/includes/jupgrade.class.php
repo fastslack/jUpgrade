@@ -642,7 +642,7 @@ class jUpgrade
 		$requirements['phpIs'] = PHP_VERSION;
 
 		$requirements['mysqlMust'] = '5.0';
-		$requirements['mysqlIs'] = mysql_get_server_info();
+		$requirements['mysqlIs'] = $this->db_old->getVersion();
 
 		return $requirements;
 	}
