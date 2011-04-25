@@ -19,65 +19,25 @@ defined('JPATH_BASE') or die();
  *
  * This class migrates the Kunena extension
  *
- * @since		1.1
+ * @since		1.1.0
  */
 class jUpgradeExtensionsKunena extends jUpgrade
 {
+
 	/**
-	 * Migrate tables
-	 *
-	 * @return	boolean
-	 * @since	0.4.
+	 * @var		string	Extension xml url
+	 * @since	1.1.0
 	 */
-	public function migrateTables()
-	{
-
-		$this->copyTable('#__kunena_announcement', 'j16_kunena_announcement');
-		$this->copyTable('#__kunena_attachments', 'j16_kunena_attachments');
-		$this->copyTable('#__kunena_attachments_bak', 'j16_kunena_attachments_bak');
-		$this->copyTable('#__kunena_categories', 'j16_kunena_categories');
-		$this->copyTable('#__kunena_config', 'j16_kunena_config');
-		$this->copyTable('#__kunena_config_backup 	Browse', 'j16_kunena_config_backup 	Browse');
-		$this->copyTable('#__kunena_favorites', 'j16_kunena_favorites');
-		$this->copyTable('#__kunena_groups', 'j16_kunena_groups');
-		$this->copyTable('#__kunena_messages', 'j16_kunena_messages');
-		$this->copyTable('#__kunena_messages_text', 'j16_kunena_messages_text');
-		$this->copyTable('#__kunena_moderation', 'j16_kunena_moderation');
-		$this->copyTable('#__kunena_polls', 'j16_kunena_polls');
-		$this->copyTable('#__kunena_polls_options', 'j16_kunena_polls_options');
-		$this->copyTable('#__kunena_polls_users', 'j16_kunena_polls_users');
-		$this->copyTable('#__kunena_ranks', 'j16_kunena_ranks');
-		$this->copyTable('#__kunena_sessions', 'j16_kunena_sessions');
-		$this->copyTable('#__kunena_smileys', 'j16_kunena_smileys');
-		$this->copyTable('#__kunena_subscriptions', 'j16_kunena_subscriptions');
-		$this->copyTable('#__kunena_subscriptions_categories', 'j16_kunena_subscriptions_categories');
-		$this->copyTable('#__kunena_thankyou', 'j16_kunena_thankyou');
-		$this->copyTable('#__kunena_users', 'j16_kunena_users');
-		$this->copyTable('#__kunena_users_banned', 'j16_kunena_users_banned');
-		$this->copyTable('#__kunena_version', 'j16_kunena_version');
-		$this->copyTable('#__kunena_whoisonline', 'j16_kunena_whoisonline');
-
-		return true;
-	}
+	protected $url = 'http://www.matware.com.ar/extensions/kunena/kunena.xml';
 
 	/**
 	 * The public entry point for the class.
 	 *
 	 * @return	boolean
-	 * @since	0.4.
+	 * @since	1.1.0
 	 */
-	public function upgrade()
+	public function migrateExtensionDataHook()
 	{
-		try
-		{
-			$this->migrateTables();
-		}
-		catch (Exception $e)
-		{
-			echo JError::raiseError(500, $e->getMessage());
-
-			return false;
-		}
 
 		return true;
 	}

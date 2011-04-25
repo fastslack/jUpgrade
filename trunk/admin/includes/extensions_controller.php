@@ -53,7 +53,7 @@ if ($step->name == 'extensions') {
 		}
 
 		$adapter = new $class();
-		$adapter->upgrade();
+		$adapter->upgradeExtension();
 	}
 }
 

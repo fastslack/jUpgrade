@@ -23,18 +23,21 @@ defined('JPATH_BASE') or die();
  */
 class jUpgradeExtensionsAdminpraise extends jUpgrade
 {
+
+	/**
+	 * @var		string	Extension xml url
+	 * @since	1.1.0
+	 */
+	protected $url = 'http://www.matware.com.ar/extensions/adminpraise/adminpraise.xml';
+
 	/**
 	 * Migrate tables
 	 *
 	 * @return	boolean
 	 * @since	1.1.0
 	 */
-	public function migrateTables()
+	public function migrateExtensionDataHook()
 	{
-
-		// Copy tables
-		$this->copyTable('#__adminpraise_menu', 'j16_adminpraise_menu');
-		$this->copyTable('#__adminpraise_menu_types', 'j16_adminpraise_menu_types');
 
 		// name -> title
 		$query = "ALTER TABLE `j16_adminpraise_menu` CHANGE `name` `title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
@@ -58,28 +61,6 @@ class jUpgradeExtensionsAdminpraise extends jUpgrade
 
 		if ($error) {
 			throw new Exception($error);
-		}
-
-		return true;
-	}
-
-	/**
-	 * The public entry point for the class.
-	 *
-	 * @return	boolean
-	 * @since	1.1.0
-	 */
-	public function upgrade()
-	{
-		try
-		{
-			$this->migrateTables();
-		}
-		catch (Exception $e)
-		{
-			echo JError::raiseError(500, $e->getMessage());
-
-			return false;
 		}
 
 		return true;

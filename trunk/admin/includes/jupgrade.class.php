@@ -77,8 +77,10 @@ class jUpgrade
 		jimport('joomla.updater.updater');
 		jimport('joomla.updater.update');
 
-		// Other stuff
+		// File and folder management
 		jimport('joomla.filesystem.folder');
+
+		// Other stuff
 		jimport('joomla.utilities.string');
 		jimport('joomla.filter.filteroutput');
 		jimport('joomla.html.parameter');
@@ -521,6 +523,81 @@ class jUpgrade
 		}
 
 		return true;
+	}
+
+	/**
+	 * The public entry point for the class.
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	public function upgradeExtension()
+	{
+		try
+		{
+			$this->migrateExtensionData();
+		}
+		catch (Exception $e)
+		{
+			echo JError::raiseError(500, $e->getMessage());
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Migrate the database and media files reading the extension xml as reference
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	protected function migrateExtensionData()
+	{
+
+		$dbprefix = $this->db_old->getPrefix();
+    $xml = simplexml_load_file($this->url); 
+
+		// Migrates tables
+		$tables = $xml->update->tables;
+
+		foreach($tables->table as $key => $value) {
+			$table = $dbprefix . $value;
+			$j16table = 'j16_' . $value;
+			$this->copyTable($table, $j16table);
+		}
+
+		// Copy folders
+		$folders = $xml->update->folders;
+		$oldpath = substr(JPATH_SITE, 0, -8);
+
+		foreach($folders->folder as $key => $value) {
+
+			$src = $oldpath.$value;
+			$dest = JPATH_SITE.DS.$value;
+
+			JFolder::copy($src, $dest);
+		}
+
+		// Fire the hook in case this parameter field needs modification.
+		$this->migrateExtensionDataHook();
+
+		return true;
+	}
+
+	/**
+	 * A hook to be able to modify params prior as they are converted to JSON.
+	 *
+	 * @param	object	$object	A reference to the parameters as an object.
+	 *
+	 * @return	void
+	 * @since	1.1.0
+	 * @throws	Exception
+	 */
+	protected function migrateExtensionDataHook()
+	{
+		// Do customisation of the params field here for specific data.
 	}
 
 	/**
