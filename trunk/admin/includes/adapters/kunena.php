@@ -26,7 +26,7 @@ class jUpgradeExtensionsKunena extends jUpgrade
 
 	/**
 	 * @var		string	The name of the source database table.
-	 * @since	0.4.4
+	 * @since	1.1.0
 	 */
 	protected $source = '#__kunena_categories';
 
@@ -79,20 +79,31 @@ class jUpgradeExtensionsKunena extends jUpgrade
 			null
 		);
 
+
+
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			// 
 			if (isset($row['accesstype']) || $row['accesstype'] == 'none' ) {
 				if ($row['admin_access'] != 0) {
-					$row['admin_access'] = $map[$row['admin_access']];
+			    $row['admin_access'] = $map[$row['admin_access']];
 				}
-				if ($row['pub_access'] != 0) {
-					$row['pub_access'] = $map[$row['pub_access']];
+				if ($row['pub_access'] == -1) {
+			    // All registered
+			    $row['pub_access'] = 2;
+			    $row['pub_recurse'] = 1;
+				} elseif ($row['pub_access'] == 0) {
+			    // Everybody
+			    $row['pub_access'] = 1;
+			    $row['pub_recurse'] = 1;
+				} elseif ($row['pub_access'] == 1) {
+			    // Nobody
+			    $row['pub_access'] = 8;
+				} else {
+			    // User groups
+			    $row['pub_access'] = $map[$row['pub_access']];
 				}
 			}
-
-
 		}
 
 		return $rows;
