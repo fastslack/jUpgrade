@@ -99,36 +99,34 @@ class jUpgradeMenu extends jUpgrade
 			else if (strlen(strstr($row['link'], 'index.php?Itemid=')) && $row['type'] == 'menulink') {
 				$ex = explode('?', $row['link']);
 				$id = substr($ex[1], 7);
-			
+
 				$row['params'] = $row['params'] . "\naliasoptions=".$id;
 				$row['type'] = 'alias';
 				$row['link'] = 'index.php?Itemid=';
+				// Root level aliases should be renamed in case there's real item with the same name
+				if ($row['parent_id'] == 1) $row['alias'] .= "-".rand();
 			}
-			else if (strlen(strstr($row['link'], 'index.php?option=com_user&view=login'))) {
-				$row['link'] = 'index.php?option=com_users&view=login';
+			else if (strpos($row['link'], 'option=com_user&')) {
+				$row['link'] = preg_replace('/com_user/', 'com_users', $row['link']);
 			}
 
 			// Joomla 1.6 database structure not allow to have duplicated aliases
 			$newrows = $rows;
-
-			for ($i=$key;$i<$count;$i++) {
-				unset($newrows[$i]);
-			}
 
 			$strip = array();
 			$strip[$key] = $row;
 
 			$newrows = array_diff_key($newrows, $strip);
 
-			foreach ($newrows as $key => &$newrow) {
-				if ($newrow['alias'] != $row['alias']) {
-					$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
-				}
-				else{
-					$row['alias'] = JFilterOutput::stringURLSafe($row['title'])."-".rand();
-					break;
-				}
-			}
+      foreach ($newrows as $key => &$newrow) {
+        if ($newrow['parent_id'] == $row['parent_id'] && $newrow['alias'] == $row['alias']) {
+          if ($newrow['type'] == 'alias' || $newrow['published'] != 1)
+            $rows[$key]['alias'] .= "-".rand();
+          else
+            $row['alias'] .= "-".rand();
+          break;
+        }
+      }
 
 			// Converting params to JSON
 			$row['params'] = $this->convertParams($row['params']);
