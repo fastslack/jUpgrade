@@ -91,7 +91,7 @@ class jUpgrade
 
 		$jconfig = new JConfig();
 
-		$this->config['driver']   = 'mysql';
+		$this->config['driver']   = $jconfig->dbtype; 
 		$this->config['host']     = $jconfig->host;
 		$this->config['user']     = $jconfig->user;
 		$this->config['password'] = $jconfig->password;

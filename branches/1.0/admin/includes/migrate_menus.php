@@ -104,6 +104,9 @@ class jUpgradeMenu extends jUpgrade
 				$row['type'] = 'alias';
 				$row['link'] = 'index.php?Itemid=';
 			}
+			else if (strlen(strstr($row['link'], 'index.php?option=com_user&view=login'))) {
+				$row['link'] = 'index.php?option=com_users&view=login';
+			}
 
 			// Joomla 1.6 database structure not allow to have duplicated aliases
 			$newrows = $rows;
@@ -282,7 +285,7 @@ class jUpgradeMenuTypes extends jUpgrade
 		$rows = parent::getSourceData(
 			 '*',
 			null,
-			$this->db_old->nameQuote('id').' > 1',
+			null,
 			'id'
 		);
 
