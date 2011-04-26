@@ -282,7 +282,7 @@ class jUpgradeMenuTypes extends jUpgrade
 		$rows = parent::getSourceData(
 			 '*',
 			null,
-			$this->db_old->nameQuote('id').' > 1',
+			null,
 			'id'
 		);
 
