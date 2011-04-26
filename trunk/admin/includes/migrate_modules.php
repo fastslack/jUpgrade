@@ -50,6 +50,21 @@ class jUpgradeModules extends jUpgrade
 	}
 
 	/**
+	 * A hook to be able to modify params prior as they are converted to JSON.
+	 *
+	 * @param	object	$object	A reference to the parameters as an object.
+	 *
+	 * @return	void
+	 * @since	1.0.3
+	 * @throws	Exception
+	 */
+	protected function convertParamsHook(&$object)
+	{
+		if (isset($object->startLevel)) $object->startLevel++;
+		if (!empty($object->endLevel)) $object->endLevel++;
+	}
+
+	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array	Returns a reference to the source data array.

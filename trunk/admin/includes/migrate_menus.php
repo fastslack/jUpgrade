@@ -119,15 +119,15 @@ class jUpgradeMenu extends jUpgrade
 
 			$newrows = array_diff_key($newrows, $strip);
 
-      foreach ($newrows as $key => &$newrow) {
-        if ($newrow['parent_id'] == $row['parent_id'] && $newrow['alias'] == $row['alias']) {
-          if ($newrow['type'] == 'alias' || $newrow['published'] != 1)
-            $rows[$key]['alias'] .= "-".rand();
-          else
-            $row['alias'] .= "-".rand();
-          break;
-        }
-      }
+			foreach ($newrows as $key => &$newrow) {
+				if ($newrow['parent_id'] == $row['parent_id'] && $newrow['alias'] == $row['alias']) {
+					if ($newrow['type'] == 'alias' || $newrow['published'] != 1)
+						$rows[$key]['alias'] .= "-".rand();
+					else
+						$row['alias'] .= "-".rand();
+					break;
+				}
+			}
 
 			// Converting params to JSON
 			$row['params'] = $this->convertParams($row['params']);
