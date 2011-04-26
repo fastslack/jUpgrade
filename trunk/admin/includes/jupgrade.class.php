@@ -213,7 +213,7 @@ class jUpgrade
 			$query->order($order);
 
 		// Debug
-		//print_r($query->__toString());
+		//$this->print_a($query->__toString());
 
 		$this->db_old->setQuery((string)$query);
 

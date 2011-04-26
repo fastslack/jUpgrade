@@ -48,7 +48,7 @@ class jUpgradeMenu extends jUpgrade
 		// Creating the query
 		$join = array();
 		$join[] = 'LEFT JOIN #__components AS c ON c.id = m.componentid';
-		$join[] = 'LEFT JOIN j16_extensions AS e ON e.name = c.option';
+		$join[] = 'LEFT JOIN j16_extensions AS e ON e.element = c.option';
 
 		$rows = parent::getSourceData(
 			 ' m.id AS sid, m.menutype, m.name AS title, m.alias, m.link, m.type,'
@@ -108,6 +108,7 @@ class jUpgradeMenu extends jUpgrade
 			}
 			else if (strpos($row['link'], 'option=com_user&')) {
 				$row['link'] = preg_replace('/com_user/', 'com_users', $row['link']);
+				$row['component_id'] = 25;
 			}
 
 			// Joomla 1.6 database structure not allow to have duplicated aliases
