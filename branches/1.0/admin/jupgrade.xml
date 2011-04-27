@@ -61,6 +61,7 @@
 			<language tag="et-EE">languages/et-EE.com_jupgrade.ini</language>
 			<language tag="hu-HU">languages/hu-HU.com_jupgrade.ini</language>
 			<language tag="zh-TW">languages/zh-TW.com_jupgrade.ini</language>
+			<language tag="sk-SK">languages/sk-SK.com_jupgrade.ini</language>
 		</languages>
 	</administration>
 </install>
