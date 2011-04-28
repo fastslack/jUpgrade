@@ -30,8 +30,8 @@ $query = "TRUNCATE TABLE `j16_jupgrade_categories`, `j16_jupgrade_menus`, `j16_j
 $jupgrade->db_new->setQuery($query);
 $jupgrade->db_new->query();
 
-// Set all status to 0
-$query = "UPDATE j16_jupgrade_steps SET status = 0";
+// Set all status to 0 and clear state
+$query = "UPDATE j16_jupgrade_steps SET status = 0, state = ''";
 $jupgrade->db_new->setQuery($query);
 $jupgrade->db_new->query();
 
