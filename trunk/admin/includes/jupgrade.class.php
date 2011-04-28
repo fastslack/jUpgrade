@@ -31,17 +31,25 @@ class jUpgrade
 	 * @since	0.4.
 	 */
 	protected $source = null;
+	protected $name = null;
+	protected $state = null;
+	protected $ready = true;
 
 	public $config = array();
 	public $config_old = array();
 	public $db_old = null;
 	public $db_new = null;
 
-	function __construct()
+	function __construct($step = null)
 	{
 		// Set timelimit to 0
-		if(!ini_get('safe_mode')) { 
+		if(!ini_get('safe_mode')) {
 			set_time_limit(0);
+		}
+
+		if ($step) {
+			$this->name = $step->name;
+			$this->state = json_decode($step->state);
 		}
 
 		// Base includes
@@ -93,7 +101,7 @@ class jUpgrade
 
 		$jconfig = new JConfig();
 
-		$this->config['driver']   = $jconfig->dbtype; 
+		$this->config['driver']   = $jconfig->dbtype;
 		$this->config['host']     = $jconfig->host;
 		$this->config['user']     = $jconfig->user;
 		$this->config['password'] = $jconfig->password;
@@ -352,7 +360,7 @@ class jUpgrade
 
       $success = true;
 	  }
-	 
+
 	  return $success;
 	}
 
@@ -526,6 +534,39 @@ class jUpgrade
 	}
 
 	/**
+	 * Save internal state.
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	public function saveState()
+	{
+		// Cannot save state if step is not defined
+		if (!$this->name) return false;
+
+		$state = json_encode($this->state);
+		$query = "UPDATE j16_jupgrade_steps SET state = {$jupgrade->db_new->quote($state)} WHERE name = {$jupgrade->db_new->quote($this->name)}";
+		$jupgrade->db_new->setQuery($query);
+		$jupgrade->db_new->query();
+
+		// Check for query error.
+		$error = $jupgrade->db_new->getErrorMsg();
+
+		return !$error;
+	}
+
+	/**
+	 * Check if this migration has been completed.
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	public function isReady()
+	{
+		return $this->ready;
+	}
+
+	/**
 	 * The public entry point for the class.
 	 *
 	 * @return	boolean
@@ -533,9 +574,14 @@ class jUpgrade
 	 */
 	public function upgradeExtension()
 	{
+		if (!$this->detectExtension())
+		{
+			return false;
+		}
 		try
 		{
 			$this->migrateExtensionData();
+			$this->saveState();
 		}
 		catch (Exception $e)
 		{
@@ -548,6 +594,18 @@ class jUpgrade
 	}
 
 	/**
+	 * Check if extension migration is supported.
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	protected function detectExtension()
+	{
+		echo JError::raiseError(500, "Extension {$this->name} not supported!");
+		return false;
+	}
+
+	/**
 	 * Migrate the database and media files reading the extension xml as reference
 	 *
 	 * @return	boolean
@@ -557,7 +615,7 @@ class jUpgrade
 	{
 
 		$dbprefix = $this->db_old->getPrefix();
-    $xml = simplexml_load_file($this->url); 
+		$xml = simplexml_load_file($this->url);
 
 		// Migrates tables
 		$tables = $xml->update->tables;

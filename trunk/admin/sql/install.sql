@@ -26,9 +26,10 @@ CREATE TABLE IF NOT EXISTS `j16_jupgrade_menus` (
 DROP TABLE IF EXISTS `j16_jupgrade_steps`;
 CREATE TABLE IF NOT EXISTS `j16_jupgrade_steps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(255) NOT NULL,
   `status` int(11) NOT NULL,
   `extension` int(1) NOT NULL DEFAULT '0',
+  `state` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 

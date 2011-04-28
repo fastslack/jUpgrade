@@ -64,17 +64,18 @@ class jUpgradeExtensions extends jUpgrade
 		{
 			//echo $row['element']."\n";
 
-			$element = substr($row['element'], 4);
+			//$element = substr($row['element'], 4);
+			$element = $row['element'];
 			//echo $element."\n";
 
-			// 
+			//
 			$filename = dirname(__FILE__).DS.'adapters'.DS.strtolower($element).'.php';
 
 			if (file_exists($filename)) {
-				$query = "INSERT INTO j16_jupgrade_steps (name, status, extension) VALUES('{$element}', 0, 1 )";
+				$query = "INSERT INTO j16_jupgrade_steps (name, status, extension, state) VALUES('{$element}', 0, 1, '' )";
 				$this->db_new->setQuery($query);
 				$this->db_new->query();
-	
+
 				$this->count = $this->count+1;
 			}
 

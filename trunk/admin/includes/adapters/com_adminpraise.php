@@ -2,7 +2,7 @@
 /**
  * jUpgrade
  *
- * @version		$Id: adminpraise.php 
+ * @version		$Id: adminpraise.php
  * @package		MatWare
  * @subpackage	com_jupgrade
  * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
@@ -21,7 +21,7 @@ defined('JPATH_BASE') or die();
  *
  * @since		1.1.0
  */
-class jUpgradeExtensionsAdminpraise extends jUpgrade
+class jUpgradeComponentAdminpraise extends jUpgrade
 {
 
 	/**
@@ -29,6 +29,18 @@ class jUpgradeExtensionsAdminpraise extends jUpgrade
 	 * @since	1.1.0
 	 */
 	protected $url = 'http://www.matware.com.ar/extensions/adminpraise/adminpraise.xml';
+
+
+	/**
+	 * Check if extension migration is supported.
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	protected function detectExtension()
+	{
+		return true;
+	}
 
 	/**
 	 * Migrate tables

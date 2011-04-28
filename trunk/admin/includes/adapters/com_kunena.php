@@ -2,7 +2,7 @@
 /**
  * jUpgrade
  *
- * @version		$Id: kunena.php 
+ * @version		$Id: kunena.php
  * @package		MatWare
  * @subpackage	com_jupgrade
  * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
@@ -21,7 +21,7 @@ defined('JPATH_BASE') or die();
  *
  * @since		1.1.0
  */
-class jUpgradeExtensionsKunena extends jUpgrade
+class jUpgradeComponentKunena extends jUpgrade
 {
 
 	/**
@@ -35,6 +35,26 @@ class jUpgradeExtensionsKunena extends jUpgrade
 	 * @since	1.1.0
 	 */
 	protected $url = 'http://www.matware.com.ar/extensions/kunena/kunena.xml';
+
+	/**
+	 * Check if extension migration is supported.
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	protected function detectExtension()
+	{
+		return true;
+
+		// Check if Kunena migration class exists
+		$file = JPATH_ROOT . '/administrator/components/com_kunena/install/j16upgrade.php';
+		if (! is_file ( $file ))
+			return false;
+
+		// Load Kunena migration class
+		require_once ($file);
+		return true;
+	}
 
 	/**
 	 * Get the mapping of the old usergroups to the new usergroup id's.
