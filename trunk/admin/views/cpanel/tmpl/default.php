@@ -86,18 +86,18 @@ window.addEvent('domready', function() {
 					<div id="info_version"><?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
 					<div id="info_thanks">
 						<p>
-							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2011<br>
-							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br>
+							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2011<br />
+							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
 						</p>
 						<p>
-							<a href="http://www.matware.com.ar/joomla/jupgrade.html">Project Site</a><br>
-							<a href="http://www.matware.com.ar/foros/jupgrade.html">Project Community</a><br>
-							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a><br>
+							<a href="http://www.matware.com.ar/joomla/jupgrade.html">Project Site</a><br />
+							<a href="http://www.matware.com.ar/foros/jupgrade.html">Project Community</a><br />
+							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a><br />
 							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-							<input type="hidden" name="cmd" value="_s-xclick">
-							<input type="hidden" name="hosted_button_id" value="CZUMWRZ5E8DKS">
-							<input id="donate" type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-							<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" style="border: none;">
+								<input type="hidden" name="cmd" value="_s-xclick" />
+								<input type="hidden" name="hosted_button_id" value="CZUMWRZ5E8DKS" />
+								<input id="donate" type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+								<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" style="border: none;" />
 							</form>
 						</p>
 					</div>
@@ -121,7 +121,7 @@ window.addEvent('domready', function() {
 				<div id="checks">
 					<p class="text"><?php echo JText::_('Checking...'); ?></p>
 					<div id="pb0"></div>
-					<div><i><small><span id="checkstatus"><?php echo JText::_('Preparing for check...'); ?></span></i></small></div>
+					<div><small><i><span id="checkstatus"><?php echo JText::_('Preparing for check...'); ?></span></i></small></div>
 				</div>
 
 				<div id="download">
@@ -148,7 +148,7 @@ window.addEvent('domready', function() {
 				<div id="migration">
 					<p class="text"><?php echo JText::_('Upgrading progress...'); ?></p>
 					<div id="pb4"></div>
-					<div><i><small><span id="status"><?php echo JText::_('Preparing for migration'); ?></span></i></small></div>
+					<div><small><i><span id="status"><?php echo JText::_('Preparing for migration'); ?></span></i></small></div>
 				</div>
 
 				<div id="templates">
@@ -159,7 +159,7 @@ window.addEvent('domready', function() {
 				<div id="extensions">
 					<p class="text"><?php echo JText::_('Upgrading 3rd extensions...'); ?></p>
 					<div id="pb6"></div>
-					<div><i><small><span id="status_ext"><?php echo JText::_('Preparing for 3rd extensions migration'); ?></span></i></small></div>
+					<div><small><i><span id="status_ext"><?php echo JText::_('Preparing for 3rd extensions migration'); ?></span></i></small></div>
 				</div>
 
 				<div id="done">
