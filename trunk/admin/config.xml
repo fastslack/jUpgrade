@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE config>
 <config>
 	<params>
 		<param name="mode" type="list" default="0" label="Distribution" description="">
