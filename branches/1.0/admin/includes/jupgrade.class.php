@@ -151,7 +151,7 @@ class jUpgrade
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function &getSourceData($select = '*', $join = null, $where = null, $order = null)
+	protected function &getSourceData($select = '*', $join = null, $where = null, $order = null, $debug = 0)
 	{
 		// Error checking.
 		if (empty($this->source)) {
@@ -211,7 +211,9 @@ class jUpgrade
 			$query->order($order);
 
 		// Debug
-		//$this->print_a($query->__toString());
+		if ($debug == 1) {
+			$this->print_a($query->__toString());
+		}
 
 		$this->db_old->setQuery((string)$query);
 
