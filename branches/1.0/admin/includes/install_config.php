@@ -29,7 +29,6 @@ require_once JPATH_INSTALLATION.'/models/configuration.php';
 require JPATH_ROOT.'/configuration.php';
 
 $jconfig = new JConfig();
-
 //print_r($jconfig);
 
 $jconfig->db_type   = 'mysql';
@@ -40,8 +39,14 @@ $jconfig->db_name	= $jconfig->db;
 $jconfig->db_prefix	= "j16_";
 $jconfig->site_name	= $jconfig->sitename;
 
-//print_r($jconfig);
+$jconfig->admin_email	= $jconfig->mailfrom;
+$jconfig->site_metadesc	= $jconfig->MetaDesc;
+$jconfig->site_metakeys	= $jconfig->MetaKeys;
 
+$jconfig->ftp_enable	= 0;
+$jconfig->ftp_save	= 0;
+
+// Run the configuration creation
 if (JInstallationModelConfiguration::_createConfiguration($jconfig) > 0) {
 	echo 1;
 }
