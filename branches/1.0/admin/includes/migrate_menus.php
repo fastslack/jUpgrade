@@ -67,11 +67,11 @@ class jUpgradeMenu extends jUpgrade
 		foreach ($rows as $key => &$row)
 		{
 			// Fixing name
-			$row['name'] = str_replace("'", "&#39;", $row['name']);
-			// Fixing parent id
-			$row['parent_id'] = $row['parent_id'] == 0 ? $row['parent_id']+1 : $row['parent_id'];
+			$row['title'] = str_replace("'", "&#39;", $row['title']);
 			// Fixing access
 			$row['access'] = $row['access'] == 0 ? 1 : $row['access']+1;
+			// Fixing parent_id
+			$row['parent_id'] = $row['parent_id'] == 0 ? 1 : $row['parent_id'];
 			// Fixing level
 			$row['level'] = $row['level'] == 0 ? 1 : $row['level']+1;
 			// Fixing language
@@ -228,7 +228,8 @@ class jUpgradeMenu extends jUpgrade
 			}
 
 			$query = "UPDATE j16_menu SET parent_id='{$row->parent_id}', params = '{$row->params}' WHERE menutype='{$row->menutype}'"
-				." AND title = '{$row->title}' AND link = '{$row->link}'";
+				." AND alias = '{$row->alias}' AND link = '{$row->link}'";
+
 			$this->db_new->setQuery($query);
 			$this->db_new->query();
 
@@ -246,7 +247,7 @@ class jUpgradeMenu extends jUpgrade
 	public function upgrade()
 	{
 		if (parent::upgrade()) {
-			// Rebuild the usergroup nested set values.
+			// Rebuild the menu nested set values.
 			$table = JTable::getInstance('Menu', 'JTable', array('dbo' => $this->db_new));
 
 			if (!$table->rebuild()) {
