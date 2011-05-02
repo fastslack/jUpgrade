@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<!-- List of update servers -->
+	<updateservers>
+		<server type="extension" priority="1" name="Kunena 1.6 Update Site">http://update.kunena.org/kunena16.xml</server>
+	</updateservers>
+
+	<!-- Adapter class location and name -->
+	<!--
+	<installer>
+		<file>administrator/components/com_kunena/install/j16upgrade.php</file>
+		<class>jUpgradeComponentKunena</class>
+	</installer>
+	-->
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>kunena_announcement</table>
+		<table>kunena_attachments</table>
+		<table>kunena_categories</table>
+		<table>kunena_config</table>
+		<table>kunena_favorites</table>
+		<table>kunena_groups</table>
+		<table>kunena_messages</table>
+		<table>kunena_messages_text</table>
+		<table>kunena_moderation</table>
+		<table>kunena_polls</table>
+		<table>kunena_polls_options</table>
+		<table>kunena_polls_users</table>
+		<table>kunena_ranks</table>
+		<table>kunena_sessions</table>
+		<table>kunena_smileys</table>
+		<table>kunena_subscriptions</table>
+		<table>kunena_subscriptions_categories</table>
+		<table>kunena_thankyou</table>
+		<table>kunena_users</table>
+		<table>kunena_users_banned</table>
+		<table>kunena_version</table>
+		<table>kunena_whoisonline</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/kunena</folder>
+		<folder>administrator/components/com_kunena</folder>
+		<folder>components/com_kunena</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_kunena"></category>
+	</categories>
+	-->
+</jupgrade>
