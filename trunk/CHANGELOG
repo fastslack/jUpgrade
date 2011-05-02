@@ -47,11 +47,18 @@ $ -> Language fix or change
  + Add new function jUpgrade::output() to output migration information back to AJAX
  ^ Add new function jUpgrade::getUsergroupIdMap(), currently filled with fixed data
  ^ jUpgrade::getUsergroupIdMap() should not be static as it might use DB in the future
- 
+
 28-Apr-2011 Matias Griese
  # Fixed bad REGEXP escape sequence in jUpgradeContent::getSourceData()
- ^ Add empty doctypes for all xml files to remove errors/warnings in Zend
+ ^ Add empty doctypes for all xml files to remove errors/warnings in Zend Studio
  # Fixed bad xhtml in the template
+ $ Add fi-FI translation
+ + Add state field to j16_jupgrade_steps allowing internal state and breakpoints for slow tasks
+ ^ Rename extension adapters to have com_ prefix
+ + Add initial support for modules and plugins (they are just not imported yet)
+ + Add breakpoint support for jUpgrade class and extensions controller
+ + Add logic to save/restore internal state in jUpgrade class
+ + Add extension version detection to avoid migration with incompatible versions
 
 09-Apr-2011 Matias Aguirre
  # Fixing single quote in all migrations 
