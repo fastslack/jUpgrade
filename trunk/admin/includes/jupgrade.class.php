@@ -53,7 +53,7 @@ class jUpgrade
 
 		if ($step) {
 			$this->id = $step->id;
-			$this->lastid = $step->lastid;
+			$this->lastid = isset($step->lastid) ? $step->lastid : 0;
 			$this->name = $step->name;
 			$this->state = json_decode($step->state);
 			if (isset($this->state->xmlfile)) {
