@@ -95,31 +95,6 @@ class jUpgradeUsergroups extends jUpgrade
 	protected $destination = '#__usergroups';
 
 	/**
-	 * Get the mapping of the old usergroups to the new usergroup id's.
-	 *
-	 * @return	array	An array with keys of the old id's and values being the new id's.
-	 * @since	0.4.4
-	 */
-	public static function getUsergroupIdMap()
-	{
-		$map = array(
-			// Old	=> // New
-			28		=> 1,	// USERS
-			29		=> 1,	// Public Frontend
-			18		=> 2,	// Registered
-			19		=> 3,	// Author
-			20		=> 4,	// Editor
-			21		=> 5,	// Publisher
-			30		=> 1,	// Public Backend
-			23		=> 6,	// Manager
-			24		=> 7,	// Administrator
-			25		=> 8,	// Super Administrator
-		);
-
-		return $map;
-	}
-
-	/**
 	 * Get the raw data for this part of the upgrade.
 	 *
 	 * @return	array
