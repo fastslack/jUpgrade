@@ -213,7 +213,7 @@ class jUpgradeModulesMenu extends jUpgrade
 		// Getting the map id's for modules and menus
 		$modules = $this->getMapList('modules');
 		$menus = $this->getMapList('menus');
-		
+
 		// Getting the menus keys to prevent 'Notice: Undefined index'
 		$menus_keys = array_keys($menus);
 
@@ -231,7 +231,7 @@ class jUpgradeModulesMenu extends jUpgrade
 		foreach ($rows as &$row)
 		{
 			if (in_array($row['menuid'], $menus_keys)) {
-				$moduleid_new = $modules[$row['moduleid']]->new;
+				$moduleid_new = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : '';
 				$menuid_new = $menus[$row['menuid']]->new;
 
 				//echo "<b> MODULE ID:</b> {$moduleid_new} <==> <b> MENU ID:</b> {$menuid_new}";
