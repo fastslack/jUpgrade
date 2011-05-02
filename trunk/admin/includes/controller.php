@@ -34,41 +34,41 @@ require_once JPATH_BASE.'/migrate_'.$step->name.'.php';
 switch ($step->name) {
 	case 'users':
 		// Migrate the users.
-		$u1 = new jUpgradeUsers;
+		$u1 = new jUpgradeUsers($step);
 		$u1->upgrade();
 
 		// Migrate the usergroups.
-		$u2 = new jUpgradeUsergroups;
+		$u2 = new jUpgradeUsergroups($step);
 		$u2->upgrade();
 
 		// Migrate the user-to-usergroup mapping.
-		$u2 = new jUpgradeUsergroupMap;
+		$u2 = new jUpgradeUsergroupMap($step);
 		$u2->upgrade();
 
 		break;
 	case 'modules':
 		// Migrate the Modules.
-		$modules = new jUpgradeModules;
+		$modules = new jUpgradeModules($step);
 		$modules->upgrade();
 
 		// Migrate the Modules Menus.
-		$modulesmenu = new jUpgradeModulesMenu;
+		$modulesmenu = new jUpgradeModulesMenu($step);
 		$modulesmenu->upgrade();
 
 		break;
 	case 'categories':
 		// Migrate the Categories.
-		$categories = new jUpgradeCategories;
+		$categories = new jUpgradeCategories($step);
 		$categories->upgrade();
 
 		break;
 	case 'content':
 		// Migrate the Content.
-		$content = new jUpgradeContent;
+		$content = new jUpgradeContent($step);
 		$content->upgrade();
 
 		// Migrate the Frontpage Content.
-		$frontpage = new jUpgradeContentFrontpage;
+		$frontpage = new jUpgradeContentFrontpage($step);
 		$frontpage->upgrade();
 
 		break;
@@ -78,33 +78,33 @@ switch ($step->name) {
 		$menu->upgrade();
 
 		// Migrate the menu types.
-		$menutypes = new jUpgradeMenuTypes;
+		$menutypes = new jUpgradeMenuTypes($step);
 		$menutypes->upgrade();
 
 		break;
 	case 'banners':
 		// Migrate the categories of banners.
-		$bannersCat = new jUpgradeBannersCategories;
+		$bannersCat = new jUpgradeBannersCategories($step);
 		$bannersCat->upgrade();
 
 		// Migrate the banners.
-		$banners = new jUpgradeBanners;
+		$banners = new jUpgradeBanners($step);
 		$banners->upgrade();
 
 		break;
 	case 'contacts':
 		// Migrate the contacts.
-		$contacts = new jUpgradeContacts;
+		$contacts = new jUpgradeContacts($step);
 		$contacts->upgrade();
 
 		// Migrate the categories of contacts.
-		$contactsCat = new jUpgradeContactsCategories;
+		$contactsCat = new jUpgradeContactsCategories($step);
 		$contactsCat->upgrade();
 
 		break;
 	case 'newsfeeds':
 		// Migrate the categories of newsfeeds.
-		$newsfeedsCat = new jUpgradeNewsfeedsCategories;
+		$newsfeedsCat = new jUpgradeNewsfeedsCategories($step);
 		$newsfeedsCat->upgrade();
 
 		// Migrate the newsfeeds.
@@ -114,11 +114,11 @@ switch ($step->name) {
 		break;
 	case 'weblinks':
 		// Migrate the categories of weblinks.
-		$weblinksCat = new jUpgradeWeblinksCategories;
+		$weblinksCat = new jUpgradeWeblinksCategories($step);
 		$weblinksCat->upgrade();
 
 		// Migrate the weblinks.
-		$weblinks = new jUpgradeWeblinks;
+		$weblinks = new jUpgradeWeblinks($step);
 		$weblinks->upgrade();
 
 		break;

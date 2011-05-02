@@ -31,9 +31,13 @@ class jUpgrade
 	 * @since	0.4.
 	 */
 	protected $source = null;
-	protected $name = null;
+	protected $id = 0;
+	protected $lastid = 0;
+	protected $name = 'undefined';
 	protected $state = null;
+	protected $xml = null;
 	protected $ready = true;
+	protected $output = '';
 
 	public $config = array();
 	public $config_old = array();
@@ -48,9 +52,16 @@ class jUpgrade
 		}
 
 		if ($step) {
+			$this->id = $step->id;
+			$this->lastid = $step->lastid;
 			$this->name = $step->name;
 			$this->state = json_decode($step->state);
+			if (isset($this->state->xmlfile)) {
+				// Read xml definition file
+				$this->xml = simplexml_load_file($this->state->xmlfile);
+			}
 		}
+		$this->checkTimeout();
 
 		// Base includes
 		require_once JPATH_LIBRARIES.'/joomla/import.php';
@@ -244,11 +255,13 @@ class jUpgrade
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function setDestinationData()
+	protected function setDestinationData($rows = null)
 	{
 		// Get the source data.
-		$rows	= $this->getSourceData();
-		$table	= empty($this->destination) ? $this->source : $this->destination;
+		if ($rows === null) {
+			$rows = $this->getSourceData();
+		}
+		$table = empty($this->destination) ? $this->source : $this->destination;
 
 		// TODO: this is ok for proof of concept, but add some batching for more efficient inserting.
 		foreach ($rows as $row)
@@ -312,56 +325,88 @@ class jUpgrade
 	}
 
 	/**
+	 * Clone table structure from old site to new site
+	 *
+	 * @return	boolean
+	 * @since 1.1.0
+	 * @throws	Exception
+	 */
+	protected function cloneTable($from, $to=null, $drop=true) {
+		// Check if table exists
+		$database = $this->config_old['database'];
+		if (!$to) $to = $from;
+		$from = preg_replace ('/#__/', $this->db_old->getPrefix(), $from);
+		$to = preg_replace ('/#__/', $this->db_new->getPrefix(), $to);
+
+		$query = "SELECT COUNT(*) AS count
+			FROM information_schema.tables
+			WHERE table_schema = '$database'
+			AND table_name = '$from'";
+
+		$this->db_old->setQuery($query);
+		$res = $this->db_old->loadResult();
+
+		if($res == 0) {
+			$success = false;
+		} else {
+			if ($drop) {
+				$query = "DROP TABLE IF EXISTS {$to}";
+				$this->db_new->setQuery($query);
+				$this->db_new->query();
+
+				// Check for query error.
+				$error = $this->db_new->getErrorMsg();
+
+				if ($error) {
+					throw new Exception($error);
+				}
+			}
+			$query = "CREATE TABLE {$to} LIKE {$from}";
+			$this->db_new->setQuery($query);
+			$this->db_new->query();
+
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+			$success = true;
+		}
+
+		return $success;
+	}
+
+	/**
 	 * Copy table to old site to new site
 	 *
 	 * @return	boolean
 	 * @since 1.1.0
 	 * @throws	Exception
 	 */
-	protected function copyTable($from, $to) {
+	protected function copyTable($from, $to=null) {
 
 		// Check if table exists
 		$database = $this->config_old['database'];
-		$prefix = $this->config_old['prefix'];
-		$from = preg_replace ('/#__/', $prefix, $from);
+		if (!$to) $to = $from;
+		$from = preg_replace ('/#__/', $this->db_old->getPrefix(), $from);
+		$to = preg_replace ('/#__/', $this->db_new->getPrefix(), $to);
 
-		$query = "SELECT COUNT(*) AS count
-      FROM information_schema.tables
-      WHERE table_schema = '$database'
-      AND table_name = '$from'";
-
-		$this->db_old->setQuery($query);
-		$res = $this->db_old->loadResult();
-
-	  if($res == 0) {
-      $success = false;
-	  } else {
-      $query = "CREATE TABLE {$to} LIKE {$from}";
+		$success = $this->cloneTable($from, $to);
+		if ($success) {
+			$query = "INSERT INTO {$to} SELECT * FROM {$from}";
 			$this->db_new->setQuery($query);
 			$this->db_new->query();
 
 			// Check for query error.
 			$error = $this->db_new->getErrorMsg();
-
 			if ($error) {
 				throw new Exception($error);
 			}
+			$success = true;
+		}
 
-      $query = "INSERT INTO {$to} SELECT * FROM {$from}";
-			$this->db_new->setQuery($query);
-			$this->db_new->query();
-
-			// Check for query error.
-			$error = $this->db_new->getErrorMsg();
-
-			if ($error) {
-				throw new Exception($error);
-			}
-
-      $success = true;
-	  }
-
-	  return $success;
+		return $success;
 	}
 
 
@@ -545,12 +590,12 @@ class jUpgrade
 		if (!$this->name) return false;
 
 		$state = json_encode($this->state);
-		$query = "UPDATE j16_jupgrade_steps SET state = {$jupgrade->db_new->quote($state)} WHERE name = {$jupgrade->db_new->quote($this->name)}";
-		$jupgrade->db_new->setQuery($query);
-		$jupgrade->db_new->query();
+		$query = "UPDATE j16_jupgrade_steps SET state = {$this->db_new->quote($state)} WHERE name = {$this->db_new->quote($this->name)}";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
 
 		// Check for query error.
-		$error = $jupgrade->db_new->getErrorMsg();
+		$error = $this->db_new->getErrorMsg();
 
 		return !$error;
 	}
@@ -574,13 +619,26 @@ class jUpgrade
 	 */
 	public function upgradeExtension()
 	{
-		if (!$this->detectExtension())
-		{
-			return false;
-		}
 		try
 		{
-			$this->migrateExtensionData();
+			// Detect
+			if (!$this->detectExtension())
+			{
+				return false;
+			}
+
+			// Migrate
+			$this->ready = $this->migrateExtensionTables();
+			if ($this->ready)
+			{
+				$this->ready = $this->migrateExtensionFolders();
+			}
+			if ($this->ready)
+			{
+				$this->ready = $this->migrateExtensionCustom();
+			}
+
+			// Store state
 			$this->saveState();
 		}
 		catch (Exception $e)
@@ -601,46 +659,129 @@ class jUpgrade
 	 */
 	protected function detectExtension()
 	{
-		echo JError::raiseError(500, "Extension {$this->name} not supported!");
-		return false;
+		return true;
 	}
 
 	/**
-	 * Migrate the database and media files reading the extension xml as reference
+	 * Get update site information
+	 *
+	 * @return	array	Update site information or null
+	 * @since	1.1.0
+	 */
+	protected function getUpdateSite() {
+		if (empty($this->xml->updateservers->server[0])) {
+			return null;
+		}
+		$server = $this->xml->updateservers->server[0];
+		if (empty($server['url'])) {
+			return null;
+		}
+		return array(
+			'type'=> ($server['type'] ? $server['type'] : 'extension'),
+			'priority'=> ($server['priority'] ? $server['priority'] : 1),
+			'name'=> ($server['name'] ? $server['name'] : $this->name),
+			'url'=> $server['url']
+		);
+	}
+
+	/**
+	 * Get folders to be migrated.
+	 *
+	 * @return	array	List of tables without prefix
+	 * @since	1.6.4
+	 */
+	protected function getCopyFolders() {
+		$folders = !empty($this->xml->folders->folder) ? $this->xml->folders->folder : array();
+		$results = array();
+		foreach ($folders as $folder) {
+			$results[] = (string) $folder;
+		}
+		return $results;
+	}
+
+	/**
+	 * Get directories to be migrated.
+	 *
+	 * @return	array	List of directories
+	 * @since	1.6.4
+	 */
+	protected function getCopyTables() {
+		$tables = !empty($this->xml->tables->table) ? $this->xml->tables->table : array();
+		$results = array();
+		foreach ($tables as $table) {
+			$results[] = (string) $table;
+		}
+		return $results;
+	}
+
+	/**
+	 * Migrate the database tables.
 	 *
 	 * @return	boolean
 	 * @since	1.1.0
 	 */
-	protected function migrateExtensionData()
+	protected function migrateExtensionTables()
 	{
-
-		$dbprefix = $this->db_old->getPrefix();
-		$xml = simplexml_load_file($this->url);
-
-		// Migrates tables
-		$tables = $xml->update->tables;
-
-		foreach($tables->table as $key => $value) {
-			$table = $dbprefix . $value;
-			$j16table = 'j16_' . $value;
-			$this->copyTable($table, $j16table);
+		if (!isset($this->state->tables))
+		{
+			$this->state->tables = $this->getCopyTables();
 		}
+		while(($value = array_shift($this->state->tables)) !== null) {
+			$this->output("{$this->name} #__{$value}");
+			$copyTableFunc = 'copyTable_'.$value;
+			if (method_exists($this, $copyTableFunc)) {
+				// Use function called like copyTable_kunena_categories
+				$ready = $this->$copyTableFunc($value);
+			} else {
+				// Use default migration function
+				$table = "#__$value";
+				$this->copyTable($table);
+				$ready = true;
+			}
+			// If table hasn't been fully copied, we need to push it back to stack
+			if (!$ready) {
+				array_unshift($this->state->tables, $value);
+			}
+			if ($this->checkTimeout()) {
+				break;
+			}
+		}
+		return empty($this->state->tables);
+	}
 
-		// Copy folders
-		$folders = $xml->update->folders;
+	/**
+	 * Migrate the folders.
+	 *
+	 * @return	boolean
+	 * @since	1.1.0
+	 */
+	protected function migrateExtensionFolders()
+	{
+		if (!isset($this->state->folders))
+		{
+			$this->state->folders = $this->getCopyFolders();
+		}
 		$oldpath = substr(JPATH_SITE, 0, -8);
-
-		foreach($folders->folder as $key => $value) {
-
+		while(($value = array_shift($this->state->folders)) !== null) {
+			$this->output("{$this->name} {$value}");
 			$src = $oldpath.$value;
 			$dest = JPATH_SITE.DS.$value;
-
 			JFolder::copy($src, $dest);
+			if ($this->checkTimeout()) {
+				break;
+			}
 		}
+		return empty($this->state->folders);
+	}
 
-		// Fire the hook in case this parameter field needs modification.
-		$this->migrateExtensionDataHook();
-
+	/**
+	 * Migrate custom information.
+	 *
+	 * @return	boolean Ready
+	 * @since	1.1.0
+	 */
+	protected function migrateExtensionCustom()
+	{
 		return true;
 	}
 
@@ -656,6 +797,19 @@ class jUpgrade
 	protected function migrateExtensionDataHook()
 	{
 		// Do customisation of the params field here for specific data.
+	}
+
+	/**
+	 * Function to output text back to user
+	 *
+	 * @return	string Previous output
+	 * @since	1.1.0
+	 */
+	public function output($text='')
+	{
+		$output = empty($this->output) ? $this->name : $this->output;
+		$this->output = $text;
+		return $output;
 	}
 
 	/**
@@ -732,6 +886,31 @@ class jUpgrade
 	}
 
 	/**
+	 * Get the mapping of the old usergroups to the new usergroup id's.
+	 *
+	 * @return	array	An array with keys of the old id's and values being the new id's.
+	 * @since	1.1.0
+	 */
+	protected function getUsergroupIdMap()
+	{
+		$map = array(
+			// Old	=> // New
+			28		=> 1,	// USERS
+			29		=> 1,	// Public Frontend
+			18		=> 2,	// Registered
+			19		=> 3,	// Author
+			20		=> 4,	// Editor
+			21		=> 5,	// Publisher
+			30		=> 1,	// Public Backend
+			23		=> 6,	// Manager
+			24		=> 7,	// Administrator
+			25		=> 8,	// Super Administrator
+		);
+
+		return $map;
+	}
+
+	/**
 	 * Internal function to get the component settings
 	 *
 	 * @return	an object with global settings
@@ -781,5 +960,24 @@ class jUpgrade
 
 		return $requirements;
 	}
-}
 
+	/**
+	 * Internal function to check if 5 seconds has been passed
+	 *
+	 * @return	bool	true / false
+	 * @since	1.1.0
+	 */
+	protected function checkTimeout($stop = false) {
+		static $start = null;
+		if ($stop) $start = 0;
+		$time = microtime (true);
+		if ($start === null) {
+			$start = $time;
+			return false;
+		}
+		if ($time - $start < 5)
+			return false;
+
+		return true;
+	}
+}
