@@ -27,6 +27,32 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+2-May-2011 Matias Aguirre
+ # Fixes menu alias and path issue
+ # Prevent warning is lastid is not set
+ - Remove duplicated method getUsergroupIdMap in users migration
+
+2-May-2011 Matias Griese
+ # Fix fatal bug in jUpgrade::saveState()
+ + Add function jUpgrade::checkTimeout() and start using it
+ + Add com_kunena.php and com_kunena.xml into extensions
+ + Add function jUpgradeExtensions::getInstance() to get extension adapter
+ ^ Greatly simplify logic in extensions_controller.php (put into classes)
+ + Add logic to find upgrade files in jUpgradeExtensions::getSourceData()
+ ^ jUpgrade::setDestinationData(): allow passing data by parameter
+ ^ Split jUpgrade::copyTable(): add new function jUpgrade::cloneTable()
+ ^ jUpgrade::cloneTable(): add parameter to drop table, use it by default
+ + Add new functions jUpgrade::getUpdateSite(), getCopyFolders(), getCopyTables()
+ ^ Split jUpgrade::migrateExtensionData() into migrateExtensionTables(), migrateExtensionFolders() and migrateExtensionCustom()
+ + Add new function jUpgrade::output() to output migration information back to AJAX
+ ^ Add new function jUpgrade::getUsergroupIdMap(), currently filled with fixed data
+ ^ jUpgrade::getUsergroupIdMap() should not be static as it might use DB in the future
+ 
+28-Apr-2011 Matias Griese
+ # Fixed bad REGEXP escape sequence in jUpgradeContent::getSourceData()
+ ^ Add empty doctypes for all xml files to remove errors/warnings in Zend
+ # Fixed bad xhtml in the template
+
 09-Apr-2011 Matias Aguirre
  # Fixing single quote in all migrations 
  ^ Skip checks option added
