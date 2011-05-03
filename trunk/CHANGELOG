@@ -27,6 +27,11 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+3-May-2011 Matias Aguirre
+ ^ Split the component/module/plugin/template migration
+ - Remove quote title replacing in menus
+ - Remove unused cloneTable method
+
 2-May-2011 Matias Aguirre
  # Fixes menu alias and path issue
  # Prevent warning is lastid is not set
