@@ -105,9 +105,6 @@ class jUpgrade
 		jimport('joomla.html.parameter');
 		jimport('joomla.environment.uri');
 
-		// Initialize Application
-		JFactory::getApplication('administrator');
-
 		// Echo all errors, otherwise things go really bad.
 		JError::setErrorHandling(E_ALL, 'echo');
 

@@ -199,6 +199,9 @@ class jUpgradeComponentKunena extends jUpgrade {
 
 	protected function _fixBrokenMenu()
   {
+		// Initialize Application
+		JFactory::getApplication('administrator');
+
     // Get component object
     $component = JTable::getInstance ( 'extension', 'JTable', array('dbo'=>$this->db_new) );
     $component->load(array('type'=>'component', 'element'=>$this->name));
