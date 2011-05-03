@@ -21,18 +21,6 @@
 class jUpgradeExtensions extends jUpgrade
 {
 	/**
-	 * @var		string	The name of the source database table.
-	 * @since	0.4.5
-	 */
-	public $source = '#__components AS c';
-
-	/**
-	 * @var		string	The name of the destination database table.
-	 * @since	0.4.5
-	 */
-	public $destination = '#__extensions';
-
-	/**
 	 * count adapters
 	 * @var int
 	 * @since	1.1.0
@@ -64,7 +52,134 @@ class jUpgradeExtensions extends jUpgrade
 
 	public function upgradeExtension()
 	{
-		return $this->upgrade();
+		if (!$this->upgradeComponents()) {
+			return false;
+		}
+		if (!$this->upgradeModules()) {
+			return false;
+		}
+		if (!$this->upgradePlugins()) {
+			return false;
+		}
+		if (!$this->upgradeTemplates()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Upgrade the components
+	 *
+	 * @return	
+	 * @since	1.1.0
+	 * @throws	Exception
+	 */
+	protected function upgradeComponents()
+	{
+		$this->source = '#__components AS c';
+		$this->destination = '#__extensions';
+
+		$where = array();
+		$where[] = "c.parent = 0";
+		$where[] = "c.option NOT IN ('com_admin', 'com_banners', 'com_cache', 'com_categories', 'com_checkin', 'com_config', 'com_contact', 'com_content', 'com_cpanel', 'com_frontpage', 'com_installer', 'com_jupgrade', 'com_languages', 'com_login', 'com_mailto', 'com_massmail', 'com_media', 'com_menus', 'com_messages', 'com_modules', 'com_newsfeeds', 'com_plugins', 'com_poll', 'com_search', 'com_sections', 'com_templates', 'com_user', 'com_users', 'com_weblinks', 'com_wrapper' )";
+
+		$rows = parent::getSourceData(
+			'id, name, \'component\' AS type, `option` AS element',
+		 null,
+		 $where,
+			'id'
+		);
+
+		$rows = $this->_processExtension ( $rows );
+
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			if (!$this->db_new->insertObject($this->destination, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Upgrade the modules
+	 *
+	 * @return	
+	 * @since	1.1.0
+	 * @throws	Exception
+	 */
+	protected function upgradeModules()
+	{
+		$this->source = "#__modules";
+		$this->destination = "#__extensions";
+
+		$where = array();
+		$where[] = "module   NOT   IN   ('mod_mainmenu',   'mod_login',   'mod_popular',   'mod_latest',   'mod_stats',   'mod_unread',   'mod_online',   'mod_toolbar',   'mod_quickicon',   'mod_logged',   'mod_footer',   'mod_menu',   'mod_submenu',   'mod_status',   'mod_title',   'mod_login' )";
+
+		$rows = parent::getSourceData(
+			'id, title as name, \'module\' AS type, `module` AS element',
+		  null,
+		  $where,
+			'id',
+		  'element'
+		);
+
+		$rows = $this->_processExtension ( $rows );
+
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			if (!$this->db_new->insertObject($this->destination, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Upgrade the plugins
+	 *
+	 * @return
+	 * @since	1.1.0
+	 * @throws	Exception
+	 */
+	protected function upgradePlugins()
+	{
+		$this->source = "#__plugins";
+		$this->destination = "#__extensions";
+
+		$where = array();
+		$where[] = "element   NOT   IN   ('joomla',   'ldap',   'gmail',   'openid',   'content',   'categories',   'contacts',   'sections',   'newsfeeds',   'weblinks',   'pagebreak',   'vote',   'emailcloak',   'geshi',   'loadmodule',   'pagenavigation', 'none',   'tinymce',   'xstandard',   'image',   'readmore',   'sef',   'debug',   'legacy',   'cache',   'remember', 'backlink', 'log', 'blogger', 'mtupdate' )";
+
+		$rows = parent::getSourceData(
+			'id, name, \'plugin\' AS type, element',
+		  null,
+		  $where,
+			'id',
+		  'element'
+		);
+
+		$rows = $this->_processExtension ( $rows );
+
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			if (!$this->db_new->insertObject($this->destination, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -74,8 +189,50 @@ class jUpgradeExtensions extends jUpgrade
 	 * @since	0.4.5
 	 * @throws	Exception
 	 */
-	protected function &getSourceData()
+	protected function upgradeTemplates()
 	{
+		$this->destination = "#__extensions";
+
+		$folders = JFolder::folders(JPATH_ROOT.DS.'templates');
+		$folders = array_diff($folders, array("system", "beez"));
+		sort($folders);
+		//print_r($folders);
+
+		$rows = array();
+		// Do some custom post processing on the list.
+		for($i=0;$i<count($folders);$i++) {
+
+			$rows[$i] = array();
+			$rows[$i]['name'] = $folders[$i];
+			$rows[$i]['type'] = 'template';
+			$rows[$i]['element'] = $folders[$i];
+		}
+
+		$rows = $this->_processExtension ( $rows );
+
+		foreach ($rows as $row)
+		{
+			// Convert the array into an object.
+			$row = (object) $row;
+
+			if (!$this->db_new->insertObject($this->destination, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get the raw data for this part of the upgrade.
+	 *
+	 * @return	array	Returns a reference to the source data array.
+	 * @since 1.1.0
+	 * @throws	Exception
+	 */
+	protected function _processExtension( $rows )
+	{
+
 		$types = array(
 			'/^com_(.+)$/e',									// com_componentname
 			'/^mod_(.+)$/e',									// mod_modulename
@@ -91,17 +248,6 @@ class jUpgradeExtensions extends jUpgrade
 			"'jUpgradeModule'.ucfirst('\\1')",					// jUpgradeModuleModulename
 			"'jUpgradePlugin'.ucfirst('\\1').ucfirst('\\2')",	// jUpgradePluginPluginname
 			"'jUpgradeTemplate'.ucfirst('\\1')");				// jUpgradeTemplateTemplatename
-
-		$where = array();
-		$where[] = "c.parent = 0";
-		$where[] = "c.option NOT IN ('com_admin', 'com_banners', 'com_cache', 'com_categories', 'com_checkin', 'com_config', 'com_contact', 'com_content', 'com_cpanel', 'com_frontpage', 'com_installer', 'com_jupgrade', 'com_languages', 'com_login', 'com_mailto', 'com_massmail', 'com_media', 'com_menus', 'com_messages', 'com_modules', 'com_newsfeeds', 'com_plugins', 'com_poll', 'com_search', 'com_sections', 'com_templates', 'com_user', 'com_users', 'com_weblinks', 'com_wrapper' )";
-
-		$rows = parent::getSourceData(
-			'id, name, \'component\' AS type, `option` AS element',
-		 null,
-		 $where,
-			'id'
-		);
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
@@ -126,7 +272,6 @@ class jUpgradeExtensions extends jUpgrade
 			if (empty($state->xmlfile)) {
 				// Find xml file from jUpgrade
 				$default_xmlfile = JPATH_ROOT.DS."administrator/components/com_jupgrade/extensions/{$element}.xml";
-				echo "$default_xmlfile ";
 				if (file_exists($default_xmlfile)) {
 					$state->xmlfile = $default_xmlfile;
 				}
@@ -166,4 +311,6 @@ class jUpgradeExtensions extends jUpgrade
 
 		return $rows;
 	}
+
+
 }

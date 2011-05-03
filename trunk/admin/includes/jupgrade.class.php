@@ -172,7 +172,7 @@ class jUpgrade
 	 * @since	0.4.
 	 * @throws	Exception
 	 */
-	protected function &getSourceData($select = '*', $join = null, $where = null, $order = null)
+	protected function &getSourceData($select = '*', $join = null, $where = null, $order = null, $groupby  = null, $debug = null)
 	{
 		// Error checking.
 		if (empty($this->source)) {
@@ -227,12 +227,17 @@ class jUpgrade
 			}
 		}
 
+		// Add group statement if exists
+		if (!empty($groupby))
+			$query->group($groupby);
+
 		// Check if 'order' clause is set
 		if (!empty($order))
 			$query->order($order);
 
 		// Debug
-		//$this->print_a($query->__toString());
+		if (!empty($debug))
+			$this->print_a($query->__toString());
 
 		$this->db_old->setQuery((string)$query);
 
