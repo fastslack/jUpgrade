@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<!-- List of update servers -->
+	<updateservers>
+		<server type="extension" priority="1" name="AdminPraise Update Site">http://www.matware.com.ar/extensions/adminpraise/adminpraise.xml</server>
+	</updateservers>
+
+	<!-- Adapter class location and name -->
+	<!--
+	<installer>
+		<file>administrator/components/com_kunena/install/j16upgrade.php</file>
+		<class>jUpgradeComponentKunena</class>
+	</installer>
+	-->
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>adminpraise_menu</table>
+		<table>adminpraise_menu_types</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/com_adminpraise</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_kunena"></category>
+	</categories>
+	-->
+</jupgrade>
