@@ -141,7 +141,7 @@ class jUpgradeComponentKunena extends jUpgrade {
 	 */
 	protected function migrateExtensionCustom()
 	{
-		return true;
+		return $this->_fixBrokenMenu();
 	}
 
 	/**
@@ -196,4 +196,77 @@ class jUpgradeComponentKunena extends jUpgrade {
 		$this->setDestinationData($rows);
 		return true;
 	}
+
+	protected function _fixBrokenMenu()
+  {
+    // Get component object
+    $component = JTable::getInstance ( 'extension', 'JTable', array('dbo'=>$this->db_new) );
+    $component->load(array('type'=>'component', 'element'=>$this->name));
+
+    // First fix all broken menu items
+    $query = "UPDATE #__menu SET component_id={$this->db_new->quote($component->extension_id)} WHERE type = 'component' AND link LIKE '%option={$this->name}%'";
+    $this->db_new->setQuery ( $query );
+    $this->db_new->query ();
+
+    $menumap = $this->getMapList('menus');
+
+    // Get all menu items from the component (JMenu style)
+		$query = $this->db_new->getQuery(true);
+    $query->select('*');
+    $query->from('#__menu');
+    $query->where("component_id = {$component->extension_id}");
+    $query->where('client_id = 0');
+    $query->order('lft');
+    $this->db_new->setQuery($query);
+    $menuitems = $this->db_new->loadObjectList('id');
+    foreach ($menuitems as &$menuitem) {
+		  // Get parent information.
+		  $parent_tree = array();
+		  if (isset($menuitems[$menuitem->parent_id])) {
+        $parent_tree  = $menuitems[$menuitem->parent_id]->tree;
+		  }
+		  // Create tree.
+		  $parent_tree[] = $menuitem->id;
+		  $menuitem->tree = $parent_tree;
+
+		  // Create the query array.
+		  $url = str_replace('index.php?', '', $menuitem->link);
+		  $url = str_replace('&amp;','&',$url);
+		  parse_str($url, $menuitem->query);
+    }
+
+    // Update menu items
+    foreach ($menuitems as $menuitem) {
+      if (!isset($menuitem->query['view'])) continue;
+      $update = false;
+      switch ($menuitem->query['view']) {
+        case 'entrypage':
+          // Update default menu item
+          if (!empty($menuitem->query['defaultmenu'])) {
+            $menuitem->query['defaultmenu'] = $menumap[$menuitem->query['defaultmenu']]->new;
+            $update = true;
+          }
+          break;
+      }
+      if ($update) {
+        // Update menuitem link
+        $query_string = array();
+        foreach ($menuitem->query as $k => $v) {
+          $query_string[] = $k.'='.$v;
+        }
+        $menuitem->link = 'index.php?'.implode('&', $query_string);
+
+        // Save menu object
+        $menu = JTable::getInstance ( 'menu', 'JTable', array('dbo'=>$this->db_new) );
+        $menu->bind(get_object_vars($menuitem), array('tree', 'query'));
+        $success = $menu->check();
+        if ($success) {
+          $success = $menu->store();
+        }
+        if (!$success) echo "ERROR";
+      }
+    }
+    return true;
+  }
+
 }
