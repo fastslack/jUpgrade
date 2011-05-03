@@ -103,6 +103,10 @@ class jUpgrade
 		jimport('joomla.utilities.string');
 		jimport('joomla.filter.filteroutput');
 		jimport('joomla.html.parameter');
+		jimport('joomla.environment.uri');
+
+		// Initialize Application
+		JFactory::getApplication('administrator');
 
 		// Echo all errors, otherwise things go really bad.
 		JError::setErrorHandling(E_ALL, 'echo');
@@ -361,6 +365,58 @@ class jUpgrade
 		return $success;
 	}
 
+ 	/**
+	 * Clone table structure from old site to new site
+	 *
+	 * @return	boolean
+	 * @since 1.1.0
+	 * @throws	Exception
+	 */
+	protected function cloneTable($from, $to=null, $drop=true) {
+		// Check if table exists
+		$database = $this->config_old['database'];
+		if (!$to) $to = $from;
+		$from = preg_replace ('/#__/', $this->db_old->getPrefix(), $from);
+		$to = preg_replace ('/#__/', $this->db_new->getPrefix(), $to);
+
+		$query = "SELECT COUNT(*) AS count
+			FROM information_schema.tables
+			WHERE table_schema = '$database'
+			AND table_name = '$from'";
+
+		$this->db_old->setQuery($query);
+		$res = $this->db_old->loadResult();
+
+		if($res == 0) {
+			$success = false;
+		} else {
+			if ($drop) {
+				$query = "DROP TABLE IF EXISTS {$to}";
+				$this->db_new->setQuery($query);
+				$this->db_new->query();
+
+				// Check for query error.
+				$error = $this->db_new->getErrorMsg();
+
+				if ($error) {
+					throw new Exception($error);
+				}
+			}
+			$query = "CREATE TABLE {$to} LIKE {$from}";
+			$this->db_new->setQuery($query);
+			$this->db_new->query();
+
+			// Check for query error.
+			$error = $this->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+			$success = true;
+		}
+
+		return $success;
+	}
 
 	/**
 	 * Inserts a category
