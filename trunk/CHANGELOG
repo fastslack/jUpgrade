@@ -27,6 +27,9 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+7-May-2011 Ronald Pijpers
+ # Directly access to Joomla controller
+
 3-May-2011 Matias Aguirre
  ^ Split the component/module/plugin/template migration
  - Remove quote title replacing in menus
