@@ -36,7 +36,8 @@ class jupgradeControllerDownload extends JController
 		// Define filenames
 		$sizefile = JPATH_ROOT.'/tmp/size.tmp';
 		$molajofile = JPATH_ROOT.'/tmp/molajo16.zip';
-		$joomlafile = JPATH_ROOT.'/tmp/joomla16.zip';
+		$joomla16file = JPATH_ROOT.'/tmp/joomla16.zip';
+		$joomla17file = JPATH_ROOT.'/tmp/joomla17.zip';
 		
 		// Cleanup
 		if (file_exists($sizefile)) {
@@ -45,8 +46,11 @@ class jupgradeControllerDownload extends JController
 		if (file_exists($molajofile)) {
 			unlink($molajofile);
 		}
-		if (file_exists($joomlafile)) {
-			unlink($joomlafile);
+		if (file_exists($joomla16file)) {
+			unlink($joomla16file);
+		}
+		if (file_exists($joomla17file)) {
+			unlink($joomla17file);
 		}
 		
 		// Setting names
@@ -55,6 +59,9 @@ class jupgradeControllerDownload extends JController
 		
 		// downloading Molajo instead Joomla zip
 		if ($params->mode == 1) {
+			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla17.zip";
+			$zipfile = JPATH_ROOT.'/tmp/joomla17.zip';
+		}else if ($params->mode == 2) {
 			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/molajo16.zip";
 			$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
 		}
