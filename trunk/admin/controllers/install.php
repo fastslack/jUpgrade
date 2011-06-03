@@ -24,8 +24,10 @@ class jupgradeControllerInstall extends JController
 {	
 	function install_config()
 	{	
-		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/configuration.php';
-		require_once JPATH_ROOT.'/configuration.php';
+		define('JPATH_INSTALLATION', JPATH_ROOT.DS.'jupgrade');
+
+		require_once JPATH_INSTALLATION.'/installation/models/configuration.php';
+		require_once JPATH_INSTALLATION.'/configuration.php';
 
 		$jconfig = new JConfig();
 				

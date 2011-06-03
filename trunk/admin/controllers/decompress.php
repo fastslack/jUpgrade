@@ -23,11 +23,7 @@ defined('_JEXEC') or die;
 class jupgradeControllerDecompress extends JController
 {	
 	function decompress()
-	{
-		define('_JEXEC', 1);
-		define('DS', DIRECTORY_SEPARATOR);
-		define('JPATH_BASE', dirname(__FILE__));
-		
+	{	
 		// Includes
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php';
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/libraries/pclzip.lib.php';
