@@ -28,6 +28,12 @@ $step = $jupgrade->db_new->loadObject();
 // Check for query error.
 $error = $jupgrade->db_new->getErrorMsg();
 
+// Check if steps is an object
+if (!is_object($step)) {
+	echo $error;
+	exit;
+}
+
 // Require the file
 require_once JPATH_BASE.'/migrate_'.$step->name.'.php';
 
