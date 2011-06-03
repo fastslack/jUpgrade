@@ -92,6 +92,7 @@ window.addEvent('domready', function() {
 						<p>
 							<a href="http://www.matware.com.ar/joomla/jupgrade.html">Project Site</a><br />
 							<a href="http://www.matware.com.ar/foros/jupgrade.html">Project Community</a><br />
+							<a href="http://matware.com.ar/forum/projects/jupgrade/jupgrade-f-a-q.html">FAQ</a><br />
 							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a><br />
 							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 								<input type="hidden" name="cmd" value="_s-xclick" />

@@ -259,7 +259,7 @@ function install(event){
 				text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_config]</b><br><br>' +response;
 			}
 
-			var d2 = new Ajax( 'components/com_jupgrade/includes/cleanup.php', {
+			var d2 = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=cleanup&task=cleanup', {
 				method: 'get',
 				noCache: true,
 				onComplete: function( response ) {
@@ -500,7 +500,7 @@ var _doExtensionsMigration = function() {
  */
 function done(event){
 
-  var d = new Ajax( 'components/com_jupgrade/includes/done.php', {
+  var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=done&task=done', {
     method: 'get',
     onComplete: function( response ) {
 			var mySlideDone = new Fx.Slide('done');
