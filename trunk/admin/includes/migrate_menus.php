@@ -59,78 +59,71 @@ class jUpgradeMenu extends jUpgrade
 			null,
 			'm.id'
 		);
-
-		// Getting number of rows
-		$count = count($rows);
-
+ 
+		// Initialize values
+		$aliases = array();
+		$unique_alias_suffix = 1;
+ 
 		// Do some custom post processing on the list.
-		foreach ($rows as $key => &$row)
-		{
+		foreach ($rows as $key => &$row) {
+ 
 			// Fixing access
-			$row['access'] = $row['access'] == 0 ? 1 : $row['access']+1;
-			// Fixing parent_id
-			$row['parent_id'] = $row['parent_id'] == 0 ? 1 : $row['parent_id'];
+			$row['access']++;
 			// Fixing level
-			$row['level'] = $row['level'] == 0 ? 1 : $row['level']+1;
+			$row['level']++;
 			// Fixing language
 			$row['language'] = '*';
 
-			// Fixing menus URL's
-			if ($row['link'] == 'index.php?option=com_content&view=frontpage') {
-				$row['link'] = 'index.php?option=com_content&view=featured';
-			}
-			else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section&layout=blog'))) {
-				$ex = explode('&', $row['link']);
-				$id = substr($ex[3], 3);
-				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
-			}
-			else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=category&layout=blog'))) {
-				$ex = explode('&', $row['link']);
-				$id = substr($ex[3], 3);
-				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
-			}
-			else if (strlen(strstr($row['link'], 'index.php?option=com_content&view=section'))) {
-				$ex = explode('&', $row['link']);
-				$id = substr($ex[2], 3);
-				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$sections[$id]->new;
-			}
-			else if (strlen(strstr($row['link'], 'index.php?Itemid=')) && $row['type'] == 'menulink') {
-				$ex = explode('?', $row['link']);
-				$id = substr($ex[1], 7);
+      // Fixing menus URLs
+      if (strpos($row['link'], 'option=com_content') !== false) {
 
-				$row['params'] = $row['params'] . "\naliasoptions=".$id;
-				$row['type'] = 'alias';
-				$row['link'] = 'index.php?Itemid=';
-				// Root level aliases should be renamed in case there's real item with the same name
-				if ($row['parent_id'] == 1) $row['alias'] .= "-".rand();
-			}
-			else if (strpos($row['link'], 'option=com_user&')) {
-				$row['link'] = preg_replace('/com_user/', 'com_users', $row['link']);
-				$row['component_id'] = 25;
-			}
+        if (strpos($row['link'], 'view=frontpage') !== false) {
+          $row['link'] = 'index.php?option=com_content&view=featured';
 
-			// Joomla 1.6 database structure not allow to have duplicated aliases
-			$newrows = $rows;
+        } else {
+          // Extract the id from the URL
+          if (preg_match('|id=([0-9]+)|', $row['link'], $tmp)) {
 
-			$strip = array();
-			$strip[$key] = $row;
+            $id = $tmp[1];
+            if ( (strpos($row['link'], 'layout=blog') !== false) AND
+               ( (strpos($row['link'], 'view=category') !== false) OR
+                 (strpos($row['link'], 'view=section') !== false) ) ) {
+            				$row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$categories[$id]->new;
+            } elseif (strpos($row['link'], 'view=section') !== false) {
+              $row['link'] = 'index.php?option=com_content&view=category&layout=blog&id='.$sections[$id]->new;
+            }
+          }
+        }
+      }
 
-			$newrows = array_diff_key($newrows, $strip);
+      if ( (strpos($row['link'], 'Itemid=') !== false) AND $row['type'] == 'menulink') {
 
-			foreach ($newrows as $key => &$newrow) {
-				if ($newrow['parent_id'] == $row['parent_id'] && $newrow['alias'] == $row['alias']) {
-					if ($newrow['type'] == 'alias' || $newrow['published'] != 1)
-						$rows[$key]['alias'] .= "-".rand();
-					else
-						$row['alias'] .= "-".rand();
-					break;
-				}
-			}
+          // Extract the Itemid from the URL
+          if (preg_match('|Itemid=([0-9]+)|', $row['link'], $tmp)) {
+          	$item_id = $tmp[1];
 
-			// Converting params to JSON
-			$row['params'] = $this->convertParams($row['params']);
+            $row['params'] = $row['params'] . "\naliasoptions=".$item_id;
+            $row['type'] = 'alias';
+            $row['link'] = 'index.php?Itemid=';
+          }
+      }
 
-		}
+      if (strpos($row['link'], 'option=com_user&') !== false) {
+        $row['link'] = preg_replace('/com_user/', 'com_users', $row['link']);
+        $row['component_id'] = 25;
+      }
+      // End fixing menus URL's
+
+      // Converting params to JSON
+      $row['params'] = $this->convertParams($row['params']);
+
+      // The Joomla 1.6 database structure does not allow duplicate aliases
+      if (in_array($row['alias'], $aliases, true)) {
+        $row['alias'] .= $unique_alias_suffix;
+        $unique_alias_suffix++;
+      }
+      $aliases[] = $row['alias'];
+    }
 
 		return $rows;
 	}
@@ -169,7 +162,6 @@ class jUpgradeMenu extends jUpgrade
 		$rows	= $this->getSourceData();
 		$table	= empty($this->destination) ? $this->source : $this->destination;
 
-		// 
 		foreach ($rows as $row)
 		{
 			// Convert the array into an object.
@@ -201,15 +193,17 @@ class jUpgradeMenu extends jUpgrade
 			// Convert the array into an object.
 			$row = (object) $row;
 
-			// Getting the new parent id
-			if ($row->parent_id != 1) {
-				$query = "SELECT new"
-				." FROM j16_jupgrade_menus"
-				." WHERE old = {$row->parent_id}"
-				." LIMIT 1";
-				$this->db_new->setQuery($query);
-				$row->parent_id = $this->db_new->loadResult();	
-			}
+			// Fix the parent id fields
+      if ($row->parent_id == 0) {
+        $row->parent_id = 1;
+      } else {
+		    $query = "SELECT new"
+		    ." FROM j16_jupgrade_menus"
+		    ." WHERE old = {$row->parent_id}"
+		    ." LIMIT 1";
+		    $this->db_new->setQuery($query);
+		    $row->parent_id = $this->db_new->loadResult();
+      }
 
 			// Change the itemid in menu alias
 			if ($row->type == 'alias') {
