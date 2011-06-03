@@ -30,8 +30,10 @@ $sizefile = JPATH_ROOT.'/tmp/size.tmp';
 $zipfile = JPATH_ROOT.'/tmp/joomla16.zip';
 
 // downloading Molajo instead Joomla zip
-if ($params->mode == 1) {
-	$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
+if (isset($params->mode)) {
+	if ($params->mode == 1) {
+		$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
+	}
 }
 
 if (file_exists($zipfile)) {
