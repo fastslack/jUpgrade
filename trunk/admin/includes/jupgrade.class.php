@@ -64,11 +64,19 @@ class jUpgrade
 		$this->checkTimeout();
 
 		// Base includes
-		require_once JPATH_LIBRARIES.'/joomla/import.php';
+		if (file_exists(JPATH_LIBRARIES.'/joomla/import.php')) {
+			require_once JPATH_LIBRARIES.'/joomla/import.php';
+		}else if (file_exists(JPATH_LIBRARIES.'/import.php')) {
+			require_once JPATH_LIBRARIES.'/import.php';
+		}
+		if (file_exists(JPATH_LIBRARIES.'/joomla/config.php')) {
+			require_once JPATH_LIBRARIES.'/joomla/config.php';
+		}
+		if (file_exists(JPATH_LIBRARIES.'/joomla/log/log.php')) {
+			require_once JPATH_LIBRARIES.'/joomla/log/log.php';
+		}
 		require_once JPATH_LIBRARIES.'/joomla/methods.php';
 		require_once JPATH_LIBRARIES.'/joomla/factory.php';
-		require_once JPATH_LIBRARIES.'/joomla/import.php';
-		require_once JPATH_LIBRARIES.'/joomla/config.php';
 		require_once JPATH_SITE.'/configuration.php';
 
 		// Base includes

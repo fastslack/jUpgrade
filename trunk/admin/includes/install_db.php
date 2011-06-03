@@ -16,9 +16,13 @@ define('JPATH_BASE', dirname(__FILE__));
 define('DS', DIRECTORY_SEPARATOR);
 
 require_once JPATH_BASE.'/defines.php';
+if (file_exists(JPATH_LIBRARIES.'/joomla/import.php')) {
+	require_once JPATH_LIBRARIES.'/joomla/import.php';
+}else if (file_exists(JPATH_LIBRARIES.'/import.php')) {
+	require_once JPATH_LIBRARIES.'/import.php';
+}
 require_once JPATH_LIBRARIES.'/joomla/methods.php';
 require_once JPATH_LIBRARIES.'/joomla/factory.php';
-require_once JPATH_LIBRARIES.'/joomla/import.php';
 require_once JPATH_LIBRARIES.'/joomla/error/error.php';
 require_once JPATH_LIBRARIES.'/joomla/base/object.php';
 require_once JPATH_LIBRARIES.'/joomla/database/database.php';
@@ -51,7 +55,7 @@ if (!$installHelper->populateDatabase($config['dbo'], $schema) > 0) {
 }
 
 // installing Molajo database
-if ($params->mode == 1) {
+if ($params->mode == 2) {
 
 	$schema = JPATH_INSTALLATION.'/sql/mysql/joomla2.sql';
 
@@ -60,6 +64,3 @@ if ($params->mode == 1) {
 		exit;
 	}
 }
-
-
-
