@@ -88,7 +88,7 @@ function checks(event){
  */
 var progress = function(event)  {
 
-  var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=checks&task=getfilesize', {
+  var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=getfilesize&task=getfilesize', {
     method: 'get',
 		noCache: true,
     onComplete: function( msg ) {
@@ -143,7 +143,7 @@ var download = function (skip){
 			decompress(skip);
 		}
 	}else{
-		var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=checks&task=download', {
+		var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=download&task=download', {
 		  method: 'get',
 		  onRequest: function( response ) {
 				//alert(response);
@@ -201,7 +201,7 @@ function decompress(skip){
 		pb2.finish();
 		install();
 	}else{
-		var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=checks&task=decompress', {
+		var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=decompress&task=decompress', {
 		  method: 'get',
 		  onComplete: function( response ) {
 
@@ -248,7 +248,7 @@ function install(event){
 		displayText: false
 	});
 
-  var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=checks&task=install_config', {
+  var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
     method: 'get',
 		noCache: true,
     onComplete: function( response ) {
@@ -270,7 +270,7 @@ function install(event){
 						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
 					}
 
-					var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=checks&task=install_db', {
+					var d = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
 						method: 'get',
 						noCache: true,
 						onComplete: function( response ) {
