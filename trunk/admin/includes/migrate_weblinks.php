@@ -48,7 +48,6 @@ class jUpgradeWeblinks extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['title'] = str_replace("'", "&#39;", $row['title']);
 			$row['params'] = $this->convertParams($row['params']);
 
 			$cid = $row['catid'];

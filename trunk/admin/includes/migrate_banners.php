@@ -57,9 +57,7 @@ class jUpgradeBanners extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['name'] = str_replace("'", "&#39;", $row['name']);
 			$row['params'] = $this->convertParams($row['params']);
-			$row['description'] = str_replace("'", "&#39;", $row['description']);
 
 			$cid = $row['catid'];
 			$row['catid'] = &$categories[$cid]->new;

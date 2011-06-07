@@ -54,7 +54,6 @@ class jUpgradeCategories extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			$row['description'] = str_replace("'", "&#39;", $row['description']);
 			$row['params'] = $this->convertParams($row['params']);
 			$row['access'] = $row['access']+1;
 			$row['language'] = '*';
