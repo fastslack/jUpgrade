@@ -473,7 +473,7 @@ var ext_request = new Request({
 
 		if (debug_val == 1) {
 			text = document.getElementById('debug');
-			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
+			text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>';
 		}
 
 		if (id == lastid) {

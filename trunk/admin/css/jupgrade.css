@@ -20,25 +20,38 @@ div#error {
 	padding: 5px;
 	margin: 5px 0px 5px 0px;
 	text-align: center;
-	text-decoration:blink;
+}
+
+div#ap-content-inner {
+	background: #fff;
 }
 
 div#update {
+	color: #0c141b;
+	text-shadow: 0 2px 2px #000;
 	width: 400px;
 	height: 220px;
 	padding: 3px;
+	margin: 20px 50px 20px 20px;
 	text-align: center;
 	border: 1px;
-	border-style:solid;
-	border-bottom-color:#EFEFEF;
-	border-right-color:#EFEFEF;
-	border-left-color:#EFEFEF;
-	border-top-color:#EFEFEF;
+  box-shadow: 0 1px 1px #222222;
+  border: 0 none;
+  border-radius: 10px;
+	cursor: crosshair;
+
+	background:url(../images/bg.png) no-repeat;
 }
 
 div#update:hover {
-	background-color: #B5CDE8;
-	border:	1px solid #30559C;
+	color: #14202b;
+  //box-shadow: 0 2px 2px #000;
+}
+
+div#update h2 {
+	font-family: 'Paytone One', arial, serif;
+	font-size: 18pt;
+	text-shadow: 0 1px 1px #FFFFFF;
 }
 
 div#info {
@@ -48,6 +61,7 @@ div#info {
 	width: 300px;
 	padding: 7px;
 	text-align: center;
+	margin: 10px 10px 10px 50px;
 }
 
 #donate {
@@ -56,7 +70,7 @@ div#info {
 
 #info_title {
 	margin: 10px;
-	color: #677751;
+	color: #0b141b;
 	font-family: 'Puritan', serif;
 	font-size: 25pt;
 	text-shadow: #000 2px -2px 2px;
@@ -107,7 +121,6 @@ div#info {
 
 #checktext {
 	color: red;
-	text-decoration: blink;
 	font-weight: bolder;
 }
 
