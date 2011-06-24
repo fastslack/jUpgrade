@@ -57,3 +57,5 @@ CREATE TABLE IF NOT EXISTS `j16_jupgrade_modules` (
   `old` int(11) NOT NULL,
   `new` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+UPDATE `#__components` SET `params` = 'mode=1 prefix_old=jos_ prefix_new=j17_ skip_checks=0 skip_download=0 skip_decompress=0 positions=0 debug=0' WHERE `option` = 'com_jupgrade';
