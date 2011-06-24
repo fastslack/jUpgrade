@@ -27,14 +27,22 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+3-Jun-2011 Matias Aguirre
+ + Joomla 1.7 support
+ ^ Menu migration rewrite
+ # Fix download stuck when config is not saved
+
 7-May-2011 Ronald Pijpers
- # Directly access to Joomla controller
+ ^ Directly access to Joomla controller
+
+3-May-2011 Matias Griese
+ # Fixes broken menu in Kunena migration
 
 3-May-2011 Matias Aguirre
  ^ Split the component/module/plugin/template migration
  - Remove quote title replacing in menus
  - Remove unused cloneTable method
-
+ 
 2-May-2011 Matias Aguirre
  # Fixes menu alias and path issue
  # Prevent warning is lastid is not set
