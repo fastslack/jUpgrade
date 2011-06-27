@@ -24,6 +24,18 @@ $mtupgrade = JPluginHelper::isEnabled( 'system', 'mtupgrade' );
 // get params
 $params		= $this->params;
 
+// Determine which package is being downloaded
+$mode	= $params->get("mode");
+
+// Set the correct package name
+if ($mode == 0) {
+	$package = 'Joomla 1.6';
+} else if ($mode == 1) {
+	$package = 'Joomla 1.7';
+} else if ($mode == 2) {
+	$package = 'Molajo';
+}
+
 // get document to add scripts
 $document	= JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/functions.js');
@@ -118,7 +130,7 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="download">
-					<p class="text"><?php echo JText::_('Downloading Joomla 1.6...'); ?></p>
+					<p class="text"><?php echo JText::_('Downloading '.$package.'...'); ?></p>
 					<div id="pb1"></div>
 					<div id="downloadtext">
 						<i><small><b><span id="currBytes">0</span></b> bytes /
@@ -134,7 +146,7 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="install">
-					<p class="text"><?php echo JText::_('Installing Joomla 1.6...'); ?></p>
+					<p class="text"><?php echo JText::_('Installing '.$package.'...'); ?></p>
 					<div id="pb3"></div>
 				</div>
 
@@ -156,7 +168,7 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="done">
-					<h2><?php echo JText::_('Joomla 1.6 Upgrade Finished!'); ?></h2>
+					<h2><?php echo JText::_($package.' Upgrade Finished!'); ?></h2>
 					<p class="text">
 						<?php echo JText::_('You can check your new site here'); ?>:&nbsp;
 						<a href="<?php echo JURI::root(); ?>jupgrade/" target="_blank"><?php echo JText::_('Site'); ?></a> and
