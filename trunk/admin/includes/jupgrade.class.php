@@ -963,12 +963,24 @@ class jUpgrade
 	 */
 	public function getRequirements()
 	{
+		// Check if server is linux
+		ob_start();
+		phpinfo(1);
+		$phpinfo = ob_get_contents();
+		ob_end_clean();
+		$phpinfo = preg_replace("'<style[^>]*>.*</style>'siU",'',$phpinfo);
+		$phpinfo = strip_tags($phpinfo);
+		$exp = explode(" ", $phpinfo);
+
 		$requirements = array();
 
-		$requirements['phpMust'] = '5.2';
+		$requirements['phpMust'] = '5.2.4';
 		$requirements['phpIs'] = PHP_VERSION;
 
-		$requirements['mysqlMust'] = '5.0';
+		$requirements['mysqlMust'] = '5.1';
+		if ($exp[3] == 'Linux') {
+			$requirements['mysqlMust'] = '5.0.4';
+		}
 		$requirements['mysqlIs'] = $this->db_old->getVersion();
 
 		return $requirements;
