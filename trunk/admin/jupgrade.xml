@@ -28,7 +28,8 @@
 
 		<files folder="admin">
 			<folder>controllers</folder>
-			<folder>css</folder>
+                        <folder>css</folder>
+                        <folder>extensions</folder>
 			<folder>images</folder>
 			<folder>includes</folder>
 			<folder>js</folder>
@@ -59,10 +60,10 @@
 			<language tag="pl-PL">languages/pl-PL.com_jupgrade.ini</language>
 			<language tag="ro-RO">languages/ro-RO.com_jupgrade.ini</language>
 			<language tag="et-EE">languages/et-EE.com_jupgrade.ini</language>
-      <language tag="hu-HU">languages/hu-HU.com_jupgrade.ini</language>
-      <language tag="zh-TW">languages/zh-TW.com_jupgrade.ini</language>
-      <language tag="zh-TW">languages/fi-FI.com_jupgrade.ini</language>
+			<language tag="hu-HU">languages/hu-HU.com_jupgrade.ini</language>
 			<language tag="zh-TW">languages/zh-TW.com_jupgrade.ini</language>
+			<language tag="sk-SK">languages/sk-SK.com_jupgrade.ini</language>
+                  <language tag="zh-TW">languages/fi-FI.com_jupgrade.ini</language>
 		</languages>
 	</administration>
 </install>
