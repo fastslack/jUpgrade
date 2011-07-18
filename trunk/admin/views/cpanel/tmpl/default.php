@@ -99,8 +99,8 @@ window.addEvent('domready', function() {
 							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
 						</p>
 						<p>
-							<a href="http://www.matware.com.ar/joomla/jupgrade.html">Project Site</a><br />
-							<a href="http://www.matware.com.ar/foros/jupgrade.html">Project Community</a><br />
+							<a href="http://matware.com.ar/joomla-projects/jupgrade.html">Project Site</a><br />
+							<a href="http://matware.com.ar/forum/listcat/categories.html">Project Community</a><br />
 							<a href="http://matware.com.ar/forum/projects/jupgrade/jupgrade-f-a-q.html">FAQ</a><br />
 							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a><br />
 							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
