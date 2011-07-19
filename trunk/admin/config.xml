@@ -8,8 +8,9 @@
 			<option value="1">Joomla 1.7</option>
 			<option value="2">Molajo</option>
 		</param>
-		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="10" />
-		<param name="prefix_new" type="text" default="j17_" label="Prefix for new database" description="" size="10" />
+		<param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20" />
+		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20" />
+		<param name="prefix_new" type="text" default="j17_" label="Prefix for new database" description="" size="20" />
 		<param type="spacer" default="&lt;b&gt;Skips&lt;/b&gt;" />
 		<param name="skip_checks" type="list" default="0" label="Skip checks" description="">
 			<option value="0">No</option>
