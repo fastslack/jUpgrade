@@ -57,7 +57,7 @@ function checks(event){
 		text = document.getElementById('checkstatus');
 		text.innerHTML = 'Checking...';
 
-		var c = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=checks&task=checks', {
+		var c = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=ajax&task=checks', {
 		  method: 'get',
 		  onComplete: function( response ) {
 		    //alert('>>'+response+'<<');
@@ -88,7 +88,7 @@ function checks(event){
  */
 var progress = function(event)  {
 
-  var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=getfilesize&task=getfilesize', {
+  var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=ajax&task=getfilesize', {
     method: 'get',
 		noCache: true,
     onComplete: function( msg ) {
@@ -143,7 +143,7 @@ var download = function (skip){
 			decompress(skip);
 		}
 	}else{
-		var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=download&task=download', {
+		var a = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=ajax&task=download', {
 		  method: 'get',
 		  onRequest: function( response ) {
 				//alert(response);
@@ -201,7 +201,7 @@ function decompress(skip){
 		pb2.finish();
 		install();
 	}else{
-		var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=decompress&task=decompress', {
+		var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=ajax&task=decompress', {
 		  method: 'get',
 		  onComplete: function( response ) {
 
@@ -259,7 +259,7 @@ function install(event){
 				text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_config]</b><br><br>' +response;
 			}
 
-			var d2 = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=cleanup&task=cleanup', {
+			var d2 = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=ajax&task=cleanup', {
 				method: 'get',
 				noCache: true,
 				onComplete: function( response ) {
@@ -500,7 +500,7 @@ var _doExtensionsMigration = function() {
  */
 function done(event){
 
-  var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=done&task=done', {
+  var d = new Ajax( 'index.php?option=com_jupgrade&tmpl=component&controller=ajax&task=done', {
     method: 'get',
     onComplete: function( response ) {
 			var mySlideDone = new Fx.Slide('done');
