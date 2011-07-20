@@ -50,7 +50,7 @@ class jUpgradeMenu extends jUpgrade
 		// Creating the query
 		$join = array();
 		$join[] = "LEFT JOIN #__components AS c ON c.id = m.componentid";
-		$join[] = "LEFT JOIN {$params->prefix_new}_extensions AS e ON e.element = c.option";
+		$join[] = "LEFT JOIN {$params->prefix_new}extensions AS e ON e.element = c.option";
 
 		$rows = parent::getSourceData(
 			 ' m.id AS sid, m.menutype, m.name AS title, m.alias, m.link, m.type,'
@@ -183,7 +183,7 @@ class jUpgradeMenu extends jUpgrade
 			$oldlist->new = $this->db_new->insertid();
 
 			// Save old and new id
-			if (!$this->db_new->insertObject('#__jupgrade_menus', $oldlist)) {
+			if (!$this->db_new->insertObject('jupgrade_menus', $oldlist)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
 

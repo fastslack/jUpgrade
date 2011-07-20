@@ -115,9 +115,11 @@ class jUpgradeContent extends jUpgrade
 
 		}
 
+		$params = $this->getParams();
+
 		// Update the featured column with records from content_frontpage
-		$query = "UPDATE `j16_content`, `{$this->config_old['prefix']}content_frontpage`"
-		." SET `j16_content`.featured = 1 WHERE `j16_content`.id = `{$this->config_old['prefix']}content_frontpage`.content_id";
+		$query = "UPDATE `{$params->prefix_new}content`, `{$this->config_old['prefix']}content_frontpage`"
+		." SET `{$params->prefix_new}content`.featured = 1 WHERE `{$params->prefix_new}content`.id = `{$this->config_old['prefix']}content_frontpage`.content_id";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
 
