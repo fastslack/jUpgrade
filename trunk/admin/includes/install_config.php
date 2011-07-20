@@ -48,7 +48,10 @@ $jconfig->db_host	= $jconfig->host;
 $jconfig->db_user	= $jconfig->user;
 $jconfig->db_pass	= $jconfig->password;
 $jconfig->db_name	= $jconfig->db;
-$jconfig->db_prefix	= "j16_";
+
+$prefix_new = $_GET['prefix_new'];
+
+$jconfig->db_prefix	= $prefix_new;
 $jconfig->site_name	= $jconfig->sitename;
 
 $jconfig->admin_email	= $jconfig->mailfrom;

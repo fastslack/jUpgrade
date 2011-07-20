@@ -395,7 +395,7 @@ var jUpgrade = new Class({
 				}).request();
 
 		  }
-		}).request('directory=' + self.options.directory);
+		}).request('directory=' + self.options.directory + '&prefix_new=' + self.options.prefix_new);
 
 	}, // end function
 

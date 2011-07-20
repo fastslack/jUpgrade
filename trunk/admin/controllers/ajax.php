@@ -157,8 +157,8 @@ class jupgradeControllerAjax extends JController
 		 */
 		$jupgrade = new jUpgrade;
 		
-		// Drop all j16_tables
-		$query = "DROP TABLE `j16_assets`, `j16_banners`, `j16_banner_clients`, `j16_banner_tracks`, `j16_categories`, `j16_contact_details`, `j16_content`, `j16_content_frontpage`, `j16_content_rating`, `j16_core_log_searches`, `j16_extensions`,  `j16_languages`, `j16_menu`, `j16_menu_types`, `j16_messages`, `j16_messages_cfg`, `j16_modules`, `j16_modules_menu`, `j16_newsfeeds`, `j16_redirect_links`, `j16_schemas`, `j16_session`, `j16_template_styles`, `j16_updates`, `j16_update_categories`, `j16_update_sites`, `j16_update_sites_extensions`, `j16_usergroups`, `j16_users`, `j16_user_profiles`, `j16_user_usergroup_map`, `j16_viewlevels`, `j16_weblinks`";
+		// Drop all #__tables
+		$query = "DROP TABLE `#__assets`, `#__banners`, `#__banner_clients`, `#__banner_tracks`, `#__categories`, `#__contact_details`, `#__content`, `#__content_frontpage`, `#__content_rating`, `#__core_log_searches`, `#__extensions`,  `#__languages`, `#__menu`, `#__menu_types`, `#__messages`, `#__messages_cfg`, `#__modules`, `#__modules_menu`, `#__newsfeeds`, `#__redirect_links`, `#__schemas`, `#__session`, `#__template_styles`, `#__updates`, `#__update_categories`, `#__update_sites`, `#__update_sites_extensions`, `#__usergroups`, `#__users`, `#__user_profiles`, `#__user_usergroup_map`, `#__viewlevels`, `#__weblinks`";
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
 
