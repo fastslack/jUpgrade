@@ -15,12 +15,6 @@ define('_JEXEC', 1);
 define('JPATH_BASE', dirname(__FILE__));
 define('DS', DIRECTORY_SEPARATOR);
 
-$directory = '';
-
-if (ctype_alpha($_GET['directory'])) {
-	$directory = $_GET['directory'];
-}
-
 require_once JPATH_BASE.'/defines.php';
 if (file_exists(JPATH_LIBRARIES.'/joomla/import.php')) {
 	require_once JPATH_LIBRARIES.'/joomla/import.php';

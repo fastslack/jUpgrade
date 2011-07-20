@@ -221,7 +221,7 @@ class jUpgradeMenu extends jUpgrade
 				$row->params = json_encode($tmp);
 			}
 
-			$query = "UPDATE j16_menu SET parent_id='{$row->parent_id}', params = '{$row->params}' WHERE menutype='{$row->menutype}'"
+			$query = "UPDATE #__menu SET parent_id='{$row->parent_id}', params = '{$row->params}' WHERE menutype='{$row->menutype}'"
 				." AND alias = '{$row->alias}' AND link = '{$row->link}'";
 
 			$this->db_new->setQuery($query);

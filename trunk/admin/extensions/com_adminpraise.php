@@ -44,9 +44,9 @@ class jUpgradeComponentAdminpraise extends jUpgrade
 	{
 
 		// name -> title
-		$query = "ALTER TABLE `j16_adminpraise_menu` CHANGE `name` `title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
+		$query = "ALTER TABLE `#__adminpraise_menu` CHANGE `name` `title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
 		$this->db_new->setQuery($query);
-		$this->db_new->query();
+		//$this->db_new->query();
 
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();
@@ -56,9 +56,9 @@ class jUpgradeComponentAdminpraise extends jUpgrade
 		}
 
 		// parent -> parent_id
-		$query = "ALTER TABLE `j16_adminpraise_menu` CHANGE `parent` `parent_id` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0'";
+		$query = "ALTER TABLE `#__adminpraise_menu` CHANGE `parent` `parent_id` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0'";
 		$this->db_new->setQuery($query);
-		$this->db_new->query();
+		//$this->db_new->query();
 
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();

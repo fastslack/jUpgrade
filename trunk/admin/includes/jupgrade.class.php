@@ -493,7 +493,7 @@ class jUpgrade
 		$oldlist->new = $this->db_new->insertid();
 
 		// Save old and new id
-		if (!$this->db_new->insertObject('#__jupgrade_categories', $oldlist)) {
+		if (!$this->db_new->insertObject('jupgrade_categories', $oldlist)) {
 			throw new Exception($this->db_new->getErrorMsg());
 		}
 

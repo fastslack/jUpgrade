@@ -298,7 +298,7 @@ class jUpgradeExtensions extends jUpgrade
 				// Read xml definition file
 				$xml = simplexml_load_file($state->xmlfile);
 
-				$query = "INSERT INTO j16_update_sites (name, type, location, enabled) VALUES({$this->db_new->quote($xml->name)}, 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
+				$query = "INSERT INTO #__update_sites (name, type, location, enabled) VALUES({$this->db_new->quote($xml->name)}, 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
 				$this->db_new->setQuery($query);
 				$this->db_new->query();
 

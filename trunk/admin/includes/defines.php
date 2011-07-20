@@ -14,11 +14,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-$directory = '';
-
-if (ctype_alpha($_GET['directory'])) {
-	$directory = $_GET['directory'];
-}
+$directory = $_GET['directory'];
 
 $parts = explode(DS, JPATH_BASE);
 
