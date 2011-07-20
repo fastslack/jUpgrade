@@ -28,6 +28,23 @@ class jupgradeControllerAjax extends JController
 	 * @return	none
 	 * @since	1.2.0
 	 */
+	function getParams()
+	{
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php';
+
+		// Initialize jupgrade class
+		$jupgrade = new jUpgrade;
+		$object = $jupgrade->getParams();
+		
+		echo json_encode($object);
+	}
+
+	/**
+	 * Initial checks in jUpgrade
+	 *
+	 * @return	none
+	 * @since	1.2.0
+	 */
 	function checks()
 	{
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php';

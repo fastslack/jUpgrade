@@ -38,7 +38,6 @@ if ($mode == 0) {
 
 // get document to add scripts
 $document	= JFactory::getDocument();
-$document->addScript('components/com_jupgrade/js/functions.js');
 $document->addScript('components/com_jupgrade/js/dwProgressBar.js');
 
 // Checking for IE
@@ -64,23 +63,17 @@ $document->addStyleSheet("http://fonts.googleapis.com/css?family=Paytone+One");
 
 window.addEvent('domready', function() {
 
-	$('checks').setStyle('display', 'none');
-	$('download').setStyle('display', 'none');
-	$('decompress').setStyle('display', 'none');
-	$('install').setStyle('display', 'none');
-	$('migration').setStyle('display', 'none');
-	$('templates').setStyle('display', 'none');
-	$('extensions').setStyle('display', 'none');
-	$('done').setStyle('display', 'none');
-
-	$('update').skip_checks = <?php echo $params->get("skip_checks") ? $params->get("skip_checks") : 0; ?>;
-	$('update').skip_download = <?php echo $params->get("skip_download") ? $params->get("skip_download") : 0; ?>;
-	$('update').skip_decompress =  <?php echo $params->get("skip_decompress") ? $params->get("skip_decompress") : 0; ?>;
-	$('update').debug =  <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>;
-
-<?php	if ($mtupgrade == true) { ?>
-	$('update').addEvent('click', checks);
-<?php	} ?>
+	var jupgrade = new jUpgrade({
+    mode: <?php echo $params->get("mode") ?>,
+    directory: '<?php echo $params->get("directory") ?>',
+    prefix_old: '<?php echo $params->get("prefix_old") ?>',
+    prefix_new: '<?php echo $params->get("prefix_new") ?>',
+    skip_checks: <?php echo $params->get("skip_checks") ?>,
+    skip_download: <?php echo $params->get("skip_download") ?>,
+    skip_decompress: <?php echo $params->get("skip_decompress") ?>,
+    positions: <?php echo $params->get("positions") ?>,
+    debug: <?php echo $params->get("debug") ?>
+	});
 
 });
 
@@ -188,6 +181,5 @@ window.addEvent('domready', function() {
 <form action="index.php?option=com_jupgrade" method="post" name="adminForm">
 	<input type="hidden" name="option" value="com_jupgrade" />
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" id="count" value="" />
 </form>
 
