@@ -14,6 +14,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
+$directory = '';
+
+if (ctype_alpha($_GET['directory'])) {
+	$directory = $_GET['directory'];
+}
+
 $parts = explode(DS, JPATH_BASE);
 
 $newparts = array();
@@ -22,12 +28,12 @@ for($i=0;$i<count($parts)-4;$i++){
 }
 
 define('JPATH_ROOT',			implode(DS, $newparts));
-define('JPATH_SITE',			JPATH_ROOT.'/jupgrade');
-define('JPATH_CONFIGURATION', 	JPATH_ROOT.'/jupgrade');
-define('JPATH_ADMINISTRATOR', 	JPATH_ROOT.'/jupgrade/administrator');
-define('JPATH_XMLRPC', 		JPATH_ROOT.'/jupgrade/xmlrpc');
-define('JPATH_LIBRARIES',	 	JPATH_ROOT.'/jupgrade/libraries');
-define('JPATH_PLUGINS',		JPATH_ROOT.'/jupgrade/plugins'  );
-define('JPATH_INSTALLATION',	JPATH_ROOT.'/jupgrade/installation');
-define('JPATH_THEMES'	   ,	JPATH_BASE.'/jupgrade/templates');
-define('JPATH_CACHE',			JPATH_BASE.'/jupgrade/cache');
+define('JPATH_SITE',			JPATH_ROOT.DS.$directory);
+define('JPATH_CONFIGURATION', 	JPATH_ROOT.DS.$directory);
+define('JPATH_ADMINISTRATOR', 	JPATH_ROOT.DS.$directory.DS.'administrator');
+define('JPATH_XMLRPC', 		JPATH_ROOT.DS.$directory.DS.'xmlrpc');
+define('JPATH_LIBRARIES',	 	JPATH_ROOT.DS.$directory.DS.'libraries');
+define('JPATH_PLUGINS',		JPATH_ROOT.DS.$directory.DS.'plugins'  );
+define('JPATH_INSTALLATION',	JPATH_ROOT.DS.$directory.DS.'installation');
+define('JPATH_THEMES'	   ,	JPATH_BASE.DS.$directory.DS.'templates');
+define('JPATH_CACHE',			JPATH_BASE.DS.$directory.DS.'cache');

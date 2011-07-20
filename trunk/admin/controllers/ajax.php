@@ -247,7 +247,9 @@ class jupgradeControllerAjax extends JController
 		// Includes
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php';
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/libraries/pclzip.lib.php';
-		
+
+		$directory = JRequest::getVar('directory');
+
 		// jUpgrade class
 		$jupgrade = new jUpgrade;
 		
@@ -266,7 +268,7 @@ class jupgradeControllerAjax extends JController
 			}
 		}		
 
-		$dir = JPATH_ROOT.'/jupgrade';
+		$dir = JPATH_ROOT.DS.$directory;
 		
 		if (file_exists($zipfile)) {
 			$archive = new PclZip($zipfile);
@@ -409,8 +411,10 @@ class jupgradeControllerAjax extends JController
 	{
 		jimport('joomla.filesystem.folder');
 
-		$olddir = JPATH_ROOT.'/jupgrade/installation';
-		$dir = JPATH_ROOT.'/jupgrade/installation-old';
+		$directory = JRequest::getVar('directory');
+
+		$olddir = JPATH_ROOT.DS.$directory.DS.'installation';
+		$dir = JPATH_ROOT.DS.$directory.DS.'installation-old';
 
 		if (is_dir($dir)) {
 			JFolder::delete($dir);

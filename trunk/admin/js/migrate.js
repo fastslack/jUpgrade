@@ -278,7 +278,7 @@ var jUpgrade = new Class({
 					}
 
 				}
-			}).request();
+			}).request('directory=' + self.options.directory);
 		}
 
 	}, // end function
@@ -344,13 +344,13 @@ var jUpgrade = new Class({
 
 								self.migrate();
 							}
-						}).request();
+						}).request('directory=' + self.options.directory);
 
 					}
 				}).request();
 
 		  }
-		}).request();
+		}).request('directory=' + self.options.directory);
 
 	}, // end function
 
@@ -367,6 +367,7 @@ var jUpgrade = new Class({
 			url: 'components/com_jupgrade/includes/controller.php',
 			method: 'get',
 			noCache: true,
+			data: 'directory=' + self.options.directory,
 			onComplete: function(response) {
 
 				var ex = self.__explode(';|;', response);
@@ -456,10 +457,10 @@ var jUpgrade = new Class({
 						pb5.finish();
 						self.extensions();
 					}
-				}).request();
+				}).request('directory=' + self.options.directory);
 
 		  }
-		}).request();
+		}).request('directory=' + self.options.directory);
 
 	}, // end function
 
@@ -476,6 +477,7 @@ var jUpgrade = new Class({
 			url: 'components/com_jupgrade/includes/extensions_controller.php',
 			method: 'get',
 			noCache: true,
+			data: 'directory=' + self.options.directory,
 			onComplete: function(response) {
 				var ex = self.__explode(';|;', response);
 				var msg = ex[0];
@@ -544,7 +546,7 @@ var jUpgrade = new Class({
 				$('done').setStyle('display', 'block');
 				mySlideDone.toggle();
 		  }
-		}).request();
+		}).request('directory=' + self.options.directory);
 
 	}, // end function
 

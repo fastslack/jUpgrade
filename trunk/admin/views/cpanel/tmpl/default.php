@@ -164,8 +164,8 @@ window.addEvent('domready', function() {
 					<h2><?php echo JText::_($package.' Upgrade Finished!'); ?></h2>
 					<p class="text">
 						<?php echo JText::_('You can check your new site here'); ?>:&nbsp;
-						<a href="<?php echo JURI::root(); ?>jupgrade/" target="_blank"><?php echo JText::_('Site'); ?></a> and
-						<a href="<?php echo JURI::root(); ?>jupgrade/administrator/" target="_blank"><?php echo JText::_('Administrator'); ?></a>
+						<a href="<?php echo JURI::root().$params->get('directory'); ?>/" target="_blank"><?php echo JText::_('Site'); ?></a> and
+						<a href="<?php echo JURI::root().$params->get('directory'); ?>/administrator/" target="_blank"><?php echo JText::_('Administrator'); ?></a>
 					</p>
 				</div>
 
