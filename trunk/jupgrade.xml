@@ -8,7 +8,7 @@
 	<copyright>Copyright 2006 - 2011 Matias Aguirre. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>2011-02-07</creationDate>
-	<version>1.1.1</version>
+	<version>1.2.0</version>
 	<description></description>
 
 	<install>
@@ -28,8 +28,8 @@
 
 		<files folder="admin">
 			<folder>controllers</folder>
-                        <folder>css</folder>
-                        <folder>extensions</folder>
+			<folder>css</folder>
+			<folder>extensions</folder>
 			<folder>images</folder>
 			<folder>includes</folder>
 			<folder>js</folder>
@@ -64,7 +64,51 @@
 			<language tag="zh-TW">languages/zh-TW.com_jupgrade.ini</language>
 			<language tag="sk-SK">languages/sk-SK.com_jupgrade.ini</language>
       <language tag="zh-TW">languages/fi-FI.com_jupgrade.ini</language>
+			<language tag="th-TH">languages/th-TH.com_jupgrade.ini</language>
 		</languages>
 	</administration>
+
+	<params>
+		<param type="spacer" default="&lt;b&gt;Global&lt;/b&gt;" />
+		<param name="mode" type="list" default="1" label="Distribution" description="">
+			<option value="0">Joomla 1.6</option>
+			<option value="1">Joomla 1.7</option>
+			<option value="2">Molajo</option>
+		</param>
+		<param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20" />
+		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20" />
+		<param name="prefix_new" type="text" default="j17_" label="Prefix for new database" description="" size="20" />
+		<param type="spacer" default="&lt;b&gt;Skips&lt;/b&gt;" />
+		<param name="skip_checks" type="list" default="0" label="Skip checks" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="skip_download" type="list" default="0" label="Skip download" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="skip_decompress" type="list" default="0" label="Skip decompress" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="skip_templates" type="list" default="0" label="Skip templates copy" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="skip_extensions" type="list" default="0" label="Skip 3rd extensions" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param type="spacer" default="&lt;b&gt;Templates&lt;/b&gt;" />
+		<param name="positions" type="list" default="0" label="Keep original positions?" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;" />
+		<param name="debug" type="list" default="0" label="Enable debug" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+	</params>
 </install>
 

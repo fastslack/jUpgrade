@@ -27,6 +27,14 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+19-Jul-2011 Matias Aguirre
+ ^ Mootools structure improvements
+ ^ More improvements in 3rd extensions support
+ ^ Target directory is now variable (an idea from Hugo Baronti)
+ # Changeable name when Joomla 1.7 is selected (thanks mbabker)
+ + Skip templates copy and skip 3rd extensions added
+ $ adding Thai (th-TH) translation (thank lungkao)
+
 3-Jun-2011 Matias Aguirre
  + Joomla 1.7 support
  ^ Menu migration rewrite
