@@ -68,13 +68,13 @@ window.addEvent('domready', function() {
     directory: '<?php echo $params->get("directory") ?>',
     prefix_old: '<?php echo $params->get("prefix_old") ?>',
     prefix_new: '<?php echo $params->get("prefix_new") ?>',
-    skip_checks: <?php echo $params->get("skip_checks") ?>,
-    skip_download: <?php echo $params->get("skip_download") ?>,
-    skip_decompress: <?php echo $params->get("skip_decompress") ?>,
-    skip_templates: <?php echo $params->get("skip_templates") ?>,
-    skip_extensions: <?php echo $params->get("skip_extensions") ?>,
-    positions: <?php echo $params->get("positions") ?>,
-    debug: <?php echo $params->get("debug") ?>
+    skip_checks: <?php echo $params->get("skip_checks") ? $params->get("skip_checks") : 0; ?>,
+    skip_download: <?php echo $params->get("skip_download") ? $params->get("skip_download") : 0; ?>,
+    skip_decompress: <?php echo $params->get("skip_decompress") ? $params->get("skip_decompress") : 0; ?>,
+    skip_templates: <?php echo $params->get("skip_templates") ? $params->get("skip_templates") : 0; ?>,
+    skip_extensions: <?php echo $params->get("skip_extensions") ? $params->get("skip_extensions") : 0; ?>,
+    positions: <?php echo $params->get("positions") ? $params->get("positions") : 0; ?>,
+    debug: <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>
 	});
 
 });
