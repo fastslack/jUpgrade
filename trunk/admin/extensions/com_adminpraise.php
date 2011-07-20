@@ -23,14 +23,6 @@ defined('JPATH_BASE') or die();
  */
 class jUpgradeComponentAdminpraise extends jUpgrade
 {
-
-	/**
-	 * @var		string	Extension xml url
-	 * @since	1.1.0
-	 */
-	protected $url = 'http://www.matware.com.ar/extensions/adminpraise/adminpraise.xml';
-
-
 	/**
 	 * Check if extension migration is supported.
 	 *

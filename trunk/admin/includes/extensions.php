@@ -259,16 +259,6 @@ class jUpgradeExtensions extends jUpgrade
 
 			$path = preg_replace($types, $directories, $element);
 
-			if (is_dir(JPATH_ROOT.DS."administrator/{$path}")) {
-				// Find j16upgrade.xml from the extension's administrator folders
-				$files = (array) JFolder::files(JPATH_ROOT.DS."administrator/{$path}", '^j16upgrade\.xml$', true, true);
-				$state->xmlfile = array_shift( $files );
-			}
-			if (empty($state->xmlfile) && is_dir(JPATH_ROOT.DS.$path)) {
-				// Find j16upgrade.xml from the extension's folders
-				$files = (array) JFolder::files(JPATH_ROOT.DS.$path, '^j16upgrade\.xml$', true, true);
-				$state->xmlfile = array_shift( $files );
-			}
 			if (empty($state->xmlfile)) {
 				// Find xml file from jUpgrade
 				$default_xmlfile = JPATH_ROOT.DS."administrator/components/com_jupgrade/extensions/{$element}.xml";
@@ -276,9 +266,11 @@ class jUpgradeExtensions extends jUpgrade
 					$state->xmlfile = $default_xmlfile;
 				}
 			}
+
 			if (!empty($state->xmlfile)) {
 				// Read xml definition file
 				$xml = simplexml_load_file($state->xmlfile);
+
 				if (!empty($xml->installer->file[0])) {
 					$state->phpfile = trim($xml->installer->file[0]);
 				}
@@ -300,6 +292,13 @@ class jUpgradeExtensions extends jUpgrade
 
 			if (!empty($state->phpfile) || !empty($state->xmlfile)) {
 				$query = "INSERT INTO j16_jupgrade_steps (name, status, extension, state) VALUES('{$element}', 0, 1, {$this->db_new->quote(json_encode($state))} )";
+				$this->db_new->setQuery($query);
+				$this->db_new->query();
+
+				// Read xml definition file
+				$xml = simplexml_load_file($state->xmlfile);
+
+				$query = "INSERT INTO j16_update_sites (name, type, location, enabled) VALUES('{$this->db_new->quote($xml->name)}', 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
 				$this->db_new->setQuery($query);
 				$this->db_new->query();
 
