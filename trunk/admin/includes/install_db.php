@@ -47,7 +47,7 @@ $params = $jupgrade->getParams();
 $jconfig = new JConfig();
 
 $config = array();
-$config['dbo'] = & JInstallationHelperDatabase::getDBO('mysql', $jconfig->host, $jconfig->user, $jconfig->password, $jconfig->db, 'j16_');
+$config['dbo'] = & JInstallationHelperDatabase::getDBO('mysql', $jconfig->host, $jconfig->user, $jconfig->password, $jconfig->db, $params->prefix_new);
 
 // getting helper
 $installHelper = new JInstallationModelDatabase($config);

@@ -21,7 +21,7 @@ require_once JPATH_BASE.'/jupgrade.class.php';
 $jupgrade = new jUpgrade;
 
 // Select the steps
-$query = "SELECT * FROM j16_jupgrade_steps AS s WHERE s.status != 1 ORDER BY s.id ASC LIMIT 1";
+$query = "SELECT * FROM jupgrade_steps AS s WHERE s.status != 1 ORDER BY s.id ASC LIMIT 1";
 $jupgrade->db_new->setQuery($query);
 $step = $jupgrade->db_new->loadObject();
 
@@ -132,7 +132,7 @@ switch ($step->name) {
 
 
 // updating the status flag
-$query = "UPDATE j16_jupgrade_steps SET status = 1"
+$query = "UPDATE jupgrade_steps SET status = 1"
 ." WHERE name = '{$step->name}'";
 $jupgrade->db_new->setQuery($query);
 $jupgrade->db_new->query();

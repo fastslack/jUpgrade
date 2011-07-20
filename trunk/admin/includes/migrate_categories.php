@@ -80,11 +80,11 @@ class jUpgradeCategories extends jUpgrade
 		// Get the source data.
 		$rows	= $this->getSourceData();
 
-		// Truncate j16_jupgrade_categories table
-		$clean	= $this->cleanDestinationData('j16_jupgrade_categories');
+		// Truncate jupgrade_categories table
+		$clean	= $this->cleanDestinationData('jupgrade_categories');
 
 		// Insert uncategorized id
-		$query = "INSERT INTO `j16_jupgrade_categories` (`old`, `new`) VALUES (0, 2)";
+		$query = "INSERT INTO `jupgrade_categories` (`old`, `new`) VALUES (0, 2)";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
 

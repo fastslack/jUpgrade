@@ -66,35 +66,35 @@ class jupgradeControllerAjax extends JController
 		$jupgrade->db_new->setQuery($query);
 		$tables = $jupgrade->db_new->loadResultArray();
 		
-		if (!in_array('j16_jupgrade_categories', $tables)) {
-			echo "401: j16_jupgrade_categories table not exist";
+		if (!in_array('jupgrade_categories', $tables)) {
+			echo "401: jupgrade_categories table not exist";
 			exit;
 		}
 		
-		if (!in_array('j16_jupgrade_menus', $tables)) {
-			echo "402: j16_jupgrade_menus table not exist";
+		if (!in_array('jupgrade_menus', $tables)) {
+			echo "402: jupgrade_menus table not exist";
 			exit;
 		}
 		
-		if (!in_array('j16_jupgrade_modules', $tables)) {
-			echo "403: j16_jupgrade_modules table not exist";
+		if (!in_array('jupgrade_modules', $tables)) {
+			echo "403: jupgrade_modules table not exist";
 			exit;
 		}
 		
-		if (!in_array('j16_jupgrade_steps', $tables)) {
-			echo "404: j16_jupgrade_steps table not exist";
+		if (!in_array('jupgrade_steps', $tables)) {
+			echo "404: jupgrade_steps table not exist";
 			exit;
 		}		
 		
 		/**
-		 * Check if j16_jupgrade_steps is fine
+		 * Check if jupgrade_steps is fine
 		 */
-		$query = "SELECT COUNT(id) FROM `j16_jupgrade_steps`";
+		$query = "SELECT COUNT(id) FROM `jupgrade_steps`";
 		$jupgrade->db_new->setQuery($query);
 		$nine = $jupgrade->db_new->loadResult();
 		
 		if ($nine < 10) {
-			echo "405: j16_jupgrade_steps is not valid";
+			echo "405: jupgrade_steps is not valid";
 			exit;
 		}
 		
@@ -163,17 +163,17 @@ class jupgradeControllerAjax extends JController
 		$jupgrade->db_new->query();
 
 		// Truncate mapping tables
-		$query = "TRUNCATE TABLE `j16_jupgrade_categories`, `j16_jupgrade_menus`, `j16_jupgrade_modules`";
+		$query = "TRUNCATE TABLE `jupgrade_categories`, `jupgrade_menus`, `jupgrade_modules`";
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
 
 		// Set all status to 0 and clear state
-		$query = "UPDATE j16_jupgrade_steps SET status = 0, state = ''";
+		$query = "UPDATE jupgrade_steps SET status = 0, state = ''";
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
 
 		// Cleanup 3rd extensions
-		$query = "DELETE FROM j16_jupgrade_steps WHERE id > 10";
+		$query = "DELETE FROM jupgrade_steps WHERE id > 10";
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
 

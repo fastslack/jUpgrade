@@ -22,7 +22,7 @@ require_once JPATH_BASE.'/extensions.php';
 $jupgrade = new jUpgrade;
 
 // Check the last step id
-$query = "SELECT id FROM j16_jupgrade_steps ORDER BY id DESC LIMIT 1";
+$query = "SELECT id FROM jupgrade_steps ORDER BY id DESC LIMIT 1";
 $jupgrade->db_new->setQuery($query);
 $lastid = $jupgrade->db_new->loadResult()+1;
 
@@ -30,7 +30,7 @@ $lastid = $jupgrade->db_new->loadResult()+1;
 $error = $jupgrade->db_new->getErrorMsg();
 
 // Select the step
-$query = "SELECT * FROM j16_jupgrade_steps AS s WHERE s.status != 1 AND s.extension = 1 ORDER BY s.id ASC LIMIT 1";
+$query = "SELECT * FROM jupgrade_steps AS s WHERE s.status != 1 AND s.extension = 1 ORDER BY s.id ASC LIMIT 1";
 $jupgrade->db_new->setQuery($query);
 $step = $jupgrade->db_new->loadObject();
 if (!$step) {
@@ -50,7 +50,7 @@ echo ";|;".$step->id.";|;".$extension->output().";|;".$step->lastid;
 
 if ($extension->isReady()) {
 	// updating the status flag
-	$query = "UPDATE j16_jupgrade_steps SET status = 1"
+	$query = "UPDATE jupgrade_steps SET status = 1"
 	." WHERE name = '{$step->name}'";
 	$jupgrade->db_new->setQuery($query);
 	$jupgrade->db_new->query();

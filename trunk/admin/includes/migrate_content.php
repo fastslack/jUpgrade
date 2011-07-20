@@ -49,7 +49,7 @@ class jUpgradeContent extends jUpgrade
 		 .'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
 		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
      .'`access`, `hits` ',
-		 'LEFT JOIN j16_jupgrade_categories AS o ON o.old = c.catid',
+		 'LEFT JOIN jupgrade_categories AS o ON o.old = c.catid',
 		 $where,
 			'id'
 		);

@@ -126,13 +126,18 @@ class jUpgrade
 		$this->config['user']     = $jconfig->user;
 		$this->config['password'] = $jconfig->password;
 		$this->config['database'] = $jconfig->db;
-		$this->config['prefix']   = $jconfig->dbprefix;
-		//print_r($config);
+
 		$this->config_old = $this->config;
 		$this->config_old['prefix'] = $this->getPrefix();
 
-		$this->db_new = JDatabase::getInstance($this->config);
+		// Creating old dabatase instance
 		$this->db_old = JDatabase::getInstance($this->config_old);
+
+		$params = $this->getParams();
+		$this->config['prefix'] = $params->prefix_new;
+
+		// Creating new dabatase instance
+		$this->db_new = JDatabase::getInstance($this->config);
 	}
 
 	/**
@@ -603,7 +608,7 @@ class jUpgrade
 		if (!$this->name) return false;
 
 		$state = json_encode($this->state);
-		$query = "UPDATE j16_jupgrade_steps SET state = {$this->db_new->quote($state)} WHERE name = {$this->db_new->quote($this->name)}";
+		$query = "UPDATE jupgrade_steps SET state = {$this->db_new->quote($state)} WHERE name = {$this->db_new->quote($this->name)}";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
 
@@ -878,7 +883,7 @@ class jUpgrade
 	{
 		// Getting the categories id's
 		$query = "SELECT *"
-		." FROM j16_jupgrade_{$table}";
+		." FROM jupgrade_{$table}";
 
 		if ($section !== false) {
 			$query .= " WHERE section = '{$section}'";

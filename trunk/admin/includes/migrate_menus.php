@@ -41,14 +41,16 @@ class jUpgradeMenu extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
+		$params = $this->getParams();
+
 		// Getting the categories id's
 		$categories = $this->getMapList();
 		$sections = $this->getMapList('categories', 'com_section');
 
 		// Creating the query
 		$join = array();
-		$join[] = 'LEFT JOIN #__components AS c ON c.id = m.componentid';
-		$join[] = 'LEFT JOIN j16_extensions AS e ON e.element = c.option';
+		$join[] = "LEFT JOIN #__components AS c ON c.id = m.componentid";
+		$join[] = "LEFT JOIN {$params->prefix_new}_extensions AS e ON e.element = c.option";
 
 		$rows = parent::getSourceData(
 			 ' m.id AS sid, m.menutype, m.name AS title, m.alias, m.link, m.type,'
@@ -155,8 +157,8 @@ class jUpgradeMenu extends jUpgrade
 	 */
 	protected function setDestinationData()
 	{
-		// Truncate j16_jupgrade_menus table
-		$clean	= $this->cleanDestinationData('j16_jupgrade_menus');
+		// Truncate jupgrade_menus table
+		$clean	= $this->cleanDestinationData('jupgrade_menus');
 
 		// Get the source data.
 		$rows	= $this->getSourceData();
@@ -198,7 +200,7 @@ class jUpgradeMenu extends jUpgrade
         $row->parent_id = 1;
       } else {
 		    $query = "SELECT new"
-		    ." FROM j16_jupgrade_menus"
+		    ." FROM jupgrade_menus"
 		    ." WHERE old = {$row->parent_id}"
 		    ." LIMIT 1";
 		    $this->db_new->setQuery($query);
@@ -210,7 +212,7 @@ class jUpgradeMenu extends jUpgrade
 				$tmp = json_decode($row->params);
 
 				$query = "SELECT new"
-				." FROM j16_jupgrade_menus"
+				." FROM jupgrade_menus"
 				." WHERE old = {$tmp->aliasoptions}"
 				." LIMIT 1";
 				$this->db_new->setQuery($query);

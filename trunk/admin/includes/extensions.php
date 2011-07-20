@@ -291,14 +291,14 @@ class jUpgradeExtensions extends jUpgrade
 			}
 
 			if (!empty($state->phpfile) || !empty($state->xmlfile)) {
-				$query = "INSERT INTO j16_jupgrade_steps (name, status, extension, state) VALUES('{$element}', 0, 1, {$this->db_new->quote(json_encode($state))} )";
+				$query = "INSERT INTO jupgrade_steps (name, status, extension, state) VALUES('{$element}', 0, 1, {$this->db_new->quote(json_encode($state))} )";
 				$this->db_new->setQuery($query);
 				$this->db_new->query();
 
 				// Read xml definition file
 				$xml = simplexml_load_file($state->xmlfile);
 
-				$query = "INSERT INTO j16_update_sites (name, type, location, enabled) VALUES('{$this->db_new->quote($xml->name)}', 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
+				$query = "INSERT INTO j16_update_sites (name, type, location, enabled) VALUES({$this->db_new->quote($xml->name)}, 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
 				$this->db_new->setQuery($query);
 				$this->db_new->query();
 
