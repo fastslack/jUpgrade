@@ -21,6 +21,8 @@ var jUpgrade = new Class({
     skip_checks: 0,
     skip_download: 0,
     skip_decompress: 0,
+    skip_templates: 0,
+    skip_extensions: 0,
     positions: 0,
     debug: 0
   },
