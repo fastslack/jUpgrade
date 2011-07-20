@@ -71,6 +71,8 @@ window.addEvent('domready', function() {
     skip_checks: <?php echo $params->get("skip_checks") ?>,
     skip_download: <?php echo $params->get("skip_download") ?>,
     skip_decompress: <?php echo $params->get("skip_decompress") ?>,
+    skip_templates: <?php echo $params->get("skip_templates") ?>,
+    skip_extensions: <?php echo $params->get("skip_extensions") ?>,
     positions: <?php echo $params->get("positions") ?>,
     debug: <?php echo $params->get("debug") ?>
 	});

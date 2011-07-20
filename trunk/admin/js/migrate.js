@@ -9,7 +9,6 @@
  * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 var jUpgrade = new Class({
 
   Implements: [Options, Events],
@@ -391,7 +390,15 @@ var jUpgrade = new Class({
 					$clear(migration_periodical);
 
 					// Run templates step
-					self.templates();
+					if (self.options.skip_templates == 1) {
+						if (self.options.skip_extensions == 1) {
+							self.done();
+						}else{
+							self.extensions();
+						}
+					}else{
+						self.templates();
+					}
 				}
 			}
 		});
@@ -455,7 +462,11 @@ var jUpgrade = new Class({
 						//alert(response);
 						pb5.set(100);
 						pb5.finish();
-						self.extensions();
+						if (self.options.skip_extensions == 1) {
+							self.done();
+						}else{
+							self.extensions();
+						}
 					}
 				}).request('directory=' + self.options.directory);
 

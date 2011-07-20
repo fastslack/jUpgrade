@@ -24,6 +24,14 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
+		<param name="skip_templates" type="list" default="0" label="Skip templates copy" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="skip_extensions" type="list" default="0" label="Skip 3rd party extensions" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
 		<param type="spacer" default="&lt;b&gt;Templates&lt;/b&gt;" />
 		<param name="positions" type="list" default="0" label="Keep original positions?" description="">
 			<option value="0">No</option>
