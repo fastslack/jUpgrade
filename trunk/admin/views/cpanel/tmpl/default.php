@@ -152,13 +152,18 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="templates">
-					<p class="text"><?php echo JText::_('Upgrading templates...'); ?></p>
+					<p class="text"><?php echo JText::_('Copying templates...'); ?></p>
 					<div id="pb5"></div>
+				</div>
+
+				<div id="files">
+					<p class="text"><?php echo JText::_('Copying images/media files...'); ?></p>
+					<div id="pb6"></div>
 				</div>
 
 				<div id="extensions">
 					<p class="text"><?php echo JText::_('Upgrading 3rd extensions...'); ?></p>
-					<div id="pb6"></div>
+					<div id="pb7"></div>
 					<div><small><i><span id="status_ext"><?php echo JText::_('Preparing for 3rd extensions migration'); ?></span></i></small></div>
 				</div>
 
