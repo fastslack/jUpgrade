@@ -38,6 +38,7 @@ var jUpgrade = new Class({
 		$('install').setStyle('display', 'none');
 		$('migration').setStyle('display', 'none');
 		$('templates').setStyle('display', 'none');
+		$('files').setStyle('display', 'none');
 		$('extensions').setStyle('display', 'none');
 		$('done').setStyle('display', 'none');
 
@@ -437,10 +438,10 @@ var jUpgrade = new Class({
 
 					// Run templates step
 					if (self.options.skip_templates == 1) {
-						if (self.options.skip_extensions == 1) {
+						if (self.options.skip_files == 1) {
 							self.done();
 						}else{
-							self.extensions();
+							self.files();
 						}
 					}else{
 						self.templates();
@@ -511,10 +512,53 @@ var jUpgrade = new Class({
 						if (self.options.skip_extensions == 1) {
 							self.done();
 						}else{
-							self.extensions();
+							self.files();
 						}
 					}
 				}).request('directory=' + self.options.directory);
+
+		  }
+		}).request('directory=' + self.options.directory);
+
+	}, // end function
+
+	/**
+	 * Run the files copying
+	 *
+	 * @return	bool
+	 * @since	1.2.0
+	 */
+	files: function(e) {
+		var self = this;
+
+		var mySlideTem = new Fx.Slide('files');
+		mySlideTem.hide();
+		$('files').setStyle('display', 'block');
+		mySlideTem.toggle();
+
+		var pb6 = new dwProgressBar({
+			container: $('pb6'),
+			startPercentage: 20,
+			speed: 1000,
+			boxID: 'pb6-box',
+			percentageID: 'pb6-perc',
+			displayID: 'text',
+			displayText: false
+		});
+
+		var d = new Ajax( 'components/com_jupgrade/includes/migrate_files.php', {
+		  method: 'get',
+		  onComplete: function( msg ) {
+		    //alert(msg);
+				pb6.set(100);
+				pb6.finish();
+
+				if (self.options.debug == 1) {
+					text = document.getElementById('debug');
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[files]</b><br><br>' +msg;
+				}
+
+				self.extensions();
 
 		  }
 		}).request('directory=' + self.options.directory);
@@ -542,17 +586,17 @@ var jUpgrade = new Class({
 				var file = ex[2];
 				var lastid = ex[3];
 
-				pb6.set(100);
+				pb7.set(100);
 				text = document.getElementById('status_ext');
 				text.innerHTML = 'Migrating ' + file;
 
 				if (self.options.debug == 1) {
 					text = document.getElementById('debug');
-					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>';
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>'+response;
 				}
 
 				if (id == lastid) {
-					pb6.finish();
+					pb7.finish();
 
 					// Shutdown periodical
 					$clear(extension_periodical);
@@ -572,12 +616,12 @@ var jUpgrade = new Class({
 		$('extensions').setStyle('display', 'block');
 		mySlideExt.toggle();
 
-		pb6 = new dwProgressBar({
-			container: $('pb6'),
+		pb7 = new dwProgressBar({
+			container: $('pb7'),
 			startPercentage: 50,
 			speed: 1000,
-			boxID: 'pb6-box',
-			percentageID: 'pb6-perc',
+			boxID: 'pb7-box',
+			percentageID: 'pb7-perc',
 			displayID: 'text',
 			displayText: false
 		});
