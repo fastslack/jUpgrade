@@ -49,19 +49,16 @@ class jupgradeControllerAjax extends JController
 	{
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php';
 		
-		/**
-		 * Initialize jupgrade class
-		 */
+		// Initialize jupgrade class
 		$jupgrade = new jUpgrade;
 		
-		/**
-		 * Requirements
-		 */
+		// Requirements
 		$requirements = $jupgrade->getRequirements();
-		
-		/**
-		 * Checking tables
-		 */
+
+		// Getting the component parameter with global settings
+		$params = $jupgrade->getParams();
+
+		// Checking tables
 		$query = "SHOW TABLES";
 		$jupgrade->db_new->setQuery($query);
 		$tables = $jupgrade->db_new->loadResultArray();
@@ -101,11 +98,13 @@ class jupgradeControllerAjax extends JController
 		/**
 		 * Check Curl
 		 */
-		$ext = get_loaded_extensions();
+		if ($params->skip_download != 1) {
+			$ext = get_loaded_extensions();
 		
-		if (!in_array("curl", $ext)) {
-			echo "406: cURL not loaded";
-			exit;
+			if (!in_array("curl", $ext)) {
+				echo "406: cURL not loaded";
+				exit;
+			}
 		}
 		
 		/**
