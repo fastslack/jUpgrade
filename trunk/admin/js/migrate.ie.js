@@ -9,7 +9,6 @@
  * @license			GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-
 var jUpgrade = new Class({
 
   Implements: [Options, Events],
@@ -22,6 +21,8 @@ var jUpgrade = new Class({
     skip_checks: 0,
     skip_download: 0,
     skip_decompress: 0,
+    skip_templates: 0,
+    skip_extensions: 0,
     positions: 0,
     debug: 0
   },
@@ -37,6 +38,7 @@ var jUpgrade = new Class({
 		$('install').setStyle('display', 'none');
 		$('migration').setStyle('display', 'none');
 		$('templates').setStyle('display', 'none');
+		$('files').setStyle('display', 'none');
 		$('extensions').setStyle('display', 'none');
 		$('done').setStyle('display', 'none');
 
@@ -138,9 +140,53 @@ var jUpgrade = new Class({
 		  method: 'get',
 			noCache: true,
 		  onComplete: function( msg ) {
-					var self = this;
+					/**
+					 * FIX!! We cant call this function in the object
+					 */
+					var __explode = function (delimiter, string, limit) {
 
-					var ex = self.__explode(',', msg);
+					 var emptyArray = { 0: '' };
+						 
+						// third argument is not required
+						if ( arguments.length < 2 ||
+								typeof arguments[0] == 'undefined' ||
+								typeof arguments[1] == 'undefined' )
+						{
+								return null;
+						}
+		
+						if ( delimiter === '' ||
+								delimiter === false ||
+								delimiter === null )
+						{
+								return false;
+						}
+		
+						if ( typeof delimiter == 'function' ||
+								typeof delimiter == 'object' ||
+								typeof string == 'function' ||
+								typeof string == 'object' )
+						{
+								return emptyArray;
+						}
+		
+						if ( delimiter === true ) {
+								delimiter = '1';
+						}
+						 
+						if (!limit) {
+								return string.toString().split(delimiter.toString());
+						} else {
+								// support for limit argument
+								var splitted = string.toString().split(delimiter.toString());
+								var partA = splitted.splice(0, limit - 1);
+								var partB = splitted.join(delimiter.toString());
+								partA.push(partB);
+								return partA;
+						}
+					} // end function
+
+					var ex = __explode(',', msg);
 
 		      var currBytes = document.getElementById('currBytes');
 		      var totalBytes = document.getElementById('totalBytes');
@@ -278,7 +324,7 @@ var jUpgrade = new Class({
 					}
 
 				}
-			}).request();
+			}).request('directory=' + self.options.directory);
 		}
 
 	}, // end function
@@ -344,13 +390,13 @@ var jUpgrade = new Class({
 
 								self.migrate();
 							}
-						}).request();
+						}).request('directory=' + self.options.directory);
 
 					}
 				}).request();
 
 		  }
-		}).request();
+		}).request('directory=' + self.options.directory + '&prefix_new=' + self.options.prefix_new);
 
 	}, // end function
 
@@ -367,6 +413,7 @@ var jUpgrade = new Class({
 			url: 'components/com_jupgrade/includes/controller.php',
 			method: 'get',
 			noCache: true,
+			data: 'directory=' + self.options.directory,
 			onComplete: function(response) {
 
 				var ex = self.__explode(';|;', response);
@@ -390,7 +437,15 @@ var jUpgrade = new Class({
 					$clear(migration_periodical);
 
 					// Run templates step
-					self.templates();
+					if (self.options.skip_templates == 1) {
+						if (self.options.skip_files == 1) {
+							self.done();
+						}else{
+							self.files();
+						}
+					}else{
+						self.templates();
+					}
 				}
 			}
 		});
@@ -454,12 +509,59 @@ var jUpgrade = new Class({
 						//alert(response);
 						pb5.set(100);
 						pb5.finish();
-						self.extensions();
+						if (self.options.skip_extensions == 1) {
+							self.done();
+						}else{
+							self.files();
+						}
 					}
-				}).request();
+				}).request('directory=' + self.options.directory);
 
 		  }
-		}).request();
+		}).request('directory=' + self.options.directory);
+
+	}, // end function
+
+	/**
+	 * Run the files copying
+	 *
+	 * @return	bool
+	 * @since	1.2.0
+	 */
+	files: function(e) {
+		var self = this;
+
+		var mySlideTem = new Fx.Slide('files');
+		mySlideTem.hide();
+		$('files').setStyle('display', 'block');
+		mySlideTem.toggle();
+
+		var pb6 = new dwProgressBar({
+			container: $('pb6'),
+			startPercentage: 20,
+			speed: 1000,
+			boxID: 'pb6-box',
+			percentageID: 'pb6-perc',
+			displayID: 'text',
+			displayText: false
+		});
+
+		var d = new Ajax( 'components/com_jupgrade/includes/migrate_files.php', {
+		  method: 'get',
+		  onComplete: function( msg ) {
+		    //alert(msg);
+				pb6.set(100);
+				pb6.finish();
+
+				if (self.options.debug == 1) {
+					text = document.getElementById('debug');
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[files]</b><br><br>' +msg;
+				}
+
+				self.extensions();
+
+		  }
+		}).request('directory=' + self.options.directory);
 
 	}, // end function
 
@@ -476,6 +578,7 @@ var jUpgrade = new Class({
 			url: 'components/com_jupgrade/includes/extensions_controller.php',
 			method: 'get',
 			noCache: true,
+			data: 'directory=' + self.options.directory,
 			onComplete: function(response) {
 				var ex = self.__explode(';|;', response);
 				var msg = ex[0];
@@ -483,17 +586,17 @@ var jUpgrade = new Class({
 				var file = ex[2];
 				var lastid = ex[3];
 
-				pb6.set(100);
+				pb7.set(100);
 				text = document.getElementById('status_ext');
 				text.innerHTML = 'Migrating ' + file;
 
 				if (self.options.debug == 1) {
 					text = document.getElementById('debug');
-					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>';
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>'+response;
 				}
 
 				if (id == lastid) {
-					pb6.finish();
+					pb7.finish();
 
 					// Shutdown periodical
 					$clear(extension_periodical);
@@ -513,12 +616,12 @@ var jUpgrade = new Class({
 		$('extensions').setStyle('display', 'block');
 		mySlideExt.toggle();
 
-		pb6 = new dwProgressBar({
-			container: $('pb6'),
+		pb7 = new dwProgressBar({
+			container: $('pb7'),
 			startPercentage: 50,
 			speed: 1000,
-			boxID: 'pb6-box',
-			percentageID: 'pb6-perc',
+			boxID: 'pb7-box',
+			percentageID: 'pb7-perc',
 			displayID: 'text',
 			displayText: false
 		});
@@ -544,7 +647,7 @@ var jUpgrade = new Class({
 				$('done').setStyle('display', 'block');
 				mySlideDone.toggle();
 		  }
-		}).request();
+		}).request('directory=' + self.options.directory);
 
 	}, // end function
 
