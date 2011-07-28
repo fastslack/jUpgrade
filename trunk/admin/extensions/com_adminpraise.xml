@@ -3,11 +3,6 @@
 <jupgrade>
 	<name>AdminPraise for Joomla 1.7</name>
 
-	<!-- List of update servers
-	<updateservers>
-		<server type="extension" priority="1" name="AdminPraise Update Site">http://www.matware.com.ar/extensions/adminpraise/adminpraise.xml</server>
-	</updateservers>-->
-
 	<collection>http://www.matware.com.ar/extensions/adminpraise/adminpraise.collection.xml</collection>
 
 	<!-- The tables to copy to the new site.

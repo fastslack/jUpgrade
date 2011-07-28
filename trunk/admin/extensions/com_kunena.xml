@@ -1,18 +1,9 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<!-- List of update servers -->
-	<updateservers>
-		<server type="extension" priority="1" name="Kunena 1.6 Update Site">http://update.kunena.org/kunena16.xml</server>
-	</updateservers>
+	<name>Kunena for Joomla 1.7</name>
 
-	<!-- Adapter class location and name -->
-	<!--
-	<installer>
-		<file>administrator/components/com_kunena/install/j16upgrade.php</file>
-		<class>jUpgradeComponentKunena</class>
-	</installer>
-	-->
+	<collection>http://www.matware.com.ar/extensions/kunena/kunena.collection.xml</collection>
 
 	<!-- The tables to copy to the new site. -->
 	<tables>

@@ -37,8 +37,8 @@ class jUpgradeExtensions extends jUpgrade
 			$state = json_decode($step->state);
 
 			// Try to load the adapter object
-			if (file_exists(JPATH_ROOT.DS.$state->phpfile)) {
-				require_once JPATH_ROOT.DS.$state->phpfile;
+			if (file_exists($state->phpfile)) {
+				require_once $state->phpfile;
 			}
 
 			if (class_exists($state->class)) {

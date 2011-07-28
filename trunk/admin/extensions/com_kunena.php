@@ -42,7 +42,7 @@ class jUpgradeComponentKunena extends jUpgrade {
 		if (!file_exists(JPATH_ROOT.DS.'administrator/components/com_kunena/api.php')) {
 			return false;
 		}
-		$this->db_old->setQuery("SELECT * FROM ".$this->db->nameQuote($this->db_old->getPrefix().'kunena_version')." ORDER BY `id` DESC", 0, 1);
+		$this->db_old->setQuery("SELECT * FROM ".$this->db_old->nameQuote($this->db_old->getPrefix().'kunena_version')." ORDER BY `id` DESC", 0, 1);
 		$version = $this->db_old->loadObject();
 		if (!is_object($version) || substr($version->version, 0, 4) != '1.6.') {
 			return false;
