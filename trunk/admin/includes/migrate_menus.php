@@ -73,6 +73,8 @@ class jUpgradeMenu extends jUpgrade
 			$row['access']++;
 			// Fixing level
 			$row['level']++;
+			// Fixing ordering
+			$row['ordering'] = 0;
 			// Fixing language
 			$row['language'] = '*';
 
