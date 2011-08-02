@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>RSGallery2 for Joomla 1.7</name>
+
+	<collection>http://www.matware.com.ar/extensions/rsgallery2/rsgallery2.collection.xml</collection>
+
+	<!-- List of update servers -->
+	<updateservers>
+  	<server type="extension" priority="1" name="RSGallery2 Update Site">http://joomlacode.org/gf/download/frsrelease/14893/64924/com_rsgallery2_v3RC1.zip</server>
+	</updateservers>
+	
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>rsgallery2_acl</table>
+		<table>rsgallery2_comments</table>
+		<table>rsgallery2_config</table>
+		<table>rsgallery2_files</table>
+		<table>rsgallery2_galleries</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>images/rsgallery/display</folder>
+		<folder>images/rsgallery/original</folder>
+		<folder>images/rsgallery/thumb</folder>
+		<folder>images/rsgallery/watermarked</folder>
+	</folders>
+
+	<!-- No categories to copy to the new site. -->
+</jupgrade>
