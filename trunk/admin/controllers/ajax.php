@@ -48,7 +48,7 @@ class jupgradeControllerAjax extends JController
 	function checks()
 	{
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php';
-		
+
 		// Initialize jupgrade class
 		$jupgrade = new jUpgrade;
 		

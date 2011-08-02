@@ -41,7 +41,7 @@ class jupgradeControllerCpanel extends jupgradeController
 	function help()
 	{
 		$msg = "";
-		$link = "http://www.matware.com.ar/foros.html";
+		$link = "http://www.matware.com.ar/forum/listcat/categories.html";
 		$this->setRedirect($link, $msg);
 	}
 }

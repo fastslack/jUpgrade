@@ -64,7 +64,7 @@ $document->addStyleSheet("http://fonts.googleapis.com/css?family=Paytone+One");
 window.addEvent('domready', function() {
 
 	var jupgrade = new jUpgrade({
-    mode: <?php echo $params->get("mode") ?>,
+    mode: <?php echo $params->get("mode") ? $params->get("mode") : 1; ?>,
     directory: '<?php echo $params->get("directory") ?>',
     prefix_old: '<?php echo $params->get("prefix_old") ?>',
     prefix_new: '<?php echo $params->get("prefix_new") ?>',

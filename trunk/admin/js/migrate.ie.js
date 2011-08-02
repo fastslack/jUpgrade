@@ -109,6 +109,11 @@ var jUpgrade = new Class({
 				onComplete: function( response ) {
 					//alert('>>'+response+'<<');
 
+					if (self.options.debug == 1) {
+						text = document.getElementById('debug');
+						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[checks]</b><br><br>' +response;
+					}
+
 					if (response != 'OK') {
 						pb0.set(100);
 						pb0.finish();
