@@ -84,7 +84,6 @@ class jUpgradeTemplatesFiles extends jUpgrade
 		}
 	}
 
-
 }
 
 // Migration 3rd party templates

@@ -27,6 +27,15 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+2-Ago-2011 Matias Aguirre
+ ^ Joomla packages updated
+ # Run default config values if not saved
+ + Copy images/media files
+
+20-Jul-2011 Matias Aguirre
+ ^ Prefix database naming rewrited
+ # Fix download progress bar
+
 19-Jul-2011 Matias Aguirre
  ^ Mootools structure improvements
  ^ More improvements in 3rd extensions support
