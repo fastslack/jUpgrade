@@ -98,9 +98,11 @@ class jupgradeControllerAjax extends JController
 		/**
 		 * Check Curl
 		 */
-		if ($params->skip_download != 1) {
+		$skip_download = isset($params->skip_download) ? $params->skip_download : 0;	
+	
+		if ($skip_download != 1) {
 			$ext = get_loaded_extensions();
-		
+	
 			if (!in_array("curl", $ext)) {
 				echo "406: cURL not loaded";
 				exit;
