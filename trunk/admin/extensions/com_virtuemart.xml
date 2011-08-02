@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>Virtuemart for Joomla 1.7</name>
+
+	<collection>http://www.matware.com.ar/extensions/virtuemart/virtuemart.collection.xml</collection>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>vm_auth_group</table>
+		<table>vm_auth_user_group</table>
+		<table>vm_auth_user_vendor</table>
+		<table>vm_cart</table>
+		<table>vm_category</table>
+		<table>vm_category_xref</table>
+		<table>vm_country</table>
+		<table>vm_coupons</table>
+		<table>vm_creditcard</table>
+		<table>vm_csv</table>
+		<table>vm_currency</table>
+		<table>vm_export</table>
+		<table>vm_function</table>
+		<table>vm_manufacturer</table>
+		<table>vm_manufacturer_category</table>
+		<table>vm_module</table>
+		<table>vm_orders</table>
+		<table>vm_order_history</table>
+		<table>vm_order_item</table>
+		<table>vm_order_payment</table>
+		<table>vm_order_status</table>
+		<table>vm_order_user_info</table>
+		<table>vm_payment_method</table>
+		<table>vm_product</table>
+		<table>vm_product_attribute</table>
+		<table>vm_product_attribute_sku</table>
+		<table>vm_product_category_xref</table>
+		<table>vm_product_discount</table>
+		<table>vm_product_download</table>
+		<table>vm_product_files</table>
+		<table>vm_product_mf_xref</table>
+		<table>vm_product_price</table>
+		<table>vm_product_product_type_xref</table>
+		<table>vm_product_relations</table>
+		<table>vm_product_reviews</table>
+		<table>vm_product_type</table>
+		<table>vm_product_type_parameter</table>
+		<table>vm_product_votes</table>
+		<table>vm_shipping_carrier</table>
+		<table>vm_shipping_label</table>
+		<table>vm_shipping_rate</table>
+		<table>vm_shopper_group</table>
+		<table>vm_shopper_vendor_xref</table>
+		<table>vm_state</table>
+		<table>vm_tax_rate</table>
+		<table>vm_userfield</table>
+		<table>vm_userfield_values</table>
+		<table>vm_user_info</table>
+		<table>vm_vendor</table>
+		<table>vm_vendor_category</table>
+		<table>vm_waiting_list</table>
+		<table>vm_zone_shipping</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. 
+	<folders>
+		<folder>media/kunena</folder>
+		<folder>administrator/components/com_kunena</folder>
+		<folder>components/com_kunena</folder>
+	</folders>-->
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_kunena"></category>
+	</categories>
+	-->
+</jupgrade>
