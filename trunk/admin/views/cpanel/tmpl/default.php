@@ -85,28 +85,6 @@ window.addEvent('domready', function() {
 	<tbody>
 		<tr>
 			<td width="100%" valign="top" align="center">
-				<div id="info">
-					<div id="info_title"><?php echo JText::_('jUpgrade'); ?></div>
-					<div id="info_version"><?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
-					<div id="info_thanks">
-						<p>
-							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2011<br />
-							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
-						</p>
-						<p>
-							<a href="http://matware.com.ar/joomla-projects/jupgrade.html">Project Site</a><br />
-							<a href="http://matware.com.ar/forum/listcat/categories.html">Project Community</a><br />
-							<a href="http://matware.com.ar/forum/projects/jupgrade/jupgrade-f-a-q.html">FAQ</a><br />
-							<a href="http://www.matware.com.ar/people-who-support-this-project.html">People who support this project</a><br />
-							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-								<input type="hidden" name="cmd" value="_s-xclick" />
-								<input type="hidden" name="hosted_button_id" value="CZUMWRZ5E8DKS" />
-								<input id="donate" type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
-								<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" style="border: none;" />
-							</form>
-						</p>
-					</div>
-				</div>
 <?php if ($mtupgrade == false) { ?>
 				<div id="error">
 					<a href="index.php?option=com_plugins"><?php echo JText::_('Mootools 1.2 not loaded. Please enable "System - Mootools Upgrade" plugin.'); ?></a>
@@ -170,12 +148,32 @@ window.addEvent('domready', function() {
 				<div id="done">
 					<h2><?php echo JText::_($package.' Upgrade Finished!'); ?></h2>
 					<p class="text">
-						<?php echo JText::_('You can check your new site here'); ?>:&nbsp;
+						<?php echo JText::_('You can check your new site here'); ?>:<br />
 						<a href="<?php echo JURI::root().$params->get('directory'); ?>/" target="_blank"><?php echo JText::_('Site'); ?></a> and
 						<a href="<?php echo JURI::root().$params->get('directory'); ?>/administrator/" target="_blank"><?php echo JText::_('Administrator'); ?></a>
 					</p>
 				</div>
-
+				<div id="info">
+					<div id="info_version"><?php echo JText::_('jUpgrade'); ?> <?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
+					<div id="info_thanks">
+						<p>
+							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2011<br />
+							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
+						</p>
+						<p>
+							<a href="http://matware.com.ar/joomla-projects/jupgrade.html">Project Site</a> /
+							<a href="http://matware.com.ar/forum/listcat/categories.html">Project Community</a> /
+							<a href="http://matware.com.ar/forum/projects/jupgrade/jupgrade-f-a-q.html">FAQ</a> /
+							<a href="http://www.matware.com.ar/people-who-support-this-project.html">Supporters</a><br />
+							<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+								<input type="hidden" name="cmd" value="_s-xclick" />
+								<input type="hidden" name="hosted_button_id" value="CZUMWRZ5E8DKS" />
+								<input id="donate" type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+								<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" style="border: none;" />
+							</form>
+						</p>
+					</div>
+				</div>
 				<div>
 					<div id="debug"></div>
 				</div>
