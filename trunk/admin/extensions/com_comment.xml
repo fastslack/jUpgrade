@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>CompoJoomComment for Joomla 1.7</name>
+
+	<collection>http://www.matware.com.ar/extensions/comment/comment.collection.xml</collection>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>comment</table>
+		<table>comment_captcha</table>
+		<table>comment_setting</table>
+		<table>comment_voting</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/com_comment</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_comment"></category>
+	</categories>
+	-->
+</jupgrade>
