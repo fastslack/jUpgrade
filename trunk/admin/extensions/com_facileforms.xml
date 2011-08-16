@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>BreezingForms for Joomla 1.7</name>
+
+	<collection>http://www.matware.com.ar/extensions/facileforms/facileforms.collection.xml</collection>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>facileforms_compmenus</table>
+		<table>facileforms_config</table>
+		<table>facileforms_elements</table>
+		<table>facileforms_forms</table>
+		<table>facileforms_integrator_criteria_fixed</table>
+		<table>facileforms_integrator_criteria_form</table>
+		<table>facileforms_integrator_criteria_joomla</table>
+		<table>facileforms_integrator_items</table>
+		<table>facileforms_integrator_rules</table>
+		<table>facileforms_packages</table>
+		<table>facileforms_pieces</table>
+		<table>facileforms_records</table>
+		<table>facileforms_scripts</table>
+		<table>facileforms_subrecords</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. 
+	<folders>
+		<folder>media/com_facileforms</folder>
+	</folders>-->
+
+	<!-- The categories to copy to the new site. 
+	<categories>
+		<category section="com_facileforms"></category>
+	</categories>	-->
+</jupgrade>
