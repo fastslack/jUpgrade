@@ -54,10 +54,6 @@ else{
 }
 
 $document->addStyleSheet("components/com_jupgrade/css/jupgrade.css");
-$document->addStyleSheet("http://fonts.googleapis.com/css?family=Orbitron");
-$document->addStyleSheet("http://fonts.googleapis.com/css?family=Puritan");
-$document->addStyleSheet("http://fonts.googleapis.com/css?family=Tinos");
-$document->addStyleSheet("http://fonts.googleapis.com/css?family=Paytone+One");
 ?>
 <script type="text/javascript">
 
@@ -93,7 +89,7 @@ window.addEvent('domready', function() {
 
 				<div id="update">
 					<br /><img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
-					<h2><?php echo JText::_('START UPGRADE'); ?></h2>
+					<h2><?php echo JText::_('START UPGRADE'); ?></h2><br />
 				</div>
 
 				<div id="checks">
