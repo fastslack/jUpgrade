@@ -44,7 +44,7 @@ class jUpgradeContent extends jUpgrade
 		$where = "o.section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$'";
 
 		$rows = parent::getSourceData(
-			'`id`, `title`, NULL AS `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
+			'`id`, `title`, `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
 		 .'`mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
 		 .'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
 		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
@@ -60,11 +60,6 @@ class jUpgradeContent extends jUpgrade
 			$row['attribs'] = $this->convertParams($row['attribs']);
 			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
 			$row['language'] = '*';
-
-			// Correct alias
-			if ($row['alias'] == "") {
-				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
-			}
 
 			// Correct state
 			if ($row['state'] == -1) {
