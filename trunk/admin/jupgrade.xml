@@ -8,7 +8,7 @@
 	<copyright>Copyright 2006 - 2011 Matias Aguirre. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>2011-02-07</creationDate>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 	<description></description>
 
 	<install>
@@ -65,6 +65,8 @@
 			<language tag="sk-SK">languages/sk-SK.com_jupgrade.ini</language>
       <language tag="zh-TW">languages/fi-FI.com_jupgrade.ini</language>
 			<language tag="th-TH">languages/th-TH.com_jupgrade.ini</language>
+			<language tag="ru-RU">languages/ru-RU.com_jupgrade.ini</language>
+			<language tag="lt-LT">languages/lt-LT.com_jupgrade.ini</language>
 		</languages>
 	</administration>
 
@@ -107,4 +109,3 @@
 		</param>
 	</params>
 </install>
-

@@ -27,6 +27,16 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+16-Ago-2011 Matias Aguirre
+ + Added Virtuemart support
+ + Added compojoomComment support
+ + Added BreezeForms support
+ $ added Russian (ru-RU) translation (thank Alexey Baskinov)
+ $ added Lituanian (lt-LT) translation (thanks Martis)
+ $ updated Traditional Chinese (zh-TW) thanslation (thanks abokuo)
+ $ updated French (fr-FR) translation (thanks Olivier)
+ $ updated sk-SK translation (thanks P3T3R)
+
 2-Ago-2011 Matias Aguirre
  ^ Joomla packages updated
  # Run default config values if not saved
