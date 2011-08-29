@@ -47,7 +47,7 @@ class jUpgrade
 	function __construct($step = null)
 	{
 		// Set timelimit to 0
-		if(!ini_get('safe_mode')) {
+		if(ini_get('safe_mode') == false) {
 			set_time_limit(0);
 		}
 
