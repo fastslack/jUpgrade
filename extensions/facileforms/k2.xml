@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<update>
+	<!-- Description -->
+	<name>K2</name>
+	<description>K2 for Joomla 1.7</description>
+	<element>com_k2</element>
+	<type>component</type>
+	<version>1.0.0</version>
+	<infourl title="k2">http://www.k2.com</infourl>
+
+	<!-- The download url of the new package to be installed -->
+	<downloads>
+    <downloadurl type="full" format="zip">http://getk2.org/svnDownload.php</downloadurl>
+	</downloads>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/k2</folder>
+	</folders>
+
+	<!-- Tags -->
+	<tags>
+		<tag>k2</tag>
+	</tags>
+
+	<!-- Maintainer description -->
+	<maintainer>Matias Aguirre</maintainer>
+	<maintainerurl>http://www.matware.com.ar/</maintainerurl>
+	<section>Testing</section>
+	<targetplatform name="joomla" version="1.6" />
+</update>
+
