@@ -3,7 +3,7 @@
 <jupgrade>
 	<name>RSGallery2 for Joomla 1.7</name>
 
-	<collection>http://www.matware.com.ar/extensions/rsgallery2/rsgallery2.collection.xml</collection>
+	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/rsgallery2/rsgallery2.collection.xml</collection>
 
 	<!-- List of update servers -->
 	<updateservers>

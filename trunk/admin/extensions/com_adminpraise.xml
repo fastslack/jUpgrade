@@ -3,7 +3,7 @@
 <jupgrade>
 	<name>AdminPraise for Joomla 1.7</name>
 
-	<collection>http://www.matware.com.ar/extensions/adminpraise/adminpraise.collection.xml</collection>
+	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/adminpraise/adminpraise.collection.xml</collection>
 
 	<!-- The tables to copy to the new site.
 	<tables>
