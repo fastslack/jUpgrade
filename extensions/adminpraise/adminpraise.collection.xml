@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<extensionset name="Adminpraise" description="Adminpraise Extensions List">
+   <extension name="Adminpraise" element="com_adminpraise" type="component" version="1.6" detailsurl="http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/adminpraise/adminpraise.xml"/>
+</extensionset>

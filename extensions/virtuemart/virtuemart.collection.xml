@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<extensionset name="Virtuemart" description="Virtuemart Extensions List">
+   <extension name="Virtuemart" element="com_virtuemart" type="component" version="2.0" detailsurl="http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/virtuemart/virtuemart.xml"/>
+</extensionset>

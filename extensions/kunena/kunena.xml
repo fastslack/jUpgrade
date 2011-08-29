@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<update>
+	<!-- Description -->
+	<name>Kunena</name>
+	<description>Kunena for Joomla 1.7</description>
+	<element>com_kunena</element>
+	<type>component</type>
+	<version>1.6.5</version>
+	<infourl title="Kunena">http://www.kunena.org</infourl>
+
+	<!-- The download url of the new package to be installed -->
+	<downloads>
+		<downloadurl type="full" format="zip">http://www.matware.com.ar/extensions/kunena/com_kunena_v1.6.5-DEV_b5004_2011-07-27.zip
+</downloadurl>
+	</downloads>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>kunena_announcement</table>
+		<table>kunena_attachments</table>
+		<table>kunena_attachments_bak</table>
+		<table>kunena_categories</table>
+		<table>kunena_config</table>
+		<table>kunena_config_backup</table>
+		<table>kunena_favorites</table>
+		<table>kunena_groups</table>
+		<table>kunena_messages</table>
+		<table>kunena_messages_text</table>
+		<table>kunena_moderation</table>
+		<table>kunena_polls</table>
+		<table>kunena_polls_options</table>
+		<table>kunena_polls_users</table>
+		<table>kunena_ranks</table>
+		<table>kunena_sessions</table>
+		<table>kunena_smileys</table>
+		<table>kunena_subscriptions</table>
+		<table>kunena_subscriptions_categories</table>
+		<table>kunena_thankyou</table>
+		<table>kunena_users</table>
+		<table>kunena_users_banned</table>
+		<table>kunena_version</table>
+		<table>kunena_whoisonline</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/kunena</folder>
+		<folder>components/com_kunena/template</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<categories>
+		<category section="com_kunena"></category>
+	</categories>
+
+	<!-- Tags -->
+	<tags>
+		<tag>testing</tag>
+	</tags>
+
+	<!-- Maintainer description -->
+	<maintainer>Matias Aguirre</maintainer>
+	<maintainerurl>http://www.matware.com.ar/</maintainerurl>
+	<section>Testing</section>
+	<targetplatform name="joomla" version="1.6" />
+</update>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" ?> 
+<extensionset name="Kunena" description="Kunena Extensions List"> 
+  <extension name="Kunena Forum" description="Kunena Forum Component. This version adds Joomla 1.6 support." element="com_kunena" type="component" version="1.6.4" detailsurl="http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/kunena/kunena.xml"/>
+  <extension name="Kunena Latest" element="mod_kunenalatest" type="module" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="Kunena Login" element="mod_kunenalogin" type="module" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="Kunena Search" element="mod_kunenasearch" type="module" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="Kunena Statistics" element="mod_kunenastats" type="module" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="Kunena Discuss" element="plg_kunenadiscuss" type="plugin" folder="content" client="site" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="Kunena Search" element="plg_kunenasearch" type="plugin" folder="search" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+
+  <extension name="Kunena Groups for JomSocial" element="plg_jomsocial_kunenagroups" type="plugin" folder="community" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="Kunena Menu for JomSocial" element="plg_jomsocial_kunenamenu" type="plugin" folder="community" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="My Kunena for JomSocial" element="plg_jomsocial_mykunena" type="plugin" folder="community" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+  <extension name="Finder - Kunena Posts" element="plg_jxfinder_kunena" type="plugin" folder="finder" version="1.6.5" detailsurl="http://www.matware.com.ar/extensions/kunena/kunena16.xml"/>
+</extensionset>
+

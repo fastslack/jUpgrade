@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<update>
+	<!-- Description -->
+	<name>Adminpraise</name>
+	<description>Adminpraise for Joomla 1.7</description>
+	<element>com_adminpraise</element>
+	<type>component</type>
+	<version>1.0.0</version>
+	<infourl title="adminpraise">http://www.adminpraise.com</infourl>
+
+	<!-- The download url of the new package to be installed -->
+	<downloads>
+    <downloadurl type="full" format="zip">http://www.matware.com.ar/extensions/adminpraise/adminpraise1.0stable-build575.zip</downloadurl>
+	</downloads>
+
+	<!-- The tables to copy to the new site. 
+	<tables>
+		<table>adminpraise_menu</table>
+		<table>adminpraise_menu_types</table>
+	</tables> -->
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/com_adminpraise</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<categories>
+		<category section="com_adminpraise"></category>
+	</categories>
+
+	<!-- Tags -->
+	<tags>
+		<tag>testing</tag>
+	</tags>
+
+	<!-- Maintainer description -->
+	<maintainer>Matias Aguirre</maintainer>
+	<maintainerurl>http://www.matware.com.ar/</maintainerurl>
+	<section>Testing</section>
+	<targetplatform name="joomla" version="1.6" />
+</update>
+

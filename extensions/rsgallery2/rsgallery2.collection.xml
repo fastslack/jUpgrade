@@ -1,0 +1,5 @@
+<?xml version="1.0" ?> 
+<extensionset name="RSGallery2" description="RSGallery2 Extensions List"> 
+  <extension name="RSGallery2 Forum" description="RSGallery2 Gallery Component. This version adds Joomla 1.6 support." element="com_rsgallery2" type="component" version="1.6.4" detailsurl="http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/rsgallery2/rsgallery2.xml"/>
+</extensionset>
+
