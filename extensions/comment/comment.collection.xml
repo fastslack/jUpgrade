@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<extensionset name="CompoJoomComment" description="CompoJoomComment Extensions List">
+   <extension name="CompoJoomComment" element="com_comment" type="component" version="1.6" detailsurl="http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/comment/comment.xml"/>
+</extensionset>
