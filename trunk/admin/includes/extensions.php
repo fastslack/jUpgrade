@@ -257,7 +257,18 @@ class jUpgradeExtensions extends jUpgrade
 			$state->xmlfile = null;
 			$state->phpfile = null;
 
-			$path = preg_replace($types, $directories, $element);
+     $path = preg_replace($types, $directories, $element);
+
+      if (is_dir(JPATH_ROOT.DS."administrator/{$path}")) {
+        // Find j16upgrade.xml from the extension's administrator folders
+        $files = (array) JFolder::files(JPATH_ROOT."/administrator/{$path}", '^j16upgrade\.xml$', true, true);
+        $state->xmlfile = array_shift( $files );
+      }
+      if (empty($state->xmlfile) && is_dir(JPATH_ROOT.'/'.$path)) {
+        // Find j16upgrade.xml from the extension's folders
+        $files = (array) JFolder::files(JPATH_ROOT.'/'.$path, '^j16upgrade\.xml$', true, true);
+        $state->xmlfile = array_shift( $files );
+      }
 
 			if (empty($state->xmlfile)) {
 				// Find xml file from jUpgrade
@@ -298,9 +309,11 @@ class jUpgradeExtensions extends jUpgrade
 				// Read xml definition file
 				$xml = simplexml_load_file($state->xmlfile);
 
-				$query = "INSERT INTO #__update_sites (name, type, location, enabled) VALUES({$this->db_new->quote($xml->name)}, 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
-				$this->db_new->setQuery($query);
-				$this->db_new->query();
+				if (isset($xml->name) && isset($xml->collection)) {
+		      $query = "INSERT INTO #__update_sites (name, type, location, enabled) VALUES({$this->db_new->quote($xml->name)}, 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
+		      $this->db_new->setQuery($query);
+		      $this->db_new->query();
+        }
 
 				$this->count = $this->count+1;
 			}
