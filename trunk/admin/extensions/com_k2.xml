@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>K2 for Joomla 1.7</name>
+
+	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/k2/k2.collection.xml</collection>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>k2_attachments</table>
+		<table>k2_categories</table>
+		<table>k2_comments</table>
+		<table>k2_extra_fields</table>
+		<table>k2_extra_fields_groups</table>
+		<table>k2_items</table>
+		<table>k2_rating</table>
+		<table>k2_tags</table>
+		<table>k2_tags_xref</table>
+		<table>k2_users</table>
+		<table>k2_user_groups</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/k2</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_k2"></category>
+	</categories>
+	-->
+</jupgrade>
