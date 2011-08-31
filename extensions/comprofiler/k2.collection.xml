@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<extensionset name="CB" description="CB Extensions List">
+   <extension name="Community Builder" element="com_comprofiler" type="component" version="1.6" detailsurl="http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/comprofiler/comprofiler.xml"/>
+</extensionset>

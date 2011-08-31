@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<update>
+	<!-- Description -->
+	<name>CB</name>
+	<description>CB for Joomla 1.7</description>
+	<element>com_comprofiler</element>
+	<type>component</type>
+	<version>1.0.0</version>
+	<infourl title="comprofiler">http://www.comprofiler.com</infourl>
+
+	<!-- The download url of the new package to be installed -->
+	<downloads>
+    <downloadurl type="full" format="zip">http://getcomprofiler.org/svnDownload.php</downloadurl>
+	</downloads>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/comprofiler</folder>
+	</folders>
+
+	<!-- Tags -->
+	<tags>
+		<tag>comprofiler</tag>
+	</tags>
+
+	<!-- Maintainer description -->
+	<maintainer>Matias Aguirre</maintainer>
+	<maintainerurl>http://www.matware.com.ar/</maintainerurl>
+	<section>Testing</section>
+	<targetplatform name="joomla" version="1.6" />
+</update>
+
