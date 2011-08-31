@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>CB for Joomla 1.7</name>
+
+	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/comprofiler/comprofiler.collection.xml</collection>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>comprofiler_fields</table>
+		<table>comprofiler_field_values</table>
+		<table>comprofiler_lists</table>
+		<table>comprofiler_members</table>
+		<table>comprofiler_plugin</table>
+		<table>comprofiler_sessions</table>
+		<table>comprofiler_tabs</table>
+		<table>comprofiler_userreports</table>
+		<table>comprofiler_views</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>images/comprofiler</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_comprofiler"></category>
+	</categories>
+	-->
+</jupgrade>
