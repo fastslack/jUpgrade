@@ -27,6 +27,6 @@
 	<maintainer>Matias Aguirre</maintainer>
 	<maintainerurl>http://www.matware.com.ar/</maintainerurl>
 	<section>Testing</section>
-	<targetplatform name="joomla" version="1.6" />
+	<targetplatform name="joomla" version="1." />
 </update>
 
