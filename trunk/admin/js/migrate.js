@@ -303,6 +303,8 @@ var jUpgrade = new Class({
 			displayText: false
 		});
 
+		var myScroll = new Fx.Scroll(window).toBottom();
+
 		text = document.getElementById('decompressstatus');
 
 		if (self.options.skip_decompress == 1) {
@@ -358,6 +360,8 @@ var jUpgrade = new Class({
 			displayID: 'text',
 			displayText: false
 		});
+
+		var myScroll = new Fx.Scroll(window).toBottom();
 
 		var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
 		  method: 'get',
@@ -474,7 +478,9 @@ var jUpgrade = new Class({
 			displayText: false
 		});
 
-		migration_periodical = runMigration.periodical(2500);
+		var myScroll = new Fx.Scroll(window).toBottom();
+
+		migration_periodical = runMigration.periodical(1500);
 
 	}, // end function
 
@@ -501,6 +507,8 @@ var jUpgrade = new Class({
 			displayID: 'text',
 			displayText: false
 		});
+
+		var myScroll = new Fx.Scroll(window).toBottom();
 
 		var d = new Ajax( 'components/com_jupgrade/includes/templates_db.php', {
 		  method: 'get',
@@ -550,6 +558,8 @@ var jUpgrade = new Class({
 			displayID: 'text',
 			displayText: false
 		});
+
+		var myScroll = new Fx.Scroll(window).toBottom();
 
 		var d = new Ajax( 'components/com_jupgrade/includes/migrate_files.php', {
 		  method: 'get',
@@ -631,7 +641,9 @@ var jUpgrade = new Class({
 			displayText: false
 		});
 
-		extension_periodical = runExtensionsMigration.periodical(5500);
+		var myScroll = new Fx.Scroll(window).toBottom();
+
+		extension_periodical = runExtensionsMigration.periodical(2000);
 
 	}, // end function
 
@@ -643,6 +655,8 @@ var jUpgrade = new Class({
 	 */
 	done: function(e) {
 		var self = this;
+
+		var myScroll = new Fx.Scroll(window).toBottom();
 
 		var d = new Ajax( 'index.php?option=com_jupgrade&format=raw&controller=ajax&task=done', {
 		  method: 'get',
