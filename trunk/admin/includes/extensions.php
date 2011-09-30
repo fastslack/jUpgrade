@@ -26,6 +26,7 @@ class jUpgradeExtensions extends jUpgrade
 	 * @since	1.1.0
 	 */
 	public $count = 0;
+	protected $extensions = array();
 
 	public function getInstance($step) {
 		static $instances = array();
@@ -64,6 +65,7 @@ class jUpgradeExtensions extends jUpgrade
 		if (!$this->upgradeTemplates()) {
 			return false;
 		}
+		$this->_processExtensions();
 
 		return true;
 	}
@@ -85,24 +87,13 @@ class jUpgradeExtensions extends jUpgrade
 		$where[] = "c.option NOT IN ('com_admin', 'com_banners', 'com_cache', 'com_categories', 'com_checkin', 'com_config', 'com_contact', 'com_content', 'com_cpanel', 'com_frontpage', 'com_installer', 'com_jupgrade', 'com_languages', 'com_login', 'com_mailto', 'com_massmail', 'com_media', 'com_menus', 'com_messages', 'com_modules', 'com_newsfeeds', 'com_plugins', 'com_poll', 'com_search', 'com_sections', 'com_templates', 'com_user', 'com_users', 'com_weblinks', 'com_wrapper' )";
 
 		$rows = parent::getSourceData(
-			'id, name, \'component\' AS type, `option` AS element',
+			'name, \'component\' AS type, `option` AS element, 1 AS client_id, params',
 		 null,
 		 $where,
 			'id'
 		);
 
-		$rows = $this->_processExtension ( $rows );
-
-		foreach ($rows as $row)
-		{
-			// Convert the array into an object.
-			$row = (object) $row;
-
-			if (!$this->db_new->insertObject($this->destination, $row)) {
-				throw new Exception($this->db_new->getErrorMsg());
-			}
-		}
-
+		$this->_addExtensions ( $rows, 'com' );
 		return true;
 	}
 
@@ -122,25 +113,14 @@ class jUpgradeExtensions extends jUpgrade
 		$where[] = "module   NOT   IN   ('mod_mainmenu',   'mod_login',   'mod_popular',   'mod_latest',   'mod_stats',   'mod_unread',   'mod_online',   'mod_toolbar',   'mod_quickicon',   'mod_logged',   'mod_footer',   'mod_menu',   'mod_submenu',   'mod_status',   'mod_title',   'mod_login' )";
 
 		$rows = parent::getSourceData(
-			'id, title as name, \'module\' AS type, `module` AS element',
+			'title as name, \'module\' AS type, `module` AS element, params',
 		  null,
 		  $where,
 			'id',
 		  'element'
 		);
 
-		$rows = $this->_processExtension ( $rows );
-
-		foreach ($rows as $row)
-		{
-			// Convert the array into an object.
-			$row = (object) $row;
-
-			if (!$this->db_new->insertObject($this->destination, $row)) {
-				throw new Exception($this->db_new->getErrorMsg());
-			}
-		}
-
+		$this->_addExtensions ( $rows, 'mod' );
 		return true;
 	}
 
@@ -160,25 +140,14 @@ class jUpgradeExtensions extends jUpgrade
 		$where[] = "element   NOT   IN   ('joomla',   'ldap',   'gmail',   'openid',   'content',   'categories',   'contacts',   'sections',   'newsfeeds',   'weblinks',   'pagebreak',   'vote',   'emailcloak',   'geshi',   'loadmodule',   'pagenavigation', 'none',   'tinymce',   'xstandard',   'image',   'readmore',   'sef',   'debug',   'legacy',   'cache',   'remember', 'backlink', 'log', 'blogger', 'mtupdate' )";
 
 		$rows = parent::getSourceData(
-			'id, name, \'plugin\' AS type, element',
+			'name, \'plugin\' AS type, element, folder, client_id, ordering, params',
 		  null,
 		  $where,
 			'id',
 		  'element'
 		);
 
-		$rows = $this->_processExtension ( $rows );
-
-		foreach ($rows as $row)
-		{
-			// Convert the array into an object.
-			$row = (object) $row;
-
-			if (!$this->db_new->insertObject($this->destination, $row)) {
-				throw new Exception($this->db_new->getErrorMsg());
-			}
-		}
-
+		$this->_addExtensions ( $rows, 'plg' );
 		return true;
 	}
 
@@ -200,27 +169,40 @@ class jUpgradeExtensions extends jUpgrade
 
 		$rows = array();
 		// Do some custom post processing on the list.
-		for($i=0;$i<count($folders);$i++) {
+		foreach($folders as $folder) {
 
-			$rows[$i] = array();
-			$rows[$i]['name'] = $folders[$i];
-			$rows[$i]['type'] = 'template';
-			$rows[$i]['element'] = $folders[$i];
+			$row = array();
+			$row['name'] = $folder;
+			$row['type'] = 'template';
+			$row['element'] = $folder;
+			$row['params'] = '';
+			$rows[] = $row;
 		}
 
-		$rows = $this->_processExtension ( $rows );
+		$this->_addExtensions ( $rows, 'tpl' );
+		return true;
+	}
 
-		foreach ($rows as $row)
+	protected function _addExtensions( $rows, $prefix )
+	{
+		// Create new indexed array
+		foreach ($rows as &$row)
 		{
 			// Convert the array into an object.
 			$row = (object) $row;
-
-			if (!$this->db_new->insertObject($this->destination, $row)) {
-				throw new Exception($this->db_new->getErrorMsg());
+			$row->id = null;
+			$row->element = strtolower($row->element);
+			//$row->client_id = 0;
+			// Ensure that name is always using form: xxx_folder_name
+			$name = preg_replace('/^'.$prefix.'_/', '', $row->element);
+			if (!empty($row->folder)) {
+				$element = preg_replace('/^'.$row->folder.'_/', '', $row->element);
+				$row->name = ucfirst($row->folder).' - '.ucfirst($element);
+				$name = $row->folder.'_'.$element;
 			}
+			$name = $prefix .'_'. $name;
+			$this->extensions[$name] = $row;
 		}
-
-		return true;
 	}
 
 	/**
@@ -230,13 +212,12 @@ class jUpgradeExtensions extends jUpgrade
 	 * @since 1.1.0
 	 * @throws	Exception
 	 */
-	protected function _processExtension( $rows )
+	protected function _processExtensions()
 	{
-
 		$types = array(
 			'/^com_(.+)$/e',									// com_componentname
 			'/^mod_(.+)$/e',									// mod_modulename
-			'/^plg_(.+)_(.+)$/e',								// plg_type_pluginname
+			'/^plg_(.+)_(.+)$/e',								// plg_folder_pluginname
 			'/^tpl_(.+)$/e');									// tpl_templatename
 		$directories = array(
 			"'components/com_\\1'",								// compontens/com_componentname
@@ -250,29 +231,28 @@ class jUpgradeExtensions extends jUpgrade
 			"'jUpgradeTemplate'.ucfirst('\\1')");				// jUpgradeTemplateTemplatename
 
 		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
+		foreach ($this->extensions as $name=>&$row)
 		{
-			$element = strtolower($row['element']);
 			$state = new StdClass();
 			$state->xmlfile = null;
 			$state->phpfile = null;
+			$state->extensions = null;
 
-     $path = preg_replace($types, $directories, $element);
+			$path = preg_replace($types, $directories, $name);
 
-      if (is_dir(JPATH_ROOT.DS."administrator/{$path}")) {
-        // Find j16upgrade.xml from the extension's administrator folders
-        $files = (array) JFolder::files(JPATH_ROOT."/administrator/{$path}", '^j16upgrade\.xml$', true, true);
-        $state->xmlfile = array_shift( $files );
-      }
-      if (empty($state->xmlfile) && is_dir(JPATH_ROOT.'/'.$path)) {
-        // Find j16upgrade.xml from the extension's folders
-        $files = (array) JFolder::files(JPATH_ROOT.'/'.$path, '^j16upgrade\.xml$', true, true);
-        $state->xmlfile = array_shift( $files );
-      }
-
+			if (is_dir(JPATH_ROOT.DS."administrator/{$path}")) {
+				// Find j16upgrade.xml from the extension's administrator folders
+				$files = (array) JFolder::files(JPATH_ROOT."/administrator/{$path}", '^j16upgrade\.xml$', true, true);
+				$state->xmlfile = array_shift( $files );
+			}
+			if (empty($state->xmlfile) && is_dir(JPATH_ROOT.'/'.$path)) {
+				// Find j16upgrade.xml from the extension's folders
+				$files = (array) JFolder::files(JPATH_ROOT.'/'.$path, '^j16upgrade\.xml$', true, true);
+				$state->xmlfile = array_shift( $files );
+			}
 			if (empty($state->xmlfile)) {
 				// Find xml file from jUpgrade
-				$default_xmlfile = JPATH_ROOT.DS."administrator/components/com_jupgrade/extensions/{$element}.xml";
+				$default_xmlfile = JPATH_ROOT."/administrator/components/com_jupgrade/extensions/{$name}.xml";
 				if (file_exists($default_xmlfile)) {
 					$state->xmlfile = $default_xmlfile;
 				}
@@ -283,7 +263,7 @@ class jUpgradeExtensions extends jUpgrade
 				$xml = simplexml_load_file($state->xmlfile);
 
 				if (!empty($xml->installer->file[0])) {
-					$state->phpfile = trim($xml->installer->file[0]);
+					$state->phpfile = JPATH_ROOT.DS.trim($xml->installer->file[0]);
 				}
 				if (!empty($xml->installer->class[0])) {
 					$state->class = trim($xml->installer->class[0]);
@@ -291,18 +271,18 @@ class jUpgradeExtensions extends jUpgrade
 			}
 			if (empty($state->phpfile)) {
 				// Find adapter from jUpgrade
-				$default_phpfile = JPATH_ROOT.DS."administrator/components/com_jupgrade/extensions/{$element}.php";
+				$default_phpfile = JPATH_ROOT.DS."administrator/components/com_jupgrade/extensions/{$name}.php";
 				if (file_exists($default_phpfile)) {
 					$state->phpfile = $default_phpfile;
 				}
 			}
 			if (empty($state->class)) {
 				// Set default class name
-				$state->class = preg_replace($types, $classes, $element);
+				$state->class = preg_replace($types, $classes, $row->element);
 			}
 
 			if (!empty($state->phpfile) || !empty($state->xmlfile)) {
-				$query = "INSERT INTO jupgrade_steps (name, status, extension, state) VALUES('{$element}', 0, 1, {$this->db_new->quote(json_encode($state))} )";
+				$query = "INSERT INTO jupgrade_steps (name, status, extension, state) VALUES('{$name}', 0, 1, {$this->db_new->quote(json_encode($state))} )";
 				$this->db_new->setQuery($query);
 				$this->db_new->query();
 
@@ -310,18 +290,35 @@ class jUpgradeExtensions extends jUpgrade
 				$xml = simplexml_load_file($state->xmlfile);
 
 				if (isset($xml->name) && isset($xml->collection)) {
-		      $query = "INSERT INTO #__update_sites (name, type, location, enabled) VALUES({$this->db_new->quote($xml->name)}, 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
-		      $this->db_new->setQuery($query);
-		      $this->db_new->query();
-        }
+					$query = "INSERT INTO #__update_sites (name, type, location, enabled) VALUES({$this->db_new->quote($xml->name)}, 'collection',  {$this->db_new->quote($xml->collection)}, 1 )";
+					$this->db_new->setQuery($query);
+					$this->db_new->query();
+				}
 
+				$row->params = $this->convertParams($row->params);
+				if (!$this->db_new->insertObject($this->destination, $row)) {
+					throw new Exception($this->db_new->getErrorMsg());
+				}
 				$this->count = $this->count+1;
+				unset ($row);
+
+				if (!empty($xml->package[0])) {
+					// Add other extensions from the package
+					foreach ($xml->package[0]->extension as $xml_ext) {
+						if (isset($this->extensions[(string) $xml_ext->name])) {
+							$extension = $this->extensions[(string) $xml_ext->name];
+							$state->extensions[] = (string) $xml_ext->name;
+
+							$extension->params = $this->convertParams($extension->params);
+							if (!$this->db_new->insertObject($this->destination, $extension)) {
+								throw new Exception($this->db_new->getErrorMsg());
+							}
+							unset ($this->extensions[(string) $xml_ext->name]);
+						}
+					}
+				}
 			}
-
-			unset($row['id']);
 		}
-
-		return $rows;
 	}
 
 

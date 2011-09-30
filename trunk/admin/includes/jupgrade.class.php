@@ -39,6 +39,21 @@ class jUpgrade
 	protected $ready = true;
 	protected $output = '';
 
+	protected $usergroup_map = array(
+			// Old	=> // New
+			0		=> 0,	// ROOT
+			28		=> 1,	// USERS (=Public)
+			29		=> 1,	// Public Frontend
+			18		=> 2,	// Registered
+			19		=> 3,	// Author
+			20		=> 4,	// Editor
+			21		=> 5,	// Publisher
+			30		=> 6,	// Public Backend (=Manager)
+			23		=> 6,	// Manager
+			24		=> 7,	// Administrator
+			25		=> 8,	// Super Administrator
+		);
+
 	public $config = array();
 	public $config_old = array();
 	public $db_old = null;
@@ -646,10 +661,10 @@ class jUpgrade
 			}
 
 			// Migrate
-			$this->ready = $this->migrateExtensionTables();
+			$this->ready = $this->migrateExtensionFolders();
 			if ($this->ready)
 			{
-				$this->ready = $this->migrateExtensionFolders();
+				$this->ready = $this->migrateExtensionTables();
 			}
 			if ($this->ready)
 			{
@@ -706,7 +721,7 @@ class jUpgrade
 	 * Get folders to be migrated.
 	 *
 	 * @return	array	List of tables without prefix
-	 * @since	1.6.4
+	 * @since	1.1.0
 	 */
 	protected function getCopyFolders() {
 		$folders = !empty($this->xml->folders->folder) ? $this->xml->folders->folder : array();
@@ -721,7 +736,7 @@ class jUpgrade
 	 * Get directories to be migrated.
 	 *
 	 * @return	array	List of directories
-	 * @since	1.6.4
+	 * @since	1.1.0
 	 */
 	protected function getCopyTables() {
 		$tables = !empty($this->xml->tables->table) ? $this->xml->tables->table : array();
@@ -779,12 +794,20 @@ class jUpgrade
 		{
 			$this->state->folders = $this->getCopyFolders();
 		}
-		$oldpath = substr(JPATH_SITE, 0, -8);
 		while(($value = array_shift($this->state->folders)) !== null) {
 			$this->output("{$this->name} {$value}");
-			$src = $oldpath.$value;
+			$src = JPATH_ROOT.DS.$value;
 			$dest = JPATH_SITE.DS.$value;
-			JFolder::copy($src, $dest);
+			$copyFolderFunc = 'copyFolder_'.preg_replace('/[^\w\d]/', '_', $value);
+			if (method_exists($this, $copyFolderFunc)) {
+				// Use function called like copyFolder_media_kunena (for media/kunena)
+				$ready = $this->$copyTableFunc($value);
+				if (!$ready) {
+					array_unshift($this->state->folders, $value);
+				}
+			} else {
+				JFolder::copy($src, $dest);
+			}
 			if ($this->checkTimeout()) {
 				break;
 			}
@@ -911,21 +934,17 @@ class jUpgrade
 	 */
 	protected function getUsergroupIdMap()
 	{
-		$map = array(
-			// Old	=> // New
-			28		=> 1,	// USERS
-			29		=> 1,	// Public Frontend
-			18		=> 2,	// Registered
-			19		=> 3,	// Author
-			20		=> 4,	// Editor
-			21		=> 5,	// Publisher
-			30		=> 1,	// Public Backend
-			23		=> 6,	// Manager
-			24		=> 7,	// Administrator
-			25		=> 8,	// Super Administrator
-		);
+		return $this->usergroup_map;
+	}
 
-		return $map;
+	/**
+	 * Map old user group from Joomla 1.5 to new installation.
+	 *
+	 * @return	int	New user group
+	 * @since	1.2.2
+	 */
+	protected function mapUserGroup($id) {
+		return isset($this->usergroup_map[$id]) ? $this->usergroup_map[$id] : $id;
 	}
 
 	/**

@@ -46,7 +46,7 @@ $error = $jupgrade->db_new->getErrorMsg();
 $extension = jUpgradeExtensions::getInstance($step);
 $success = $extension->upgradeExtension();
 
-echo ";|;".$step->id.";|;".$step->name.";|;".$step->lastid;
+echo ";|;{$step->id};|;{$step->name};|;{$step->lastid}";
 
 if ($extension->isReady()) {
 	// updating the status flag
