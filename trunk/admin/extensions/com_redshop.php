@@ -1,8 +1,8 @@
 <?php
 /**
- * jUpgrade
+ * redSHOP jUpgrade extensions
  *
- * @version		$Id: com_k2.php
+ * @version		$Id: com_redhop.php
  * @package		MatWare
  * @subpackage	com_jupgrade
  * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
@@ -11,18 +11,14 @@
  * @link		http://www.matware.com.ar
  */
 
-// Check to ensure this file is within the rest of the framework
-defined('JPATH_BASE') or die();
+defined ( '_JEXEC' ) or die ();
 
 /**
- * jUpgrade class for K2 migration
- *
- * This class migrates the K2 extension
- *
+ * @package		MatWare
+ * @subpackage	com_jupgrade
  * @since		1.1.0
  */
-class jUpgradeComponentK2 extends jUpgrade
-{
+class jUpgradeComponentRedshop extends jUpgrade {
 	/**
 	 * Check if extension migration is supported.
 	 *

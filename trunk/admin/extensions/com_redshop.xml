@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>redSHOP for Joomla 1.7</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>redshop_accessmanager</table>
+		<table>redshop_attribute_set</table>
+		<table>redshop_cart</table>
+		<table>redshop_catalog</table>
+		<table>redshop_catalog_colour</table>
+		<table>redshop_catalog_request</table>
+		<table>redshop_catalog_sample</table>
+		<table>redshop_category</table>
+		<table>redshop_category_xref</table>
+		<table>redshop_container</table>
+		<table>redshop_container_product_xref</table>
+		<table>redshop_country</table>
+		<table>redshop_coupons</table>
+		<table>redshop_coupons_transaction</table>
+		<table>redshop_cron</table>
+		<table>redshop_currency</table>
+		<table>redshop_customer_question</table>
+		<table>redshop_discount</table>
+		<table>redshop_discount_product</table>
+		<table>redshop_discount_product_shoppers</table>
+		<table>redshop_discount_shoppers</table>
+		<table>redshop_economic_accountgroup</table>
+		<table>redshop_fields</table>
+		<table>redshop_fields_data</table>
+		<table>redshop_fields_value</table>
+		<table>redshop_giftcard</table>
+		<table>redshop_mail</table>
+		<table>redshop_manufacturer</table>
+		<table>redshop_mass_discount</table>
+		<table>redshop_media</table>
+		<table>redshop_media_download</table>
+		<table>redshop_newsletter</table>
+		<table>redshop_newsletter_subscription</table>
+		<table>redshop_newsletter_tracker</table>
+		<table>redshop_order_acc_item</table>
+		<table>redshop_order_attribute_item</table>
+		<table>redshop_order_item</table>
+		<table>redshop_order_payment</table>
+		<table>redshop_order_status</table>
+		<table>redshop_order_status_log</table>
+		<table>redshop_order_users_info</table>
+		<table>redshop_orderbarcode_log</table>
+		<table>redshop_orders</table>
+		<table>redshop_pageviewer</table>
+		<table>redshop_payment_method</table>
+		<table>redshop_product</table>
+		<table>redshop_product_accessory</table>
+		<table>redshop_product_attribute</table>
+		<table>redshop_product_attribute_price</table>
+		<table>redshop_product_attribute_property</table>
+		<table>redshop_product_attribute_stockroom_xref</table>
+		<table>redshop_product_category_xref</table>
+		<table>redshop_product_compare</table>
+		<table>redshop_product_discount_calc</table>
+		<table>redshop_product_discount_calc_extra</table>
+		<table>redshop_product_download</table>
+		<table>redshop_product_download_log</table>
+		<table>redshop_product_price</table>
+		<table>redshop_product_rating</table>
+		<table>redshop_product_related</table>
+		<table>redshop_product_serial_number</table>
+		<table>redshop_product_stockroom_xref</table>
+		<table>redshop_product_subattribute_color</table>
+		<table>redshop_product_subscribe_detail</table>
+		<table>redshop_product_subscription</table>
+		<table>redshop_product_tags</table>
+		<table>redshop_product_tags_xref</table>
+		<table>redshop_product_voucher</table>
+		<table>redshop_product_voucher_transaction</table>
+		<table>redshop_product_voucher_xref</table>
+		<table>redshop_quotation</table>
+		<table>redshop_quotation_accessory_item</table>
+		<table>redshop_quotation_attribute_item</table>
+		<table>redshop_quotation_fields_data</table>
+		<table>redshop_quotation_item</table>
+		<table>redshop_sample_request</table>
+		<table>redshop_shipping_boxes</table>
+		<table>redshop_shipping_rate</table>
+		<table>redshop_shopper_group</table>
+		<table>redshop_siteviewer</table>
+		<table>redshop_state</table>
+		<table>redshop_stockroom</table>
+		<table>redshop_stockroom_amount_image</table>
+		<table>redshop_stockroom_container_xref</table>
+		<table>redshop_subscription_renewal</table>
+		<table>redshop_supplier</table>
+		<table>redshop_tax_group</table>
+		<table>redshop_tax_rate</table>
+		<table>redshop_template</table>
+		<table>redshop_textlibrary</table>
+		<table>redshop_usercart</table>
+		<table>redshop_usercart_accessory_item</table>
+		<table>redshop_usercart_attribute_item</table>
+		<table>redshop_usercart_item</table>
+		<table>redshop_users_info</table>
+		<table>redshop_wishlist</table>
+		<table>redshop_wishlist_product</table>
+		<table>redshop_wishlist_userfielddata</table>
+		<table>redshop_wrapper</table>
+		<table>redshop_xml_export</table>
+		<table>redshop_xml_export_ipaddress</table>
+		<table>redshop_xml_export_log</table>
+		<table>redshop_xml_import</table>
+		<table>redshop_xml_import_log</table>
+		<table>redshop_zipcode</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>components/com_redshop/assets</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_redshop"></category>
+	</categories>
+	-->
+</jupgrade>
