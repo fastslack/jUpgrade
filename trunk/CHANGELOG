@@ -27,6 +27,18 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+4-Sep-2011 Matias Aguirre
+ + Adding JCE support
+ + Adding Contact Enhanced support
+ # Fixing 3rd extension categories using xml
+
+30-Sep-2011 Matias Aguirre
+ + Adding redSHOP support
+ + Adding CommunityBuilder support
+ ^ Better 3rd extensions management (thanks Matias Griese) 
+ ! Joomla package updated to 1.7.1
+ + Scroll down in each step (thanks Marco Barbosa)
+
 16-Ago-2011 Matias Aguirre
  + Added Virtuemart support
  + Added compojoomComment support
