@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>Contact Enhaced for Joomla 1.7</name>
+
+	<tables>
+		<table>contact_enhanced_details</table>
+		<table>contact_enhanced_cv</table>
+		<table>contact_enhanced_cf</table>
+		<table>contact_enhanced_messages</table>
+		<table>contact_enhanced_message_fields</table>
+	</tables>
+
+	<categories>
+		<section>com_contact_enhanced</section>
+	</categories>
+</jupgrade>
