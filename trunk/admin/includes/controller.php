@@ -16,6 +16,7 @@ define('JPATH_BASE', dirname(__FILE__));
 define('DS', DIRECTORY_SEPARATOR);
 require_once JPATH_BASE.'/defines.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
+require_once JPATH_BASE.'/jupgrade.category.class.php';
 
 // jUpgrade class
 $jupgrade = new jUpgrade;
@@ -90,8 +91,9 @@ switch ($step->name) {
 		break;
 	case 'banners':
 		// Migrate the categories of banners.
-		$bannersCat = new jUpgradeBannersCategories($step);
-		$bannersCat->upgrade();
+		$cat = new jUpgradeCategory($step);
+		$cat->section = "com_banner";
+		$cat->upgrade();
 
 		// Migrate the banners.
 		$banners = new jUpgradeBanners($step);
@@ -99,19 +101,21 @@ switch ($step->name) {
 
 		break;
 	case 'contacts':
+		// Migrate the categories of contacts.
+		$cat = new jUpgradeCategory($step);
+		$cat->section = "com_contact_details";
+		$cat->upgrade();
+
 		// Migrate the contacts.
 		$contacts = new jUpgradeContacts($step);
 		$contacts->upgrade();
 
-		// Migrate the categories of contacts.
-		$contactsCat = new jUpgradeContactsCategories($step);
-		$contactsCat->upgrade();
-
 		break;
 	case 'newsfeeds':
 		// Migrate the categories of newsfeeds.
-		$newsfeedsCat = new jUpgradeNewsfeedsCategories($step);
-		$newsfeedsCat->upgrade();
+		$cat = new jUpgradeCategory($step);
+		$cat->section = "com_newsfeeds";
+		$cat->upgrade();
 
 		// Migrate the newsfeeds.
 		$newsfeeds = new jUpgradeNewsfeeds;
@@ -120,8 +124,9 @@ switch ($step->name) {
 		break;
 	case 'weblinks':
 		// Migrate the categories of weblinks.
-		$weblinksCat = new jUpgradeWeblinksCategories($step);
-		$weblinksCat->upgrade();
+		$cat = new jUpgradeCategory($step);
+		$cat->section = "com_weblinks";
+		$cat->upgrade();
 
 		// Migrate the weblinks.
 		$weblinks = new jUpgradeWeblinks($step);

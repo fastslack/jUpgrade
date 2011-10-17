@@ -253,6 +253,7 @@ class jUpgradeExtensions extends jUpgrade
 			if (empty($state->xmlfile)) {
 				// Find xml file from jUpgrade
 				$default_xmlfile = JPATH_ROOT."/administrator/components/com_jupgrade/extensions/{$name}.xml";
+
 				if (file_exists($default_xmlfile)) {
 					$state->xmlfile = $default_xmlfile;
 				}
@@ -317,9 +318,20 @@ class jUpgradeExtensions extends jUpgrade
 						}
 					}
 				}
-			}
+
+				$section = @$xml->categories[0]->section;
+
+				if (!empty($section)) { 
+	
+					// Migrate the categories of contacts.
+					$cat = new jUpgradeCategory();
+					$cat->section = $section;
+					$cat->upgrade();
+
+				} //end if
+
+
+			} //end if
 		}
 	}
-
-
-}
+} // end class

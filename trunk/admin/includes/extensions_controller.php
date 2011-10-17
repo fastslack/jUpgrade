@@ -16,7 +16,8 @@ define('JPATH_BASE', dirname(__FILE__));
 define('DS', DIRECTORY_SEPARATOR);
 require_once JPATH_BASE.'/defines.php';
 require_once JPATH_BASE.'/jupgrade.class.php';
-require_once JPATH_BASE.'/extensions.php';
+require_once JPATH_BASE.'/jupgrade.category.class.php';
+require_once JPATH_BASE.'/jupgrade.extensions.class.php';
 
 // jUpgrade class
 $jupgrade = new jUpgrade;
