@@ -145,9 +145,11 @@ class jUpgradeModules extends jUpgrade
 	 */
 	protected function setDestinationData()
 	{
+		$table	= empty($this->destination) ? $this->source : $this->destination;
+		// Truncate jupgrade_modules table
+		$clean = $this->cleanDestinationData('jupgrade_modules');
 		// Get the source data.
 		$rows	= $this->getSourceData();
-		$table	= empty($this->destination) ? $this->source : $this->destination;
 
 		// 
 		foreach ($rows as $row)
@@ -171,8 +173,8 @@ class jUpgradeModules extends jUpgrade
 			if (!$this->db_new->insertObject('jupgrade_modules', $oldlist)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
-
 		}
+
 	}
 
 }
@@ -213,8 +215,9 @@ class jUpgradeModulesMenu extends jUpgrade
 
 		// Getting the menus keys to prevent 'Notice: Undefined index'
 		$menus_keys = array_keys($menus);
+		$modules_keys = array_keys($modules);
 
-		$where = "m.moduleid NOT IN (1, 16, 17, 18)";
+		$where = "m.moduleid NOT IN (16)";
 
 		// Getting the data
 		$rows = parent::getSourceData(
@@ -224,22 +227,27 @@ class jUpgradeModulesMenu extends jUpgrade
 			'm.moduleid'
 		);
 
+		$i = 0;
+		$newrows = array();
+
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
-			if (in_array($row['menuid'], $menus_keys)) {
-				$moduleid_new = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : '';
-				$menuid_new = $menus[$row['menuid']]->new;
 
-				//echo "<b> MODULE ID:</b> {$moduleid_new} <==> <b> MENU ID:</b> {$menuid_new}";
-				//echo "<br><br>.................<br><br>";
+			if (in_array($row['moduleid'], $modules_keys)) {
+				if (in_array($row['menuid'], $menus_keys) || $row['menuid'] == 0) {
 
-				$row['moduleid'] = $moduleid_new == '' ? 0 : $moduleid_new;
-			  $row['menuid'] = $menuid_new == '' ? 0 : $menuid_new;
+					$newrows[$i]['moduleid'] = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : 0;
+					$newrows[$i]['menuid'] = isset($menus[$row['menuid']]->new) ? $menus[$row['menuid']]->new : 0;
+
+					//echo "<b> MODULE ID:</b> {$newrows[$i]['moduleid']} <==> <b> MENU ID:</b> {$newrows[$i]['menuid']}<br>";
+					//echo "<br><br>.................<br><br>";
+				}
 			}
+
+			$i++;
 		}
 
-
-		return $rows;
+		return $newrows;
 	}
 }
