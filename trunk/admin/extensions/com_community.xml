@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>JomSocial for Joomla 1.7</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>community_activities</table>
+		<table>community_activities_hide</table>
+		<table>community_apps</table>
+		<table>community_avatar</table>
+		<table>community_blocklist</table>
+		<table>community_config</table>
+		<table>community_connect_users</table>
+		<table>community_connection</table>
+		<table>community_events</table>
+		<table>community_events_category</table>
+		<table>community_events_members</table>
+		<table>community_featured</table>
+		<table>community_fields</table>
+		<table>community_fields_values</table>
+		<table>community_groups</table>
+		<table>community_groups_bulletins</table>
+		<table>community_groups_category</table>
+		<table>community_groups_discuss</table>
+		<table>community_groups_invite</table>
+		<table>community_groups_members</table>
+		<table>community_invitations</table>
+		<table>community_likes</table>
+		<table>community_location_cache</table>
+		<table>community_mailq</table>
+		<table>community_memberlist</table>
+		<table>community_memberlist_criteria</table>
+		<table>community_msg</table>
+		<table>community_msg_recepient</table>
+		<table>community_oauth</table>
+		<table>community_photos</table>
+		<table>community_photos_albums</table>
+		<table>community_photos_tag</table>
+		<table>community_photos_tokens</table>
+		<table>community_profiles</table>
+		<table>community_profiles_fields</table>
+		<table>community_register</table>
+		<table>community_register_auth_token</table>
+		<table>community_reports</table>
+		<table>community_reports_actions</table>
+		<table>community_reports_reporter</table>
+		<table>community_storage_s3</table>
+		<table>community_tags</table>
+		<table>community_tags_words</table>
+		<table>community_user_status</table>
+		<table>community_userpoints</table>
+		<table>community_users</table>
+		<table>community_videos</table>
+		<table>community_videos_category</table>
+		<table>community_wall</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. 
+	<folders>
+		<folder>images/community</folder>
+	</folders>
+	-->
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_community"></category>
+	</categories>
+	-->
+</jupgrade>
