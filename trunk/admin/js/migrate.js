@@ -573,7 +573,11 @@ var jUpgrade = new Class({
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[files]</b><br><br>' +msg;
 				}
 
-				self.extensions();
+				if (self.options.skip_extensions == 1) {
+					self.done();
+				}else{
+					self.extensions();
+				}
 
 		  }
 		}).request('directory=' + self.options.directory);
