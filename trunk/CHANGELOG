@@ -27,6 +27,20 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+01-Nov-2011 Matias Aguirre
+ # Fix menu assigments on modules
+ # Better mootools version checks and debugging
+ # Fixed Joomla 1.7 core-updating bug
+ # Updating Joomla 1.7 package to rev 22320
+
+31-Oct-2011 Matias Aguirre
+ # Fix "skip extension" option
+
+17-Oct-2011 Matias Aguirre
+ + Adding JomSocial support
+ + Adding redFORM support
+ # Categories migration rewrited
+
 4-Sep-2011 Matias Aguirre
  + Adding JCE support
  + Adding Contact Enhanced support
