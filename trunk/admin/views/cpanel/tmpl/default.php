@@ -59,6 +59,13 @@ $document->addStyleSheet("components/com_jupgrade/css/jupgrade.css");
 
 window.addEvent('domready', function() {
 
+	var debug = <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>;
+	var version = MooTools.version;
+
+	if (debug > 0) {
+		alert(version);
+	}
+
 	var jupgrade = new jUpgrade({
     mode: <?php echo $params->get("mode") ? $params->get("mode") : 1; ?>,
     directory: '<?php echo $params->get("directory") ?>',
@@ -73,6 +80,7 @@ window.addEvent('domready', function() {
     debug: <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>
 	});
 
+
 });
 
 </script>
@@ -85,7 +93,7 @@ window.addEvent('domready', function() {
 				<div id="error">
 					<a href="index.php?option=com_plugins"><?php echo JText::_('Mootools 1.2 not loaded. Please enable "System - Mootools Upgrade" plugin.'); ?></a>
 				</div>
-<?php } ?>
+<?php }else { ?>
 
 				<div id="update">
 					<br /><img src="components/com_jupgrade/images/update.png" align="middle" border="0"/><br />
@@ -164,6 +172,8 @@ window.addEvent('domready', function() {
 						</p>
 					</div>
 				</div>
+<?php } ?>
+
 				<div>
 					<div id="debug"></div>
 				</div>
