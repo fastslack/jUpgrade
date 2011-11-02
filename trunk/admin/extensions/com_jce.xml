@@ -3,8 +3,6 @@
 <jupgrade>
 	<name>JCE for Joomla 1.7</name>
 
-	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/jce/jce.collection.xml</collection>
-
 	<!-- The folders to copy to the new site. -->
 	<folders>
 		<folder>media/jce</folder>
