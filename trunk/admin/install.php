@@ -21,6 +21,8 @@ $language->load('com_jupgrade');
 // PHP 5 check.
 if (version_compare(PHP_VERSION, '5.2.4', '<')) {
 	$this->parent->abort(JText::_('J_USE_PHP5'));
-
 	return false;
 }
+
+echo "<div style=\"text-align: center;\"><a href=\"index.php?option=com_jupgrade\"><img src=\"http://images.redcomponent.com/jupgrade.png\"></a><br>";
+echo "<b>jUpgrade resides on redCOMPONENT.com / jUpgrade is hosted by redCOMPONENT.com</b></div>";
