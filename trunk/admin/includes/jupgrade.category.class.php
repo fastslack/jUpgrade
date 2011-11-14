@@ -97,25 +97,25 @@ class jUpgradeCategory extends jUpgrade
 
 			// Bind the data.
 			if (!$table->bind($row)) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError());
 				return false;
 			}
 	
 			// Store the data.
 			if (!$table->store()) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError());
 				return false;
 			}
 
 			// Rebuild the path for the category:
 			if (!$table->rebuildPath($table->id)) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError());
 				return false;
 			}
 
 			// Rebuild the paths of the category's children:
 			if (!$table->rebuild($table->id, $table->lft, 1, $table->path)) {
-				$this->setError($table->getError());
+				throw new Exception($table->getError());
 				return false;
 			}
 		}
