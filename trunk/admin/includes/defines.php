@@ -16,14 +16,7 @@ defined('_JEXEC') or die;
 
 $directory = $_GET['directory'];
 
-$parts = explode(DS, JPATH_BASE);
-
-$newparts = array();
-for($i=0;$i<count($parts)-4;$i++){
-	$newparts[] = $parts[$i];
-}
-
-define('JPATH_ROOT',			implode(DS, $newparts));
+define('JPATH_ROOT',			dirname(dirname(dirname(dirname(JPATH_BASE)))));
 define('JPATH_SITE',			JPATH_ROOT.DS.$directory);
 define('JPATH_CONFIGURATION', 	JPATH_ROOT.DS.$directory);
 define('JPATH_ADMINISTRATOR', 	JPATH_ROOT.DS.$directory.DS.'administrator');
