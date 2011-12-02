@@ -27,11 +27,19 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+16-Nov-2011
+ ^ Better way to get directory path
+ ^ Disable SEF by default
+
+14-Nov-2011
+ ^ Updating Joomla package to v1.7.3
+ # replacing setError function to Exception in jUpgradeCategory class
+
 01-Nov-2011 Matias Aguirre
  # Fix menu assigments on modules
  # Better mootools version checks and debugging
  # Fixed Joomla 1.7 core-updating bug
- # Updating Joomla 1.7 package to rev 22320
+ ^ Updating Joomla 1.7 package to rev 22320
 
 31-Oct-2011 Matias Aguirre
  # Fix "skip extension" option
