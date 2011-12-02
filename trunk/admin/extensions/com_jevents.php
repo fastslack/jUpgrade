@@ -15,13 +15,13 @@
 defined('JPATH_BASE') or die();
 
 /**
- * jUpgrade class for Akeeba migration
+ * jUpgrade class for JEvents migration
  *
- * This class migrates the Akeeba extension
+ * This class migrates the JEvents extension
  *
  * @since		1.2.4
  */
-class jUpgradeComponentAkeeba extends jUpgrade
+class jUpgradeComponentJEvents extends jUpgrade
 {
 	/**
 	 * Check if extension migration is supported.

@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>JEvents for Joomla 1.7</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>jevents_categories</table>
+		<table>jevents_exception</table>
+		<table>jevents_icsfile</table>
+		<table>jevents_repbyday</table>
+		<table>jevents_repetition</table>
+		<table>jevents_rrule</table>
+		<table>jevents_vevdetail</table>
+		<table>jevents_vevent</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. 
+	<folders>
+		<folder>media/com_jevents</folder>
+	</folders>-->
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_jevents"></category>
+	</categories>
+	-->
+</jupgrade>
