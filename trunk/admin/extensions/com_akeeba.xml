@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>Akeeba Backup for Joomla 1.7</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>ak_acl</table>
+		<table>ak_profiles</table>
+		<table>ak_stats</table>
+		<table>ak_storage</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/com_akeeba</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_redform"></category>
+	</categories>
+	-->
+</jupgrade>
