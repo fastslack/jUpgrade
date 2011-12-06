@@ -109,7 +109,7 @@ var jUpgrade = new Class({
 				onComplete: function( response ) {
 					//alert('>>'+response+'<<');
 
-					if (self.options.debug == 1) {
+					if (self.options.debug_php == 1) {
 						text = document.getElementById('debug');
 						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[checks]</b><br><br>' +response;
 					}
@@ -316,7 +316,7 @@ var jUpgrade = new Class({
 				method: 'get',
 				onComplete: function( response ) {
 
-					if (self.options.debug == 1) {
+					if (self.options.debug_php == 1) {
 						text = document.getElementById('debug');
 						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[decompress]</b><br><br>' +response;
 					}
@@ -369,7 +369,7 @@ var jUpgrade = new Class({
 		  onComplete: function( response ) {
 				pb3.set(33);
 
-				if (self.options.debug == 1) {
+				if (self.options.debug_php == 1) {
 					text = document.getElementById('debug');
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_config]</b><br><br>' +response;
 				}
@@ -380,7 +380,7 @@ var jUpgrade = new Class({
 					onComplete: function( response ) {
 						pb3.set(66);
 
-						if (self.options.debug == 1) {
+						if (self.options.debug_php == 1) {
 							text = document.getElementById('debug');
 							text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
 						}
@@ -392,7 +392,7 @@ var jUpgrade = new Class({
 								pb3.set(100);
 								pb3.finish();
 
-								if (self.options.debug == 1) {
+								if (self.options.debug_php == 1) {
 									text = document.getElementById('debug');
 									text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_db]</b><br><br>' +response;
 								}
@@ -434,7 +434,7 @@ var jUpgrade = new Class({
 				text = document.getElementById('status');
 				text.innerHTML = 'Migrating ' + file;
 
-				if (self.options.debug == 1) {
+				if (self.options.debug_php == 1) {
 					text = document.getElementById('debug');
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>' +msg;
 				}
@@ -568,7 +568,7 @@ var jUpgrade = new Class({
 				pb6.set(100);
 				pb6.finish();
 
-				if (self.options.debug == 1) {
+				if (self.options.debug_php == 1) {
 					text = document.getElementById('debug');
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[files]</b><br><br>' +msg;
 				}
@@ -609,7 +609,7 @@ var jUpgrade = new Class({
 				text = document.getElementById('status_ext');
 				text.innerHTML = 'Migrating ' + file;
 
-				if (self.options.debug == 1) {
+				if (self.options.debug_php == 1) {
 					text = document.getElementById('debug');
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>['+id+'] ['+file+']</b><br><br>'+response;
 				}
