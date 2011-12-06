@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>redMEMBER for Joomla 1.7</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>redmember_accessgroup</table>
+		<table>redmember_configuration</table>
+		<table>redmember_country</table>
+		<table>redmember_currency</table>
+		<table>redmember_fields</table>
+		<table>redmember_fields_value</table>
+		<table>redmember_filemanager</table>
+		<table>redmember_filemanager_categories</table>
+		<table>redmember_forum_category</table>
+		<table>redmember_forum_post</table>
+		<table>redmember_forum_section</table>
+		<table>redmember_forum_subscribe</table>
+		<table>redmember_forum_thread</table>
+		<table>redmember_mail</table>
+		<table>redmember_membershipfee</table>
+		<table>redmember_membershipfee_secondary</table>
+		<table>redmember_membershipfee_users</table>
+		<table>redmember_newsletter</table>
+		<table>redmember_newsletter_subscription</table>
+		<table>redmember_newsletter_tracker</table>
+		<table>redmember_payment_method</table>
+		<table>redmember_search</table>
+		<table>redmember_search_form</table>
+		<table>redmember_state</table>
+		<table>redmember_tab</table>
+		<table>redmember_tab_usertype_xref</table>
+		<table>redmember_template</table>
+		<table>redmember_userfield_sort</table>
+		<table>redmember_users</table>
+		<table>redmember_usertype</table>
+		<table>redmember_user_usertype_xref</table>
+		<table>redmember_vatgroup</table>
+		<table>redmember_vatrates</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/com_redmember</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_redmember"></category>
+	</categories>
+	-->
+</jupgrade>
