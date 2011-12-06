@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>Jumi for Joomla 1.7</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>jumi</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. 
+	<folders>
+		<folder>media/com_jumi</folder>
+	</folders>-->
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_jumi"></category>
+	</categories>
+	-->
+</jupgrade>
