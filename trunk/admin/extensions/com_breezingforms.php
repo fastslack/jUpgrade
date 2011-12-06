@@ -5,12 +5,11 @@
  * @version		$Id: 
  * @package		MatWare
  * @subpackage	com_jupgrade
- * @copyright	Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @copyright	Copyright 2006 - 2011 Matias Aguirre. All rights reserved.
  * @license		GNU General Public License version 2 or later.
  * @author		Matias Aguirre <maguirre@matware.com.ar>
  * @link		http://www.matware.com.ar
  */
-
 // Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
