@@ -82,7 +82,7 @@ class jupgradeControllerAjax extends JController
 			echo "404: jupgrade_steps table not exist";
 			exit;
 		}		
-		
+
 		/**
 		 * Check if jupgrade_steps is fine
 		 */
@@ -139,6 +139,15 @@ class jupgradeControllerAjax extends JController
 			echo "410: MySQL 5.0+ or greater is required";
 			exit;
 		}
+
+		/**
+		 * Check safe_mode_gid
+		 */
+		if (ini_get('safe_mode_gid')) {
+			echo "411: You must to disable 'safe_mode_gid' on your php configuration";
+			exit;
+		}
+
 		echo "OK";
 		exit;
 	}
