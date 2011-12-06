@@ -61,16 +61,6 @@ class jUpgrade
 
 	function __construct($step = null)
 	{
-		// Getting the params
-		$params = $this->getParams();
-
-		// Set timelimit to 0
-		if(!ini_get('safe_mode')) {
-			if ($params->timelimit == 0) {
-				set_time_limit(0);
-			}
-		}
-
 		if ($step) {
 			$this->id = $step->id;
 			$this->lastid = isset($step->lastid) ? $step->lastid : 0;
@@ -153,11 +143,20 @@ class jUpgrade
 		// Creating old dabatase instance
 		$this->db_old = JDatabase::getInstance($this->config_old);
 
+		// Getting the params
+		$params = $this->getParams();
+
 		// Setting the new prefix to the db instance
 		$this->config['prefix'] = $params->prefix_new;
-
 		// Creating new dabatase instance
 		$this->db_new = JDatabase::getInstance($this->config);
+
+		// Set timelimit to 0
+		if(!ini_get('safe_mode')) {
+			if ($params->timelimit == 0) {
+				set_time_limit(0);
+			}
+		}
 	}
 
 	/**
