@@ -38,7 +38,11 @@
 			<option value="1">Yes</option>
 		</param>
 		<param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;" />
-		<param name="debug" type="list" default="0" label="Enable debug" description="">
+		<param name="debug_php" type="list" default="0" label="Enable migration debug" description="">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="debug_js" type="list" default="0" label="Enable Mootools version debug" description="">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>

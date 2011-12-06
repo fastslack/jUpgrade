@@ -40,32 +40,14 @@ if ($mode == 0) {
 $document	= JFactory::getDocument();
 $document->addScript('components/com_jupgrade/js/dwProgressBar.js');
 
-// Checking for IE
-jimport('joomla.environment.browser');
-
-$browser = new JBrowser();
-$version = $browser->getBrowser();
-
-if ($version == 'msie') {
-	$document->addScript('components/com_jupgrade/js/migrate.ie.js');
-}
-else{
-	$document->addScript('components/com_jupgrade/js/migrate.js');
-}
-
+$document->addScript('components/com_jupgrade/js/migrate.js');
 $document->addStyleSheet("components/com_jupgrade/css/jupgrade.css");
 ?>
 <script type="text/javascript">
 
 window.addEvent('domready', function() {
 
-	var debug = <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>;
-	var version = MooTools.version;
-
-	if (debug > 0) {
-		alert(version);
-	}
-
+	/* Init jUpgrade */
 	var jupgrade = new jUpgrade({
     mode: <?php echo $params->get("mode") ? $params->get("mode") : 1; ?>,
     directory: '<?php echo $params->get("directory") ?>',
@@ -77,9 +59,17 @@ window.addEvent('domready', function() {
     skip_templates: <?php echo $params->get("skip_templates") ? $params->get("skip_templates") : 0; ?>,
     skip_extensions: <?php echo $params->get("skip_extensions") ? $params->get("skip_extensions") : 0; ?>,
     positions: <?php echo $params->get("positions") ? $params->get("positions") : 0; ?>,
-    debug: <?php echo $params->get("debug") ? $params->get("debug") : 0; ?>
+    debug_php: <?php echo $params->get("debug_php") ? $params->get("debug_php") : 0; ?>,
+    debug_js: <?php echo $params->get("debug_js") ? $params->get("debug_js") : 0; ?>
 	});
 
+	/* Debug */
+	var debug_js = <?php echo $params->get("debug_js") ? $params->get("debug_js") : 0; ?>;
+	var version = MooTools.version;
+
+	if (debug_js > 0) {
+		alert('Mootools version: '+version);
+	}
 
 });
 
