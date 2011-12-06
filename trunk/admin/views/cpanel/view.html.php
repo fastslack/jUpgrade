@@ -38,18 +38,20 @@ class jupgradeViewCpanel extends JView
 		JToolBarHelper::custom('help', 'help.png', 'help_f2.png', 'Help', false, false);
 		JToolBarHelper::spacer();
 
+		// get params
+		$params		= JComponentHelper::getParams('com_jupgrade');
+
 		// Set timelimit to 0
-		if(!ini_get('safe_mode')) { 
-			set_time_limit(0);
+		if(!ini_get('safe_mode')) {
+			if ($params->get('timelimit') == 0) {
+				set_time_limit(0);
+			}
 		}
 
 		$xmlfile = JPATH_COMPONENT.'/jupgrade.xml';
  		$xml = new JSimpleXML;
  		$xml->loadFile($xmlfile);
 		$attrib = $xml->document->version[0];
-
-		// get params
-		$params		= JComponentHelper::getParams('com_jupgrade');
 
 		$this->assignRef('version',	$attrib->data());
 		$this->assignRef('params',	$params);
