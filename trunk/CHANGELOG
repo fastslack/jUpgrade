@@ -27,11 +27,24 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
-16-Nov-2011
+06-Dec-2011 Matias Aguirre
+ ^ Remove unused config
+ # Add option to disable set_time_mode() function
+ + Adding Jumi support
+ + Adding redMEMBER support
+ ^ Correct comments
+ # Separe js debug and php debug
+
+01-Dec-201 Matias Aguirre
+ + Adding JEvents support
+ + Adding Akeeba Backup support
+ ^ cosmetical changes 
+
+16-Nov-2011 Matias Aguirre
  ^ Better way to get directory path
  ^ Disable SEF by default
 
-14-Nov-2011
+14-Nov-2011 Matias Aguirre
  ^ Updating Joomla package to v1.7.3
  # replacing setError function to Exception in jUpgradeCategory class
 
