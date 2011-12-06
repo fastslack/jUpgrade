@@ -52,9 +52,6 @@ $jconfig->admin_email	= $jconfig->mailfrom;
 $jconfig->site_metadesc	= $jconfig->MetaDesc;
 $jconfig->site_metakeys	= $jconfig->MetaKeys;
 
-$jconfig->ftp_enable	= 0;
-$jconfig->ftp_save	= 0;
-
 // Run the configuration creation
 if (JInstallationModelConfiguration::_createConfiguration($jconfig) > 0) {
 	echo 1;
