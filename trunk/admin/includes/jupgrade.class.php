@@ -14,10 +14,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 
-// Make sure we can see all errors.
-error_reporting(E_ALL);
-@ini_set('display_errors', 1);
-
 /**
  * jUpgrade utility class for migrations
  *
@@ -156,6 +152,12 @@ class jUpgrade
 			if ($params->timelimit == 0) {
 				set_time_limit(0);
 			}
+		}
+
+		// Make sure we can see all errors.
+		if ($params->error_reporting == 0) {
+			error_reporting(E_ALL);
+			@ini_set('display_errors', 1);
 		}
 	}
 
