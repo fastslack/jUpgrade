@@ -143,7 +143,7 @@ class jupgradeControllerAjax extends JController
 		/**
 		 * Check safe_mode_gid
 		 */
-		if (ini_get('safe_mode_gid')) {
+		if (@ini_get('safe_mode_gid')) {
 			echo "411: You must to disable 'safe_mode_gid' on your php configuration";
 			exit;
 		}
@@ -166,16 +166,6 @@ class jupgradeControllerAjax extends JController
 		 * Initialize jupgrade class
 		 */
 		$jupgrade = new jUpgrade;
-		
-		// Drop all #__tables
-		$query = "DROP TABLE `#__assets`, `#__banners`, `#__banner_clients`, `#__banner_tracks`, `#__categories`, `#__contact_details`, `#__content`, `#__content_frontpage`, `#__content_rating`, `#__core_log_searches`, `#__extensions`,  `#__languages`, `#__menu`, `#__menu_types`, `#__messages`, `#__messages_cfg`, `#__modules`, `#__modules_menu`, `#__newsfeeds`, `#__redirect_links`, `#__schemas`, `#__session`, `#__template_styles`, `#__updates`, `#__update_categories`, `#__update_sites`, `#__update_sites_extensions`, `#__usergroups`, `#__users`, `#__user_profiles`, `#__user_usergroup_map`, `#__viewlevels`, `#__weblinks`";
-		$jupgrade->db_new->setQuery($query);
-		$jupgrade->db_new->query();
-
-		// Truncate mapping tables
-		$query = "TRUNCATE TABLE `jupgrade_categories`, `jupgrade_menus`, `jupgrade_modules`";
-		$jupgrade->db_new->setQuery($query);
-		$jupgrade->db_new->query();
 
 		// Set all status to 0 and clear state
 		$query = "UPDATE jupgrade_steps SET status = 0, state = ''";
@@ -187,8 +177,63 @@ class jupgradeControllerAjax extends JController
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
 
-		// Check for query error.
-		$error = $jupgrade->db_new->getErrorMsg();
+    if ($jupgrade->canDrop) {
+			// Drop or truncate all #__tables
+			$query = "DROP TABLE `#__assets`, `#__banners`, `#__banner_clients`, `#__banner_tracks`, `#__categories`, `#__contact_details`, `#__content`, `#__content_frontpage`, `#__content_rating`, `#__core_log_searches`, `#__extensions`,  `#__languages`, `#__menu`, `#__menu_types`, `#__messages`, `#__messages_cfg`, `#__modules`, `#__modules_menu`, `#__newsfeeds`, `#__redirect_links`, `#__schemas`, `#__session`, `#__template_styles`, `#__updates`, `#__update_categories`, `#__update_sites`, `#__update_sites_extensions`, `#__usergroups`, `#__users`, `#__user_profiles`, `#__user_usergroup_map`, `#__viewlevels`, `#__weblinks`";
+			$jupgrade->db_new->setQuery($query);
+			$jupgrade->db_new->query();
+
+			// Check for query error.
+			$error = $jupgrade->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+
+			$tables = array();
+			$tables[] = 'jupgrade_categories';
+			$tables[] = 'jupgrade_menus';
+			$tables[] = 'jupgrade_modules';
+
+			for ($i=0;$i<count($tables);$i++) {
+				// Truncate mapping tables
+				$query = "TRUNCATE TABLE `{$tables[$i]}`";
+				$jupgrade->db_new->setQuery($query);
+				$jupgrade->db_new->query();
+			}
+
+			// Check for query error.
+			$error = $jupgrade->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+
+		} else {
+
+			$prefix = $jupgrade->db_new->getPrefix();
+			$query = "SHOW TABLES LIKE '{$prefix}%'";
+			$jupgrade->db_new->setQuery($query);
+			$tables = $jupgrade->db_new->loadRowList();
+
+			$tables[][0] = 'jupgrade_categories';
+			$tables[][0] = 'jupgrade_menus';
+			$tables[][0] = 'jupgrade_modules';
+
+			for ($i=0;$i<count($tables);$i++) {
+				// Truncate mapping tables
+				$query = "DELETE FROM `{$tables[$i][0]}`";
+				$jupgrade->db_new->setQuery($query);
+				$jupgrade->db_new->query();
+
+				// Check for query error.
+				$error = $jupgrade->db_new->getErrorMsg();
+
+				if ($error) {
+					throw new Exception($error);
+				}
+			}
+		}
 	}
 
 	/**

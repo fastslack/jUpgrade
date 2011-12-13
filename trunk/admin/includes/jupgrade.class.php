@@ -23,9 +23,10 @@ defined('_JEXEC') or die;
 class jUpgrade
 {
 	/**
-	 * @var		string	The name of the source database table.
+	 * Parameters 
 	 * @since	0.4.
 	 */
+	public    $canDrop = false;
 	protected $source = null;
 	protected $id = 0;
 	protected $lastid = 0;
@@ -159,6 +160,17 @@ class jUpgrade
 			error_reporting(E_ALL);
 			@ini_set('display_errors', 1);
 		}
+
+		// MySQL grants check
+		$query = "SHOW GRANTS FOR CURRENT_USER";
+		$this->db_new->setQuery( $query );
+		$list = $this->db_new->loadRowList();
+		$grant = $list[1][0];
+
+		if (strpos($grant, 'DROP') == true) {
+			$this->canDrop = true;
+		}
+
 	}
 
 	/**
@@ -351,9 +363,15 @@ class jUpgrade
 			$table	= empty($this->destination) ? $this->source : $this->destination;
 		}
 
-		$query = "TRUNCATE TABLE {$table}";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
+		if ($this->canDrop) {
+			$query = "TRUNCATE TABLE {$table}";
+			$this->db_new->setQuery($query);
+			$this->db_new->query();
+		} else {
+			$query = "DELETE FROM {$table}";
+			$this->db_new->setQuery($query);
+			$this->db_new->query();
+		}
 
 		// Check for query error.
 		$error = $this->db_new->getErrorMsg();
@@ -422,9 +440,15 @@ class jUpgrade
 			$success = false;
 		} else {
 			if ($drop) {
-				$query = "DROP TABLE IF EXISTS {$to}";
-				$this->db_new->setQuery($query);
-				$this->db_new->query();
+				if ($this->canDrop) {
+					$query = "DROP TABLE IF EXISTS {$to}";
+					$this->db_new->setQuery($query);
+					$this->db_new->query();
+				} else {
+					$query = "DELETE FROM {$to}";
+					$this->db_new->setQuery($query);
+					$this->db_new->query();
+				}
 
 				// Check for query error.
 				$error = $this->db_new->getErrorMsg();
@@ -595,7 +619,9 @@ class jUpgrade
 		$table->title = mysql_real_escape_string($object->title);
 
 		// Insert the asset
-		$table->store();
+		if (!$table->store()) {
+			echo JError::raiseError(500, $table->getError());
+		}
 
 		// Returning sid needed by childen categories
 		$object->sid = isset($sid) ? $sid : $object->id ;
