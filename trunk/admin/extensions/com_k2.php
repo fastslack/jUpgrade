@@ -42,6 +42,31 @@ class jUpgradeComponentK2 extends jUpgrade
 	 */
 	public function migrateExtensionCustom()
 	{
+
+		// Fixing access
+		$query = "UPDATE #__k2_items SET access = '1' WHERE access = '0'";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
+		// Fixing access
+		$query = "UPDATE #__k2_categories SET access = '1' WHERE access = '0'";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
 		return true;
 	}
 }
