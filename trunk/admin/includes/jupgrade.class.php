@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
 
 // Make sure we can see all errors.
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+@ini_set('display_errors', 1);
 
 /**
  * jUpgrade utility class for migrations
