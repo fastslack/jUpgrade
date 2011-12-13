@@ -152,7 +152,7 @@ class jUpgrade
 		$this->db_new = JDatabase::getInstance($this->config);
 
 		// Set timelimit to 0
-		if(!ini_get('safe_mode')) {
+		if(!@ini_get('safe_mode')) {
 			if ($params->timelimit == 0) {
 				set_time_limit(0);
 			}

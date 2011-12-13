@@ -42,7 +42,7 @@ class jupgradeViewCpanel extends JView
 		$params		= JComponentHelper::getParams('com_jupgrade');
 
 		// Set timelimit to 0
-		if(!ini_get('safe_mode')) {
+		if(!@ini_get('safe_mode')) {
 			if ($params->get('timelimit') == 0) {
 				set_time_limit(0);
 			}
