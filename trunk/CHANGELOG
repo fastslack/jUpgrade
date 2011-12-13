@@ -27,6 +27,9 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+13-Dec-2011 Matias Aguirre
+ ^ Fix options save as initial
+
 06-Dec-2011 Matias Aguirre
  ^ Remove unused config
  # Add option to disable set_time_mode() function
