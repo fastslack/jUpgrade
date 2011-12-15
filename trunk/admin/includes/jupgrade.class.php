@@ -7,7 +7,7 @@
  * @subpackage	com_jupgrade
  * @author      Matias Aguirre <maguirre@matware.com.ar>
  * @link        http://www.matware.com.ar
- * @copyright		Copyright 2006 - 2011 Matias Aguire. All rights reserved.
+ * @copyright		Copyright 2006 - 2011 Matias Aguirre. All rights reserved.
  * @license		  GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -142,6 +142,14 @@ class jUpgrade
 
 		// Getting the params
 		$params = $this->getParams();
+		$empty = (array)$params;
+
+		// Correct params for jUpgradeCli
+		if (empty($empty)) {
+			$params->prefix_new = $jconfig->prefix_new;
+			$params->timelimit = $jconfig->timelimit;
+			$params->error_reporting = $jconfig->error_reporting;
+		}
 
 		// Setting the new prefix to the db instance
 		$this->config['prefix'] = $params->prefix_new;
@@ -167,10 +175,9 @@ class jUpgrade
 		$list = $this->db_new->loadRowList();
 		$grant = $list[1][0];
 
-		if (strpos($grant, 'DROP') == true) {
+		if (strpos($grant, 'DROP') == true || strpos($grant, 'ALL') == true) {
 			$this->canDrop = true;
 		}
-
 	}
 
 	/**
