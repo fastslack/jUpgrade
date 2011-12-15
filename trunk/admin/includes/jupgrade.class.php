@@ -142,14 +142,6 @@ class jUpgrade
 
 		// Getting the params
 		$params = $this->getParams();
-		$empty = (array)$params;
-
-		// Correct params for jUpgradeCli
-		if (empty($empty)) {
-			$params->prefix_new = $jconfig->prefix_new;
-			$params->timelimit = $jconfig->timelimit;
-			$params->error_reporting = $jconfig->error_reporting;
-		}
 
 		// Setting the new prefix to the db instance
 		$this->config['prefix'] = $params->prefix_new;
@@ -995,24 +987,44 @@ class jUpgrade
 	 */
 	public function getParams()
 	{
-		// Getting the categories id's
-		$query = "SELECT params
-							FROM #__components AS c
-							WHERE c.option = 'com_jupgrade'";
 
-		$this->db_old->setQuery($query);
-		$params = $this->db_old->loadResult();
+		$jconfig = new JConfig();
 
-		// Check for query error.
-		$error = $this->db_old->getErrorMsg();
+		// Correct params for jUpgradeCli
+		if ($jconfig->cli == 1) {
 
-		if ($error) {
-			throw new Exception($error);
-			return false;
+			$object = new stdClass();
+
+			$object->cli = $jconfig->cli;
+			$object->dbtype = $jconfig->dbtype;
+			$object->host = $jconfig->host;
+			$object->user = $jconfig->user;
+			$object->password = $jconfig->password;
+			$object->db = $jconfig->db;
+			$object->dbprefix = $jconfig->dbprefix;
+			$object->prefix_new = $jconfig->prefix_new;
+			$object->timelimit = $jconfig->timelimit;
+			$object->error_reporting = $jconfig->error_reporting;
+		}else{
+			// Getting the categories id's
+			$query = "SELECT params
+								FROM #__components AS c
+								WHERE c.option = 'com_jupgrade'";
+
+			$this->db_old->setQuery($query);
+			$params = $this->db_old->loadResult();
+
+			// Check for query error.
+			$error = $this->db_old->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+				return false;
+			}
+
+			$temp	= new JParameter($params);
+			$object	= $temp->toObject();
 		}
-
-		$temp	= new JParameter($params);
-		$object	= $temp->toObject();
 
 		return $object;
 	}
