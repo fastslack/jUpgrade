@@ -14,58 +14,98 @@
 defined('_JEXEC') or die;
 
 /**
-* CLI configuration class.
+* jUpgradeCli configuration class.
 *
-* @package Joomla.Examples
-* @since 11.3
+* @package jUpgrade
+* @since 2.5
 */
 final class JConfig
 {
-/**
-* The database driver.
-*
-* @var string
-* @since 11.3
-*/
-public $dbDriver = 'mysqli';
+	/**
+	* Cli flag
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $cli = 1;
+	/**
+	* The database driver.
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $dbtype = 'mysql';
 
-/**
-* Database host.
-*
-* @var string
-* @since 11.3
-*/
-public $dbHost = 'localhost';
+	/**
+	* Database host.
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $host = 'localhost';
 
-/**
-* The database connection user.
-*
-* @var string
-* @since 11.3
-*/
-public $dbUser = 'user';
+	/**
+	* The database connection user.
+	*
+	* @var string
+	* @since 11.3
+	*/
+	public $user = '';
 
-/**
-* The database connection password.
-*
-* @var string
-* @since 11.3
-*/
-public $dbPass = 'user';
+	/**
+	* The database connection password.
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $password = '';
 
-/**
-* The database name.
-*
-* @var string
-* @since 11.3
-*/
-public $dbName = 'mysql';
+	/**
+	* The database name.
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $db = '';
 
-/**
-* The database table prefix, if necessary.
-*
-* @var string
-* @since 11.3
-*/
-public $dbPrefix = '';
+	/**
+	* The database table prefix, if necessary.
+	*
+	* @var string
+	* @since 11.3
+	*/
+	public $dbprefix = 'jos_';
+
+	/**
+	* The database table prefix, if necessary.
+	*
+	* @var string
+	* @since 11.3
+	*/
+	public $prefix_new = 'j17_';
+
+	/**
+	* The timelimit
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $timelimit = 0;
+
+	/**
+	* The error reporting
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $error_reporting = 0;
+
+	/**
+	* The positions
+	*
+	* @var string
+	* @since 2.5
+	*/
+	public $positions = 0;
+
 }
