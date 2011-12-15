@@ -15,6 +15,9 @@ define('_JEXEC', 1);
 
 // Setup the base path related constant.
 define('JPATH_BASE', dirname(__FILE__));
+define('JPATH_SITE', dirname(__FILE__));
+define('JPATH_ROOT', dirname(__FILE__));
+define('JPATH_LIBRARIES', dirname(dirname(dirname(__FILE__))).'/joomla-platform/libraries'   );
 
 // Bootstrap the application.
 require './bootstrap.php';
@@ -24,53 +27,320 @@ jimport('joomla.application.cli');
 
 class jUpgradeCli extends JCli
 {
-
 	/**
 	* A database object for the application to use.
 	*
 	* @var JDatabase
 	* @since 11.3
 	*/
-	protected $dbo = null;
+	protected $jupgrade = null;
 
 	/**
 	* Class constructor.
 	*
-	* This constructor invokes the parent JCli class constructor,
-	* and then creates a connector to the database so that it is
-	* always available to the application when needed.
-	*
 	* @return void
 	*
-	* @since 11.3
-	* @throws JDatabaseException
+	* @since 2.5.0
 	*/
 	public function __construct()
 	{
 		// Call the parent __construct method so it bootstraps the application class.
 		parent::__construct();
 
+		// Require the files
+		jimport('joomla.filesystem.file');
 		jimport('joomla.database.database');
+		// Require the files
+		require_once JPATH_BASE.'/includes/jupgrade.class.php';
+		require_once JPATH_BASE.'/includes/jupgrade.category.class.php';
+		require_once JPATH_BASE.'/includes/jupgrade.extensions.class.php';
+		// Require the files
+		require_once JPATH_BASE.'/includes/migrate_users.php';
+		require_once JPATH_BASE.'/includes/migrate_modules.php';
+		require_once JPATH_BASE.'/includes/migrate_categories.php';
+		require_once JPATH_BASE.'/includes/migrate_content.php';
+		require_once JPATH_BASE.'/includes/migrate_menus.php';
+		require_once JPATH_BASE.'/includes/migrate_banners.php';
+		require_once JPATH_BASE.'/includes/migrate_contacts.php';
+		require_once JPATH_BASE.'/includes/migrate_newsfeeds.php';
+		require_once JPATH_BASE.'/includes/migrate_weblinks.php';
+		// Require the files
+		require_once JPATH_BASE.'/includes/helper.php';
+		
+		$this->jupgrade = new jUpgrade;
 
-		// Note, this will throw an exception if there is an error
-		// creating the database connection.
-		$this->dbo = JDatabase::getInstance(
-			array(
-				'driver' => $this->get('dbDriver'),
-				'host' => $this->get('dbHost'),
-				'user' => $this->get('dbUser'),
-				'password' => $this->get('dbPass'),
-				'database' => $this->get('dbName'),
-				'prefix' => $this->get('dbPrefix'),
-			)
-		);
 	}
 
+	/**
+	 * execute
+	 *
+	 * @return	none
+	 * @since	2.5.0
+	 */
   public function execute()
   {
-		$this->out('Under Construction');
-	}
+		// Import the user database if exists
+		$file = $this->input->get('f');
 
-}
+		if (JFile::exists($file)) {
+			// Import the sql file
+		  if (JUpgradeCliHelper::populateDatabase($this->jupgrade->db_old, $file, $errors) > 0 ) {
+		  	return false;
+		  }
+		}
+
+		// Cleanup 
+		$this->cleanup();
+
+		// Import Joomla 1.7/2.5 default schema
+		$joomladump = JPATH_BASE.'/includes/joomla.sql';
+		// Import the sql file
+	  if (JUpgradeCliHelper::populateDatabase($this->jupgrade->db_new, $joomladump, $errors) > 0 ) {
+	  	return false;
+	  }
+
+		// Start migration
+		$this->migrate();
+
+	} // end method
+
+	/**
+	 * migrate
+	 *
+	 * @return	none
+	 * @since	2.5.0
+	 */
+	public function migrate() {
+
+		for ($i=0;$i<9;$i++) {
+			$this->processStep();
+		}
+
+	} // end method
+
+	/**
+	 * processStep
+	 *
+	 * @return	none
+	 * @since	2.5.0
+	 */
+	public function processStep () {
+
+		// Select the steps
+		$query = "SELECT * FROM jupgrade_steps AS s WHERE s.status != 1 ORDER BY s.id ASC LIMIT 1";
+		$this->jupgrade->db_new->setQuery($query);
+		$step = $this->jupgrade->db_new->loadObject();
+
+		// Check for query error.
+		$error = $this->jupgrade->db_new->getErrorMsg();
+
+		// Check if steps is an object
+		if (!is_object($step)) {
+			echo $error;
+			exit;
+		}
+
+		echo "Migrating ".$step->name."\n";
+
+		// Require the file
+		require_once JPATH_BASE.'/includes/migrate_'.$step->name.'.php';
+
+		switch ($step->name) {
+			case 'users':
+				// Migrate the users.
+				$u1 = new jUpgradeUsers($step);
+				$u1->upgrade();
+
+				// Migrate the usergroups.
+				$u2 = new jUpgradeUsergroups($step);
+				$u2->upgrade();
+
+				// Migrate the user-to-usergroup mapping.
+				$u2 = new jUpgradeUsergroupMap($step);
+				$u2->upgrade();
+
+				break;
+			case 'modules':
+				// Migrate the Modules.
+				$modules = new jUpgradeModules($step);
+				$modules->upgrade();
+
+				// Migrate the Modules Menus.
+				$modulesmenu = new jUpgradeModulesMenu($step);
+				$modulesmenu->upgrade();
+
+				break;
+			case 'categories':
+				// Migrate the Categories.
+				$categories = new jUpgradeCategories($step);
+				$categories->upgrade();
+
+				break;
+			case 'content':
+				// Migrate the Content.
+				$content = new jUpgradeContent($step);
+				$content->upgrade();
+
+				// Migrate the Frontpage Content.
+				$frontpage = new jUpgradeContentFrontpage($step);
+				$frontpage->upgrade();
+
+				break;
+			case 'menus':
+				// Migrate the menu.
+				$menu = new jUpgradeMenu;
+				$menu->upgrade();
+
+				// Migrate the menu types.
+				$menutypes = new jUpgradeMenuTypes($step);
+				$menutypes->upgrade();
+
+				break;
+			case 'banners':
+				// Migrate the categories of banners.
+				$cat = new jUpgradeCategory($step);
+				$cat->section = "com_banner";
+				$cat->upgrade();
+
+				// Migrate the banners.
+				$banners = new jUpgradeBanners($step);
+				$banners->upgrade();
+
+				break;
+			case 'contacts':
+				// Migrate the categories of contacts.
+				$cat = new jUpgradeCategory($step);
+				$cat->section = "com_contact_details";
+				$cat->upgrade();
+
+				// Migrate the contacts.
+				$contacts = new jUpgradeContacts($step);
+				$contacts->upgrade();
+
+				break;
+			case 'newsfeeds':
+				// Migrate the categories of newsfeeds.
+				$cat = new jUpgradeCategory($step);
+				$cat->section = "com_newsfeeds";
+				$cat->upgrade();
+
+				// Migrate the newsfeeds.
+				$newsfeeds = new jUpgradeNewsfeeds;
+				$newsfeeds->upgrade();
+
+				break;
+			case 'weblinks':
+				// Migrate the categories of weblinks.
+				$cat = new jUpgradeCategory($step);
+				$cat->section = "com_weblinks";
+				$cat->upgrade();
+
+				// Migrate the weblinks.
+				$weblinks = new jUpgradeWeblinks($step);
+				$weblinks->upgrade();
+
+				break;
+		}
+
+
+		// updating the status flag
+		$query = "UPDATE jupgrade_steps SET status = 1"
+		." WHERE name = '{$step->name}'";
+		$this->jupgrade->db_new->setQuery($query);
+		$this->jupgrade->db_new->query();
+
+		// Check for query error.
+		$error = $this->jupgrade->db_new->getErrorMsg();
+
+	} // end method
+
+
+	/**
+	 * Cleanup
+	 *
+	 * @return	none
+	 * @since	2.5.0
+	 */
+	function cleanup()
+	{	
+		// Set all status to 0 and clear state
+		$query = "UPDATE jupgrade_steps SET status = 0, state = ''";
+		$this->jupgrade->db_new->setQuery($query);
+		$this->jupgrade->db_new->query();
+
+		// Cleanup 3rd extensions
+		$query = "DELETE FROM jupgrade_steps WHERE id > 10";
+		$this->jupgrade->db_new->setQuery($query);
+		$this->jupgrade->db_new->query();
+		
+		// Get the prefix
+		$prefix = $this->jupgrade->db_new->getPrefix();
+
+    if ($this->jupgrade->canDrop) {
+
+			$query = "SHOW TABLES LIKE '{$prefix}%'";
+			$this->jupgrade->db_new->setQuery($query);
+			$tables = $this->jupgrade->db_new->loadRowList();
+
+			for($i=0;$i<count($tables);$i++) {
+				$table = $tables[$i][0];
+				$query = "DROP TABLE {$table}";
+				$this->jupgrade->db_new->setQuery($query);
+				$this->jupgrade->db_new->query();
+
+				// Check for query error.
+				$error = $this->jupgrade->db_new->getErrorMsg();
+
+				if ($error) {
+					throw new Exception($error);
+				}
+			}
+
+			$tables = array();
+			$tables[] = 'jupgrade_categories';
+			$tables[] = 'jupgrade_menus';
+			$tables[] = 'jupgrade_modules';
+
+			for ($i=0;$i<count($tables);$i++) {
+				// Truncate mapping tables
+				$query = "TRUNCATE TABLE `{$tables[$i]}`";
+				$this->jupgrade->db_new->setQuery($query);
+				$this->jupgrade->db_new->query();
+			}
+
+			// Check for query error.
+			$error = $this->jupgrade->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+
+		} else {
+
+			$query = "SHOW TABLES LIKE '{$prefix}%'";
+			$this->jupgrade->db_new->setQuery($query);
+			$tables = $this->jupgrade->db_new->loadRowList();
+
+			$tables[][0] = 'jupgrade_categories';
+			$tables[][0] = 'jupgrade_menus';
+			$tables[][0] = 'jupgrade_modules';
+
+			for ($i=0;$i<count($tables);$i++) {
+				// Truncate mapping tables
+				$query = "DELETE FROM `{$tables[$i][0]}`";
+				$this->jupgrade->db_new->setQuery($query);
+				$this->jupgrade->db_new->query();
+
+				// Check for query error.
+				$error = $this->jupgrade->db_new->getErrorMsg();
+
+				if ($error) {
+					throw new Exception($error);
+				}
+			}
+		} // end if
+	} // end method
+
+} // end class
  
 JCli::getInstance( 'jUpgradeCli' )->execute( );
