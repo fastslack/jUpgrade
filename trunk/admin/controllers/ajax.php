@@ -178,16 +178,23 @@ class jupgradeControllerAjax extends JController
 		$jupgrade->db_new->query();
 
     if ($jupgrade->canDrop) {
-			// Drop or truncate all #__tables
-			$query = "DROP TABLE `#__assets`, `#__banners`, `#__banner_clients`, `#__banner_tracks`, `#__categories`, `#__contact_details`, `#__content`, `#__content_frontpage`, `#__content_rating`, `#__core_log_searches`, `#__extensions`,  `#__languages`, `#__menu`, `#__menu_types`, `#__messages`, `#__messages_cfg`, `#__modules`, `#__modules_menu`, `#__newsfeeds`, `#__redirect_links`, `#__schemas`, `#__session`, `#__template_styles`, `#__updates`, `#__update_categories`, `#__update_sites`, `#__update_sites_extensions`, `#__usergroups`, `#__users`, `#__user_profiles`, `#__user_usergroup_map`, `#__viewlevels`, `#__weblinks`";
-			$jupgrade->db_new->setQuery($query);
-			$jupgrade->db_new->query();
+			// Get the tables
+			$query = "SHOW TABLES LIKE '{$prefix}%'";
+			$this->jupgrade->db_new->setQuery($query);
+			$tables = $this->jupgrade->db_new->loadRowList();
 
-			// Check for query error.
-			$error = $jupgrade->db_new->getErrorMsg();
+			for($i=0;$i<count($tables);$i++) {
+				$table = $tables[$i][0];
+				$query = "DROP TABLE {$table}";
+				$this->jupgrade->db_new->setQuery($query);
+				$this->jupgrade->db_new->query();
 
-			if ($error) {
-				throw new Exception($error);
+				// Check for query error.
+				$error = $this->jupgrade->db_new->getErrorMsg();
+
+				if ($error) {
+					throw new Exception($error);
+				}
 			}
 
 			$tables = array();
