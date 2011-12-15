@@ -1005,6 +1005,8 @@ class jUpgrade
 			$object->prefix_new = $jconfig->prefix_new;
 			$object->timelimit = $jconfig->timelimit;
 			$object->error_reporting = $jconfig->error_reporting;
+			$object->positions = $jconfig->positions;
+
 		}else{
 			// Getting the categories id's
 			$query = "SELECT params
