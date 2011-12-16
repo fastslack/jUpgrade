@@ -79,18 +79,17 @@ class jUpgradeCli extends JCli
 	 */
   public function execute()
   {
-		// Import the user database if exists
-		$file = $this->input->get('f');
+		// Cleanup 
+		$this->cleanup();
 
-		if (JFile::exists($file)) {
+		// Import the user database if exists
+		$from = $this->input->get('from');
+		if (JFile::exists($from)) {
 			// Import the sql file
-		  if (JUpgradeCliHelper::populateDatabase($this->jupgrade->db_old, $file, $errors) > 0 ) {
+		  if (JUpgradeCliHelper::populateDatabase($this->jupgrade->db_old, $from, $errors) > 0 ) {
 		  	return false;
 		  }
 		}
-
-		// Cleanup 
-		$this->cleanup();
 
 		// Import Joomla 1.7/2.5 default schema
 		$joomladump = JPATH_BASE.'/includes/joomla.sql';
@@ -275,26 +274,14 @@ class jUpgradeCli extends JCli
 		
 		// Get the prefix
 		$prefix = $this->jupgrade->db_new->getPrefix();
+		$prefix_old = $this->jupgrade->db_old->getPrefix();
 
     if ($this->jupgrade->canDrop) {
 
-			$query = "SHOW TABLES LIKE '{$prefix}%'";
-			$this->jupgrade->db_new->setQuery($query);
-			$tables = $this->jupgrade->db_new->loadRowList();
-
-			for($i=0;$i<count($tables);$i++) {
-				$table = $tables[$i][0];
-				$query = "DROP TABLE {$table}";
-				$this->jupgrade->db_new->setQuery($query);
-				$this->jupgrade->db_new->query();
-
-				// Check for query error.
-				$error = $this->jupgrade->db_new->getErrorMsg();
-
-				if ($error) {
-					throw new Exception($error);
-				}
-			}
+			// Drop tables 
+			$this->dropTables($prefix);
+			// Drop old tables
+			$this->dropTables($prefix_old);
 
 			$tables = array();
 			$tables[] = 'jupgrade_categories';
@@ -338,8 +325,31 @@ class jUpgradeCli extends JCli
 					throw new Exception($error);
 				}
 			}
+
 		} // end if
 	} // end method
+
+	public function dropTables($prefix) {
+
+		$query = "SHOW TABLES LIKE '{$prefix}%'";
+		$this->jupgrade->db_new->setQuery($query);
+		$tables = $this->jupgrade->db_new->loadRowList();
+
+		for($i=0;$i<count($tables);$i++) {
+			$table = $tables[$i][0];
+			$query = "DROP TABLE {$table}";
+			$this->jupgrade->db_new->setQuery($query);
+			$this->jupgrade->db_new->query();
+
+			// Check for query error.
+			$error = $this->jupgrade->db_new->getErrorMsg();
+
+			if ($error) {
+				throw new Exception($error);
+			}
+		}
+	}
+
 
 } // end class
  
