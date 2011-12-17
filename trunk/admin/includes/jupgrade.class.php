@@ -23,7 +23,7 @@ defined('_JEXEC') or die;
 class jUpgrade
 {
 	/**
-	 * Parameters 
+	 * Parameters
 	 * @since	0.4.
 	 */
 	public    $canDrop = false;
@@ -991,7 +991,7 @@ class jUpgrade
 		$jconfig = new JConfig();
 
 		// Correct params for jUpgradeCli
-		if ($jconfig->cli == 1) {
+		if (!empty($jconfig->cli) && $jconfig->cli == 1) {
 
 			$object = new stdClass();
 
