@@ -167,6 +167,9 @@ class jupgradeControllerAjax extends JController
 		 */
 		$jupgrade = new jUpgrade;
 
+		// Get the prefix
+		$prefix = $jupgrade->db_new->getPrefix();
+
 		// Set all status to 0 and clear state
 		$query = "UPDATE jupgrade_steps SET status = 0, state = ''";
 		$jupgrade->db_new->setQuery($query);
@@ -180,17 +183,17 @@ class jupgradeControllerAjax extends JController
     if ($jupgrade->canDrop) {
 			// Get the tables
 			$query = "SHOW TABLES LIKE '{$prefix}%'";
-			$this->jupgrade->db_new->setQuery($query);
-			$tables = $this->jupgrade->db_new->loadRowList();
+			$jupgrade->db_new->setQuery($query);
+			$tables = $jupgrade->db_new->loadRowList();
 
 			for($i=0;$i<count($tables);$i++) {
 				$table = $tables[$i][0];
 				$query = "DROP TABLE {$table}";
-				$this->jupgrade->db_new->setQuery($query);
-				$this->jupgrade->db_new->query();
+				$jupgrade->db_new->setQuery($query);
+				$jupgrade->db_new->query();
 
 				// Check for query error.
-				$error = $this->jupgrade->db_new->getErrorMsg();
+				$error = $jupgrade->db_new->getErrorMsg();
 
 				if ($error) {
 					throw new Exception($error);
@@ -218,7 +221,6 @@ class jupgradeControllerAjax extends JController
 
 		} else {
 
-			$prefix = $jupgrade->db_new->getPrefix();
 			$query = "SHOW TABLES LIKE '{$prefix}%'";
 			$jupgrade->db_new->setQuery($query);
 			$tables = $jupgrade->db_new->loadRowList();
