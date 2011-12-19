@@ -363,49 +363,82 @@ var jUpgrade = new Class({
 
 		var myScroll = new Fx.Scroll(window).toBottom();
 
-		var d = new Ajax( 'components/com_jupgrade/includes/install_config.php', {
-		  method: 'get',
-			noCache: true,
-		  onComplete: function( response ) {
+		//
+		// Request 0
+		//
+		var request = new Request({
+			url: 'components/com_jupgrade/includes/install_config.php',
+			method: 'get',
+			noCache: true
+		}); // end Request		
+
+		request.addEvents({
+			'complete': function(response) {
+				//alert('ffdd');
 				pb3.set(33);
 
 				if (self.options.debug_php == 1) {
 					text = document.getElementById('debug');
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_config]</b><br><br>' +response;
 				}
+	
+				// Next step				
+				request1.send();
 
-				var d2 = new Ajax( 'index.php?option=com_jupgrade&format=raw&controller=ajax&task=cleanup', {
-					method: 'get',
-					noCache: true,
-					onComplete: function( response ) {
-						pb3.set(66);
+			}
+		});
 
-						if (self.options.debug_php == 1) {
-							text = document.getElementById('debug');
-							text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
-						}
+		var data = 'directory=' + self.options.directory + '&prefix_new=' + self.options.prefix_new;
 
-						var d = new Ajax( 'components/com_jupgrade/includes/install_db.php', {
-							method: 'get',
-							noCache: true,
-							onComplete: function( response ) {
-								pb3.set(100);
-								pb3.finish();
+		//
+		// Request 1
+		//
+		var request1 = new Request({
+			url: 'index.php?option=com_jupgrade&format=raw&controller=ajax&task=cleanup',
+			method: 'get',
+			noCache: true
+		}); // end Request		
 
-								if (self.options.debug_php == 1) {
-									text = document.getElementById('debug');
-									text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_db]</b><br><br>' +response;
-								}
+		request1.addEvents({
+			'complete': function(response) {
+				pb3.set(66);
 
-								self.migrate();
-							}
-						}).request('directory=' + self.options.directory);
+				if (self.options.debug_php == 1) {
+					text = document.getElementById('debug');
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
+				}
+				
+				// Next step
+				var data2 = 'directory=' + self.options.directory;
+				request2.send(data2);
+			}
+		});
 
-					}
-				}).request();
+		//
+		// Request 2
+		//
+		var request2 = new Request({
+			url: 'components/com_jupgrade/includes/install_db.php',
+			method: 'get',
+			noCache: true
+		}); // end Request		
 
-		  }
-		}).request('directory=' + self.options.directory + '&prefix_new=' + self.options.prefix_new);
+		request2.addEvents({
+			'complete': function(response) {
+				pb3.set(100);
+				pb3.finish();
+
+				if (self.options.debug_php == 1) {
+					text = document.getElementById('debug');
+					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_db]</b><br><br>' +response;
+				}
+
+				self.migrate();
+			}
+		});
+
+		// Start install
+		request.send(data);
 
 	}, // end function
 
@@ -724,15 +757,4 @@ var jUpgrade = new Class({
 
 	} // end function
 
-
 });
-
-
-
-
-
-
-
-
-
-
