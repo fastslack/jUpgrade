@@ -223,8 +223,12 @@ class jUpgradeMenu extends jUpgrade
 				$row->params = json_encode($tmp);
 			}
 
+			// Add quote's to link
+			$row->link = $this->db_new->quote($row->link);
+
+			// Run Query
 			$query = "UPDATE #__menu SET parent_id='{$row->parent_id}', params = '{$row->params}' WHERE menutype='{$row->menutype}'"
-				." AND alias = '{$row->alias}' AND link = '{$row->link}'";
+				." AND alias = '{$row->alias}' AND link = {$row->link}";
 
 			$this->db_new->setQuery($query);
 			$this->db_new->query();

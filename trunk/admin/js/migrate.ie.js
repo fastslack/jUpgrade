@@ -374,7 +374,6 @@ var jUpgrade = new Class({
 
 		request.addEvents({
 			'complete': function(response) {
-				//alert('ffdd');
 				pb3.set(33);
 
 				if (self.options.debug_php == 1) {
