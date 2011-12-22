@@ -438,6 +438,7 @@ class jUpgrade
 		if($res == 0) {
 			$success = false;
 		} else {
+			/*
 			if ($drop) {
 				if ($this->canDrop) {
 					$query = "DROP TABLE IF EXISTS {$to}";
@@ -456,6 +457,7 @@ class jUpgrade
 					throw new Exception($error);
 				}
 			}
+			*/
 			$query = "CREATE TABLE {$to} LIKE {$from}";
 			$this->db_new->setQuery($query);
 			$this->db_new->query();
