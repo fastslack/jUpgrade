@@ -417,7 +417,8 @@ class jUpgradeExtensions extends jUpgrade
 				for ($i=0;$i<count($tables);$i++) {
 					// Use default migration function
 					$table = $tables[$i][0];
-					$this->copyTable($table);
+					$from = preg_replace ('/jos_/', '#__', $table);
+					$this->copyTable($from);
 					$ready = true;
 				}
 
