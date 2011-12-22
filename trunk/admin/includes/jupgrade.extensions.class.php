@@ -51,7 +51,7 @@ class jUpgradeExtensions extends jUpgrade
 		return $instances[$step->name];
 	}
 
-	public function upgradeExtension()
+	public function upgrade()
 	{
 		if (!$this->upgradeComponents()) {
 			return false;

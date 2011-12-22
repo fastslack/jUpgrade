@@ -34,6 +34,10 @@ $error = $jupgrade->db_new->getErrorMsg();
 $query = "SELECT * FROM jupgrade_steps AS s WHERE s.status != 1 AND s.extension = 1 ORDER BY s.id ASC LIMIT 1";
 $jupgrade->db_new->setQuery($query);
 $step = $jupgrade->db_new->loadObject();
+
+// Check for query error.
+$error = $jupgrade->db_new->getErrorMsg();
+
 if (!$step) {
 	// No steps to run, terminate
 	echo ";|;{$lastid};|;ready;|;{$lastid}";
@@ -41,11 +45,9 @@ if (!$step) {
 }
 $step->lastid = $lastid;
 
-// Check for query error.
-$error = $jupgrade->db_new->getErrorMsg();
-
+// Get jUpgradeExtensions instance
 $extension = jUpgradeExtensions::getInstance($step);
-$success = $extension->upgradeExtension();
+$success = $extension->upgrade();
 
 echo ";|;{$step->id};|;{$step->name};|;{$step->lastid}";
 
