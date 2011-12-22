@@ -400,10 +400,27 @@ class jUpgradeExtensions extends jUpgrade
 		}
 		while(($value = array_shift($this->state->tables)) !== null) {
 			$this->output("{$this->name} #__{$value}");
+
 			$copyTableFunc = 'copyTable_'.$value;
 			if (method_exists($this, $copyTableFunc)) {
 				// Use function called like copyTable_kunena_categories
 				$ready = $this->$copyTableFunc($value);
+
+			} else if (strpos($value, '%') !== false) {
+
+				$table = $this->db_old->getPrefix().$value;
+
+				$query = "SHOW TABLES LIKE '{$table}'";
+				$this->db_old->setQuery($query);
+				$tables = $this->db_old->loadRowList();
+
+				for ($i=0;$i<count($tables);$i++) {
+					// Use default migration function
+					$table = $tables[$i][0];
+					$this->copyTable($table);
+					$ready = true;
+				}
+
 			} else {
 				// Use default migration function
 				$table = "#__$value";

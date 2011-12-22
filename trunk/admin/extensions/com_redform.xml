@@ -7,7 +7,7 @@
 	<tables>
 		<table>rwf_configuration</table>
 		<table>rwf_fields</table>
-		<table>rwf_forms</table>
+		<table>rwf_forms%</table>
 		<table>rwf_mailinglists</table>
 		<table>rwf_submitters</table>
 		<table>rwf_values</table>
