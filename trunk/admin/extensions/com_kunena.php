@@ -31,7 +31,7 @@ defined ( '_JEXEC' ) or die ();
  * @subpackage	com_jupgrade
  * @since		1.1.0
  */
-class jUpgradeComponentKunena extends jUpgrade {
+class jUpgradeComponentKunena extends jUpgradeExtensions {
 	/**
 	 * Check if extension migration is supported.
 	 *

@@ -16,7 +16,7 @@ defined ( '_JEXEC' ) or die ();
  *
  * @since		1.1.1
  */
-class jUpgradeComponentRsgallery2 extends jUpgrade {
+class jUpgradeComponentRsgallery2 extends jUpgradeExtensions {
 	/**
 	 * Check if extension migration is supported.
 	 *

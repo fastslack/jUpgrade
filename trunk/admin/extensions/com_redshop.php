@@ -18,7 +18,7 @@ defined ( '_JEXEC' ) or die ();
  * @subpackage	com_jupgrade
  * @since		1.1.0
  */
-class jUpgradeComponentRedshop extends jUpgrade {
+class jUpgradeComponentRedshop extends jUpgradeExtensions {
 	/**
 	 * Check if extension migration is supported.
 	 *

@@ -18,7 +18,7 @@ defined ( '_JEXEC' ) or die ();
  * @subpackage	com_jupgrade
  * @since		1.1.0
  */
-class jUpgradeComponentContactEnhanced extends jUpgrade {
+class jUpgradeComponentContactEnhanced extends jUpgradeExtensions {
 	/**
 	 * Check if extension migration is supported.
 	 *

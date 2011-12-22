@@ -21,7 +21,7 @@ defined('JPATH_BASE') or die();
  *
  * @since		1.2.0
  */
-class jUpgradeComponentVirtuemart extends jUpgrade
+class jUpgradeComponentVirtuemart extends jUpgradeExtensions
 {
 	/**
 	 * Check if extension migration is supported.

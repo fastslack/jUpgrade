@@ -21,7 +21,7 @@ defined('JPATH_BASE') or die();
  *
  * @since		1.1.0
  */
-class jUpgradeComponentJce extends jUpgrade
+class jUpgradeComponentJce extends jUpgradeExtensions
 {
 	/**
 	 * Check if extension migration is supported.

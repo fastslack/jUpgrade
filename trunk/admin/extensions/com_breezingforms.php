@@ -20,7 +20,7 @@ defined('JPATH_BASE') or die();
  *
  * @since		1.2.0
  */
-class jUpgradeComponentFacileforms extends jUpgrade
+class jUpgradeComponentFacileforms extends jUpgradeExtensions
 {
 	/**
 	 * Check if extension migration is supported.

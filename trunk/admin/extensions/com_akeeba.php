@@ -21,7 +21,7 @@ defined('JPATH_BASE') or die();
  *
  * @since		1.2.4
  */
-class jUpgradeComponentAkeeba extends jUpgrade
+class jUpgradeComponentAkeeba extends jUpgradeExtensions
 {
 	/**
 	 * Check if extension migration is supported.
