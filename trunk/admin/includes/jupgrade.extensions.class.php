@@ -474,7 +474,9 @@ class jUpgradeExtensions extends jUpgrade
 					array_unshift($this->state->folders, $value);
 				}
 			} else {
-				JFolder::copy($src, $dest);
+				if (JFolder::exists($src) ) {
+					JFolder::copy($src, $dest);
+				}
 			}
 			if ($this->checkTimeout()) {
 				break;
