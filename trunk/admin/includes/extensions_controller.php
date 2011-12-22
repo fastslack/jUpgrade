@@ -47,7 +47,12 @@ $step->lastid = $lastid;
 
 // Get jUpgradeExtensions instance
 $extension = jUpgradeExtensions::getInstance($step);
-$success = $extension->upgrade();
+
+if ($step->id == 10) {
+	$success = $extension->upgrade();
+}else{
+	$success = $extension->upgradeExtension();
+}
 
 echo ";|;{$step->id};|;{$step->name};|;{$step->lastid}";
 
