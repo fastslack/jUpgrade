@@ -107,17 +107,6 @@ class jUpgradeCategory extends jUpgrade
 				return false;
 			}
 
-			// Rebuild the path for the category:
-			if (!$table->rebuildPath($table->id)) {
-				throw new Exception($table->getError());
-				return false;
-			}
-
-			// Rebuild the paths of the category's children:
-			if (!$table->rebuild($table->id, $table->lft, 1, $table->path)) {
-				throw new Exception($table->getError());
-				return false;
-			}
 		}
 	}
 
@@ -130,9 +119,16 @@ class jUpgradeCategory extends jUpgrade
 	 */
 	public function upgrade()
 	{
-		if (!parent::upgrade()) {
-			throw new Exception('JUPGRADE_ERROR_INSERTING_CATEGORY');
+
+		if (parent::upgrade()) {
+			// Rebuild the categories table
+			$table = JTable::getInstance('Category', 'JTable', array('dbo' => $this->db_new));
+
+			if (!$table->rebuild()) {
+				echo JError::raiseError(500, $table->getError());
+			}
 		}
+
 	}
 
 }
