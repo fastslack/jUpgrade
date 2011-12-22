@@ -35,6 +35,7 @@ class jUpgrade
 	protected $xml = null;
 	protected $ready = true;
 	protected $output = '';
+	protected $params = null;
 
 	protected $usergroup_map = array(
 			// Old	=> // New
@@ -141,22 +142,22 @@ class jUpgrade
 		$this->db_old = JDatabase::getInstance($this->config_old);
 
 		// Getting the params
-		$params = $this->getParams();
+		$this->params = $this->getParams();
 
 		// Setting the new prefix to the db instance
-		$this->config['prefix'] = isset($params->prefix_new) ? $params->prefix_new : 'j17_';
+		$this->config['prefix'] = isset($this->params->prefix_new) ? $this->params->prefix_new : 'j17_';
 		// Creating new dabatase instance
 		$this->db_new = JDatabase::getInstance($this->config);
 
 		// Set timelimit to 0
 		if(!@ini_get('safe_mode')) {
-			if (!empty($params->timelimit)) {
+			if (!empty($this->params->timelimit)) {
 				set_time_limit(0);
 			}
 		}
 
 		// Make sure we can see all errors.
-		if (!empty($params->error_reporting)) {
+		if (!empty($this->params->error_reporting)) {
 			error_reporting(E_ALL);
 			@ini_set('display_errors', 1);
 		}

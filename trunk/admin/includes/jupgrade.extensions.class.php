@@ -62,8 +62,11 @@ class jUpgradeExtensions extends jUpgrade
 		if (!$this->upgradePlugins()) {
 			return false;
 		}
-		if (!$this->upgradeTemplates()) {
-			return false;
+
+		if (empty($this->params->cli)) {
+			if (!$this->upgradeTemplates()) {
+				return false;
+			}
 		}
 		$this->_processExtensions();
 
@@ -250,9 +253,17 @@ class jUpgradeExtensions extends jUpgrade
 				$files = (array) JFolder::files(JPATH_ROOT.'/'.$path, '^j16upgrade\.xml$', true, true);
 				$state->xmlfile = array_shift( $files );
 			}
+
+			// Check default path for extensions files
+			if (empty($this->params->cli)) {			
+				$default_path = JPATH_ROOT."/administrator/components/com_jupgrade";
+			} else {
+				$default_path = JPATH_ROOT;
+			}
+
 			if (empty($state->xmlfile)) {
 				// Find xml file from jUpgrade
-				$default_xmlfile = JPATH_ROOT."/administrator/components/com_jupgrade/extensions/{$name}.xml";
+				$default_xmlfile = "{$default_path}/extensions/{$name}.xml";
 
 				if (file_exists($default_xmlfile)) {
 					$state->xmlfile = $default_xmlfile;
@@ -272,7 +283,7 @@ class jUpgradeExtensions extends jUpgrade
 			}
 			if (empty($state->phpfile)) {
 				// Find adapter from jUpgrade
-				$default_phpfile = JPATH_ROOT.DS."administrator/components/com_jupgrade/extensions/{$name}.php";
+				$default_phpfile = "{$default_path}/extensions/{$name}.php";
 				if (file_exists($default_phpfile)) {
 					$state->phpfile = $default_phpfile;
 				}
