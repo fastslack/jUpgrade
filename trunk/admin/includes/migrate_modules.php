@@ -125,7 +125,7 @@ class jUpgradeModules extends jUpgrade
 			}
 
 			## Change positions
-			if ($params->positions == 0) {
+			if ($params->positions == 1) {
 				if (in_array($row['position'], $map_keys)) {
 						$row['position'] = $map[$row['position']];
 				}
@@ -236,8 +236,8 @@ class jUpgradeModulesMenu extends jUpgrade
 
 			if (in_array($row['moduleid'], $modules_keys)) {
 				if (in_array($row['menuid'], $menus_keys) || $row['menuid'] == 0) {
-					$rows[$i]['moduleid'] = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : rand(1000, 100000);
-					$rows[$i]['menuid'] = isset($menus[$row['menuid']]->new) ? $menus[$row['menuid']]->new : rand(1000, 100000);
+					$newrows[$i]['moduleid'] = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : 0;
+					$newrows[$i]['menuid'] = isset($menus[$row['menuid']]->new) ? $menus[$row['menuid']]->new : 0;
 
 					//echo "<b> MODULE ID:</b> {$newrows[$i]['moduleid']} <==> <b> MENU ID:</b> {$newrows[$i]['menuid']}\n";
 					//echo "\n.................\n";
@@ -247,6 +247,6 @@ class jUpgradeModulesMenu extends jUpgrade
 			$i++;
 		}
 
-		return $rows;
+		return $newrows;
 	}
 }
