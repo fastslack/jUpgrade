@@ -38,10 +38,10 @@ CREATE TABLE IF NOT EXISTS `jupgrade_steps` (
 --
 
 INSERT INTO `jupgrade_steps` VALUES(1, 'users', 0, 0, '');
-INSERT INTO `jupgrade_steps` VALUES(2, 'modules', 0, 0, '');
-INSERT INTO `jupgrade_steps` VALUES(3, 'categories', 0, 0, '');
-INSERT INTO `jupgrade_steps` VALUES(4, 'content', 0, 0, '');
-INSERT INTO `jupgrade_steps` VALUES(5, 'menus', 0, 0, '');
+INSERT INTO `jupgrade_steps` VALUES(2, 'categories', 0, 0, '');
+INSERT INTO `jupgrade_steps` VALUES(3, 'content', 0, 0, '');
+INSERT INTO `jupgrade_steps` VALUES(4, 'menus', 0, 0, '');
+INSERT INTO `jupgrade_steps` VALUES(5, 'modules', 0, 0, '');
 INSERT INTO `jupgrade_steps` VALUES(6, 'banners', 0, 0, '');
 INSERT INTO `jupgrade_steps` VALUES(7, 'contacts', 0, 0, '');
 INSERT INTO `jupgrade_steps` VALUES(8, 'newsfeeds', 0, 0, '');
