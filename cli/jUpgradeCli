@@ -13,17 +13,8 @@
 // We are a valid Joomla entry point.
 define('_JEXEC', 1);
 
-// Setup the base path related constant.
-define('JPATH_BASE', dirname(__FILE__));
-define('JPATH_SITE', dirname(__FILE__));
-define('JPATH_ROOT', dirname(__FILE__));
-define('JPATH_LIBRARIES', dirname(dirname(dirname(__FILE__))).'/joomla-platform/libraries'   );
-
 // Bootstrap the application.
 require './bootstrap.php';
-
-// Import the JCli class from the platform.
-jimport('joomla.application.cli');
 
 class jUpgradeCli extends JCli
 {
@@ -46,29 +37,44 @@ class jUpgradeCli extends JCli
 	{
 		// Call the parent __construct method so it bootstraps the application class.
 		parent::__construct();
-
-		// Require the files
-		jimport('joomla.filesystem.file');
-		jimport('joomla.database.database');
-		// Require the files
-		require_once JPATH_BASE.'/includes/jupgrade.class.php';
-		require_once JPATH_BASE.'/includes/jupgrade.category.class.php';
-		require_once JPATH_BASE.'/includes/jupgrade.extensions.class.php';
-		// Require the files
-		require_once JPATH_BASE.'/includes/migrate_users.php';
-		require_once JPATH_BASE.'/includes/migrate_modules.php';
-		require_once JPATH_BASE.'/includes/migrate_categories.php';
-		require_once JPATH_BASE.'/includes/migrate_content.php';
-		require_once JPATH_BASE.'/includes/migrate_menus.php';
-		require_once JPATH_BASE.'/includes/migrate_banners.php';
-		require_once JPATH_BASE.'/includes/migrate_contacts.php';
-		require_once JPATH_BASE.'/includes/migrate_newsfeeds.php';
-		require_once JPATH_BASE.'/includes/migrate_weblinks.php';
-		// Require the files
-		require_once JPATH_BASE.'/includes/helper.php';
-		
+	
+		// Create the jUpgrade object
 		$this->jupgrade = new jUpgrade;
 
+		// Add the logger.
+		JLog::addLogger(
+			// Pass an array of configuration options
+			array(
+				// Set the name of the log file
+				'text_file' => JPATH_SITE.'/logs/jupgrade.log.php'
+			)
+		);
+
+		// Picasso
+		$body = <<<EOD
+
+                                       /;    ;\                        
+         jUpgradeCLi v2.5.0        __  \\____//                        
+                                  /{_\_/   `'\____                     
+                                  \___   (o)  (o  }   
+       _____________________________/          :--'                   
+   ,-,'`@@@@@@@@       @@@@@@         \_    `__\                       
+  ;:(  @@@@@@@@@        @@@             \___(o'o)                      
+  :: )  @@@@          @@@@@@        ,'@@(  `===='                      
+  :: : @@@@@:          @@@@         `@@@:     \                         
+  :: \  @@@@@:       @@@@@@@)    (  '@@@'      JLinux Rules!                        
+  ;; /\      /`,    @@@@@@@@@\   :@@@@@)                              
+  ::/  )    {_----------------:  :~`,~~;                               
+ ;;'`; :   )                  :  / `; ;                               
+;;;; : :   ;                  :  ;  ; :                                 
+`'`' / :  :                   :  :  : :                                
+    )_ \__;      ";"          :_ ;  \_\       `,','                    
+    :__\  \    * `,'*         \  \  :  \   *  8`;'*  *                 
+        `^'     \ :/           `^'  `-^-'   \ / :  \/
+
+EOD;
+
+		$this->out($body);
 	}
 
 	/**
@@ -109,21 +115,23 @@ class jUpgradeCli extends JCli
 	 * @return	none
 	 * @since	2.5.0
 	 */
-	public function migrate() {
+	public function migrate()
+	{
 
 		$finished = false;
 
-		while (!$finished) {
+		while (!$finished)
+		{
 
 			$step = $this->getStep();
 
-			if ($step === false) {
-				echo "No more steps";
+			if ($step === false){
+				$this->out("No more steps");
 				$finished = true;
 				break;
 			}
 
-			echo "[{$step->id}] Migrating {$step->name}\n";
+			$this->out("[{$step->id}] Migrating {$step->name}");
 
 			if ($step->id <= 9) {
 				$this->processStep($step);
@@ -144,13 +152,11 @@ class jUpgradeCli extends JCli
 	 * @return	none
 	 * @since	2.5.0
 	 */
-	public function processStep ($step) {
+	public function processStep ($step)
+	{
 
-
-		// Require the file
-		//require_once JPATH_BASE.'/includes/migrate_'.$step->name.'.php';
-
-		switch ($step->name) {
+		switch ($step->name)
+		{
 			case 'users':
 				// Migrate the users.
 				$u1 = new jUpgradeUsers($step);
@@ -163,16 +169,6 @@ class jUpgradeCli extends JCli
 				// Migrate the user-to-usergroup mapping.
 				$u2 = new jUpgradeUsergroupMap($step);
 				$u2->upgrade();
-
-				break;
-			case 'modules':
-				// Migrate the Modules.
-				$modules = new jUpgradeModules($step);
-				$modules->upgrade();
-
-				// Migrate the Modules Menus.
-				$modulesmenu = new jUpgradeModulesMenu($step);
-				$modulesmenu->upgrade();
 
 				break;
 			case 'categories':
@@ -199,6 +195,16 @@ class jUpgradeCli extends JCli
 				// Migrate the menu types.
 				$menutypes = new jUpgradeMenuTypes($step);
 				$menutypes->upgrade();
+
+				break;
+			case 'modules':
+				// Migrate the Modules.
+				$modules = new jUpgradeModules($step);
+				$modules->upgrade();
+
+				// Migrate the Modules Menus.
+				$modulesmenu = new jUpgradeModulesMenu($step);
+				$modulesmenu->upgrade();
 
 				break;
 			case 'banners':
@@ -255,7 +261,8 @@ class jUpgradeCli extends JCli
 	 * @return	none
 	 * @since	2.5.0
 	 */
-	public function processExtensionStep ($step) {
+	public function processExtensionStep ($step)
+	{
 
 		// Check the last step id
 		$query = "SELECT id FROM jupgrade_steps ORDER BY id DESC LIMIT 1";
@@ -265,7 +272,8 @@ class jUpgradeCli extends JCli
 		// Check for query error.
 		$error = $this->jupgrade->db_new->getErrorMsg();
 
-		if (!$step) {
+		if (!$step)
+		{
 			// No steps to run, terminate
 			echo ";|;{$lastid};|;ready;|;{$lastid}";
 			return;
@@ -275,13 +283,17 @@ class jUpgradeCli extends JCli
 		// Get jUpgradeExtensions instance
 		$extension = jUpgradeExtensions::getInstance($step);
 
-		if ($step->id == 10) {
+		if ($step->id == 10)
+		{
 			$success = $extension->upgrade();
-		}else{
+		}
+		else
+		{
 			$success = $extension->upgradeExtension();
 		}
 
-		if ($extension->isReady()) {
+		if ($extension->isReady())
+		{
 			// updating the status flag
 			$query = "UPDATE jupgrade_steps SET status = 1"
 			." WHERE name = '{$step->name}'";
