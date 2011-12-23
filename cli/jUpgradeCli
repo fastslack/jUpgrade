@@ -126,7 +126,6 @@ EOD;
 			$step = $this->getStep();
 
 			if ($step === false){
-				$this->out("No more steps");
 				$finished = true;
 				break;
 			}
@@ -263,23 +262,6 @@ EOD;
 	 */
 	public function processExtensionStep ($step)
 	{
-
-		// Check the last step id
-		$query = "SELECT id FROM jupgrade_steps ORDER BY id DESC LIMIT 1";
-		$this->jupgrade->db_new->setQuery($query);
-		$lastid = $this->jupgrade->db_new->loadResult()+1;
-
-		// Check for query error.
-		$error = $this->jupgrade->db_new->getErrorMsg();
-
-		if (!$step)
-		{
-			// No steps to run, terminate
-			echo ";|;{$lastid};|;ready;|;{$lastid}";
-			return;
-		}
-		$step->lastid = $lastid;
-
 		// Get jUpgradeExtensions instance
 		$extension = jUpgradeExtensions::getInstance($step);
 
@@ -303,8 +285,6 @@ EOD;
 			// Check for query error.
 			$error = $this->jupgrade->db_new->getErrorMsg();
 		}
-
-
 	}
 
 	/**
@@ -425,7 +405,6 @@ EOD;
 	}
 
 	public function updateStep($step) {
-
 		// updating the status flag
 		$query = "UPDATE jupgrade_steps SET status = 1"
 		." WHERE name = '{$step->name}'";
