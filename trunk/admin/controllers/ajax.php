@@ -148,6 +148,17 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 
+
+		// Get original prefix for check
+		$original_prefix = $jupgrade->getPrefix();
+		// Get the prefix
+		$prefix = $jupgrade->db_new->getPrefix();
+
+		if ($original_prefix == $prefix) {
+			echo "412: Your destination prefix is the same of the original site";
+			exit;
+		}
+
 		echo "OK";
 		exit;
 	}
