@@ -43,6 +43,11 @@ class jUpgradeMenu extends jUpgrade
 	{
 		$params = $this->getParams();
 
+		// Delete main menu
+		$query = "DELETE FROM {$this->destination} WHERE id = 101 LIMIT 1";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+
 		// Getting the categories id's
 		$categories = $this->getMapList();
 		$sections = $this->getMapList('categories', 'com_section');
@@ -288,5 +293,22 @@ class jUpgradeMenuTypes extends jUpgrade
 		);
 
 		return $rows;
+	}
+
+	/**
+	 * Sets the data in the destination database.
+	 *
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
+	 */
+	protected function setDestinationData()
+	{
+		// Truncate jupgrade_menus table
+		$this->cleanDestinationData();
+
+		if (parent::setDestinationData()) {
+			echo JError::raiseError(500, $table->getError());
+		}
 	}
 }
