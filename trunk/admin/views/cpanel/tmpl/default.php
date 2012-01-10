@@ -28,10 +28,8 @@ $params		= $this->params;
 $mode	= $params->get("mode");
 
 // Set the correct package name
-if ($mode == 0) {
-	$package = 'Joomla 1.6';
-} else if ($mode == 1) {
-	$package = 'Joomla 1.7';
+if ($mode == 1) {
+	$package = 'Joomla 2.5';
 } else if ($mode == 2) {
 	$package = 'Molajo';
 }
