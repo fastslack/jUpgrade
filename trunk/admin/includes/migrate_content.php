@@ -125,6 +125,34 @@ class jUpgradeContent extends jUpgrade
 			throw new Exception($error);
 		}
 
+		/*
+		 * Upgrading the content configuration
+		 */
+		$query = "SELECT params FROM #__components WHERE `option` = 'com_content'";
+		$this->db_old->setQuery($query);
+		$articles_config = $this->db_old->loadResult();
+
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
+		// Convert params to JSON
+		$articles_config = $this->convertParams($articles_config);
+
+		// Update the
+		$query = "UPDATE #__extensions SET `params` = '{$articles_config}' WHERE `element` = 'com_content'";
+		$this->db_new->setQuery($query);
+		$this->db_new->query();
+
+		// Check for query error.
+		$error = $this->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
 	}
 }
 
