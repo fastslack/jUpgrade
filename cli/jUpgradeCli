@@ -112,7 +112,7 @@ class jUpgradeCli extends JApplicationCli
 		}
 
 		// Import Joomla 1.7/2.5 default schema
-		$joomladump = JPATH_BASE.'/includes/joomla.sql';
+		$joomladump = JPATH_BASE.'/sql/joomla.sql';
 		// Import the sql file
 	  if (JUpgradeCliHelper::populateDatabase($this->jupgrade->db_new, $joomladump, $errors) > 0 ) {
 	  	return false;
