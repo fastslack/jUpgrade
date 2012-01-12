@@ -146,9 +146,9 @@ class jUpgradeCli extends JApplicationCli
 
 			$this->out("[{$step->id}] Migrating {$step->name}");
 
-			if ($step->id <= 9) {
+			if ($step->id <= 10) {
 				$this->processStep($step);
-			}else if ($step->id >= 10) {
+			}else if ($step->id > 10) {
 				$this->processExtensionStep($step);
 			}
 
@@ -264,6 +264,12 @@ class jUpgradeCli extends JApplicationCli
 				$weblinks->upgrade();
 
 				break;
+			case 'extensions':
+				// Get jUpgradeExtensions instance
+				$extension = jUpgradeExtensions::getInstance($step);
+				$success = $extension->upgrade();
+
+				break;
 		}
 
 	} // end method
@@ -278,15 +284,7 @@ class jUpgradeCli extends JApplicationCli
 	{
 		// Get jUpgradeExtensions instance
 		$extension = jUpgradeExtensions::getInstance($step);
-
-		if ($step->id == 10)
-		{
-			$success = $extension->upgrade();
-		}
-		else
-		{
-			$success = $extension->upgradeExtension();
-		}
+		$success = $extension->upgradeExtension();
 
 		if ($extension->isReady())
 		{
