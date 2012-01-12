@@ -228,6 +228,7 @@ class jUpgradeModulesMenu extends jUpgrade
 			'm.moduleid'
 		);
 
+		$i = 0;
 		$newrows = array();
 
 		// Do some custom post processing on the list.
@@ -235,6 +236,8 @@ class jUpgradeModulesMenu extends jUpgrade
 		{	
 			$newrows[$i]['moduleid'] = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : $row['moduleid'] + 90000000;	
 			$newrows[$i]['menuid'] = isset($menus[$row['menuid']]->new) ? $menus[$row['menuid']]->new : 0;
+
+			$i++;
 		}
 
 		return $newrows;
