@@ -125,7 +125,7 @@ class jUpgradeModules extends jUpgrade
 			}
 
 			## Change positions
-			if ($params->positions == 1) {
+			if ($params->positions == 0) {
 				if (in_array($row['position'], $map_keys)) {
 						$row['position'] = $map[$row['position']];
 				}
@@ -162,6 +162,7 @@ class jUpgradeModules extends jUpgrade
 			$oldlist->old = $row->sid;
 			unset($row->sid);
 
+			// Insert module
 			if (!$this->db_new->insertObject($table, $row)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
@@ -214,10 +215,10 @@ class jUpgradeModulesMenu extends jUpgrade
 		$menus = $this->getMapList('menus');
 
 		// Getting the menus keys to prevent 'Notice: Undefined index'
-		$menus_keys = array_keys($menus);
 		$modules_keys = array_keys($modules);
+		$menus_keys = array_keys($menus);
 
-		$where = "m.moduleid NOT IN (16)";
+		$where = "m.moduleid NOT IN (1,2,3,4,8,13,14,15)";
 
 		// Getting the data
 		$rows = parent::getSourceData(
@@ -227,24 +228,13 @@ class jUpgradeModulesMenu extends jUpgrade
 			'm.moduleid'
 		);
 
-		$i = 0;
 		$newrows = array();
 
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
-		{
-
-			if (in_array($row['moduleid'], $modules_keys)) {
-				if (in_array($row['menuid'], $menus_keys) || $row['menuid'] == 0) {
-					$newrows[$i]['moduleid'] = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : 0;
-					$newrows[$i]['menuid'] = isset($menus[$row['menuid']]->new) ? $menus[$row['menuid']]->new : 0;
-
-					//echo "<b> MODULE ID:</b> {$newrows[$i]['moduleid']} <==> <b> MENU ID:</b> {$newrows[$i]['menuid']}\n";
-					//echo "\n.................\n";
-				}
-			}
-
-			$i++;
+		{	
+			$newrows[$i]['moduleid'] = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : $row['moduleid'] + 90000000;	
+			$newrows[$i]['menuid'] = isset($menus[$row['menuid']]->new) ? $menus[$row['menuid']]->new : 0;
 		}
 
 		return $newrows;
