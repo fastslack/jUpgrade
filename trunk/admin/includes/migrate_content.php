@@ -71,6 +71,33 @@ class jUpgradeContent extends jUpgrade
 		return $rows;
 	}
 
+	/**
+	 * A hook to be able to modify params prior as they are converted to JSON.
+	 *
+	 * @param	object	$object	A reference to the parameters as an object.
+	 *
+	 * @return	void
+	 * @since	0.4.
+	 * @throws	Exception
+	 */
+	protected function convertParamsHook(&$object)
+	{
+		$object->show_parent_category = isset($object->show_parent_category) ? $object->show_parent_category : "";
+		$object->link_parent_category = isset($object->link_parent_category) ? $object->link_parent_category : "";
+		$object->link_author = isset($object->link_author) ? $object->link_author : "";
+		$object->show_publish_date = isset($object->show_publish_date) ? $object->show_publish_date : "";
+		$object->show_item_navigation = isset($object->show_item_navigation) ? $object->show_item_navigation : "";
+		$object->show_icons = isset($object->show_icons) ? $object->show_icons : "";
+		$object->show_vote = isset($object->show_vote) ? $object->show_vote : "";
+		$object->show_hits = isset($object->show_hits) ? $object->show_hits : "";
+		$object->show_noauth = isset($object->show_noauth) ? $object->show_noauth : "";
+		$object->alternative_readmore = isset($object->alternative_readmore) ? $object->alternative_readmore : "";
+		$object->article_layout = isset($object->article_layout) ? $object->article_layout : "";
+		$object->show_publishing_options = isset($object->show_publishing_options) ? $object->show_publishing_options : "";
+		$object->show_article_options = isset($object->show_article_options) ? $object->show_article_options : "";
+		$object->show_urls_images_backend = isset($object->show_urls_images_backend) ? $object->show_urls_images_backend : "";
+		$object->show_urls_images_frontend = isset($object->show_urls_images_frontend) ? $object->show_urls_images_frontend : "";
+	}
 
 	/**
 	* Sets the data in the destination database.
