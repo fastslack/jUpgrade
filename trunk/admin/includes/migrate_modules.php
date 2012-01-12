@@ -61,7 +61,6 @@ class jUpgradeModules extends jUpgrade
 	protected function convertParamsHook(&$object)
 	{
 		if (isset($object->startLevel)) $object->startLevel++;
-		if (!empty($object->endLevel)) $object->endLevel++;
 	}
 
 	/**
