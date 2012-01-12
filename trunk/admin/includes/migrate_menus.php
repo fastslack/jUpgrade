@@ -151,6 +151,10 @@ class jUpgradeMenu extends jUpgrade
 				$object->menu_image = '';
 			}
 		}
+		if (isset($object->show_page_title)) {
+			$object->show_page_heading = $object->show_page_title;
+			unset($object->show_page_title);
+		}
 	}
 
 	/**
