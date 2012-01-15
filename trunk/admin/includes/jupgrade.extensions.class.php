@@ -245,17 +245,17 @@ class jUpgradeExtensions extends jUpgrade
 
 			if (is_dir(JPATH_ROOT.DS."administrator/{$path}")) {
 				// Find j16upgrade.xml from the extension's administrator folders
-				$files = (array) JFolder::files(JPATH_ROOT."/administrator/{$path}", '^j16upgrade\.xml$', true, true);
+				$files = (array) JFolder::files(JPATH_ROOT."/administrator/{$path}", '^j25upgrade\.xml$', true, true);
 				$state->xmlfile = array_shift( $files );
 			}
 			if (empty($state->xmlfile) && is_dir(JPATH_ROOT.'/'.$path)) {
 				// Find j16upgrade.xml from the extension's folders
-				$files = (array) JFolder::files(JPATH_ROOT.'/'.$path, '^j16upgrade\.xml$', true, true);
+				$files = (array) JFolder::files(JPATH_ROOT.'/'.$path, '^j25upgrade\.xml$', true, true);
 				$state->xmlfile = array_shift( $files );
 			}
 
 			// Check default path for extensions files
-			if (empty($this->params->cli)) {			
+			if (empty($this->params->cli)) {
 				$default_path = JPATH_ROOT."/administrator/components/com_jupgrade";
 			} else {
 				$default_path = JPATH_ROOT;
