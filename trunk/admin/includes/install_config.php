@@ -51,6 +51,7 @@ $jconfig->site_name	= $jconfig->sitename;
 $jconfig->admin_email	= $jconfig->mailfrom;
 $jconfig->site_metadesc	= $jconfig->MetaDesc;
 $jconfig->site_metakeys	= $jconfig->MetaKeys;
+$jconfig->site_offline  = $jconfig->offline;
 
 $jconfig->ftp_enable  = 0;
 $jconfig->ftp_save  = 0;

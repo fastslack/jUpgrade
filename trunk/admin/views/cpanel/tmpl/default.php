@@ -28,10 +28,8 @@ $params		= $this->params;
 $mode	= $params->get("mode");
 
 // Set the correct package name
-if ($mode == 0) {
-	$package = 'Joomla 1.6';
-} else if ($mode == 1) {
-	$package = 'Joomla 1.7';
+if ($mode == 1) {
+	$package = 'Joomla 2.5';
 } else if ($mode == 2) {
 	$package = 'Molajo';
 }
@@ -151,7 +149,7 @@ window.addEvent('domready', function() {
 					<div id="info_version"><?php echo JText::_('jUpgrade'); ?> <?php echo JText::_('Version').' <b>'.$this->version.'</b>'; ?></div>
 					<div id="info_thanks">
 						<p>
-							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2011<br />
+							<?php echo JText::_('Developed by'); ?> <i><a href="http://www.matware.com.ar/">Matware &#169;</a></i>  Copyleft 2006-2012<br />
 							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
 						</p>
 						<p>

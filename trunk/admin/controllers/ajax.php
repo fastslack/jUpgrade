@@ -275,12 +275,11 @@ class jupgradeControllerAjax extends JController
 		
 		// Define filenames
 		$sizefile = JPATH_ROOT.'/tmp/size.tmp';
-		$zipfile = JPATH_ROOT.'/tmp/joomla16.zip';
 		
 		// downloading Molajo instead Joomla zip
 		if (isset($params->mode)) {
 			if ($params->mode == 1) {
-				$zipfile = JPATH_ROOT.'/tmp/joomla17.zip';
+				$zipfile = JPATH_ROOT.'/tmp/joomla25.zip';
 			}
 			if ($params->mode == 2) {
 				$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
@@ -331,12 +330,10 @@ class jupgradeControllerAjax extends JController
 		// Getting the component parameter with global settings
 		$params = $jupgrade->getParams();
 		
-		$zipfile = JPATH_ROOT.'/tmp/joomla16.zip';
-		
 		// downloading Molajo instead Joomla zip
 		if (isset($params->mode)) {
 			if ($params->mode == 1) {
-				$zipfile = JPATH_ROOT.'/tmp/joomla17.zip';
+				$zipfile = JPATH_ROOT.'/tmp/joomla25.zip';
 			}
 			if ($params->mode == 2) {
 				$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
@@ -376,8 +373,8 @@ class jupgradeControllerAjax extends JController
 		// Define filenames
 		$sizefile = JPATH_ROOT.'/tmp/size.tmp';
 		$molajofile = JPATH_ROOT.'/tmp/molajo16.zip';
-		$joomla16file = JPATH_ROOT.'/tmp/joomla16.zip';
 		$joomla17file = JPATH_ROOT.'/tmp/joomla17.zip';
+		$joomla25file = JPATH_ROOT.'/tmp/joomla25.zip';
 		
 		// Cleanup
 		if (file_exists($sizefile)) {
@@ -386,21 +383,17 @@ class jupgradeControllerAjax extends JController
 		if (file_exists($molajofile)) {
 			unlink($molajofile);
 		}
-		if (file_exists($joomla16file)) {
-			unlink($joomla16file);
-		}
 		if (file_exists($joomla17file)) {
 			unlink($joomla17file);
 		}
-		
-		// Setting names
-		$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla16.zip";
-		$zipfile = JPATH_ROOT.'/tmp/joomla16.zip';
+		if (file_exists($joomla25file)) {
+			unlink($joomla25file);
+		}
 		
 		// downloading Molajo instead Joomla zip
 		if ($params->mode == 1) {
-			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla17.zip";
-			$zipfile = JPATH_ROOT.'/tmp/joomla17.zip';
+			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla25.zip";
+			$zipfile = JPATH_ROOT.'/tmp/joomla25.zip';
 		}else if ($params->mode == 2) {
 			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/molajo16.zip";
 			$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';

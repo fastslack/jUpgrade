@@ -8,7 +8,7 @@
  * @author				Matias Aguirre
  * @email   			maguirre@matware.com.ar
  * @link					http://www.matware.com.ar/
- * @license				GNU/GPL http://www.gnu.org/licenses/gpl-3.0-standalone.html
+ * @license				GNU/GPL http://www.gnu.org/licenses/gpl-2.0-standalone.html
  */
 // We are a valid Joomla entry point.
 define('_JEXEC', 1);
@@ -16,7 +16,7 @@ define('_JEXEC', 1);
 // Bootstrap the application.
 require './bootstrap.php';
 
-class jUpgradeCli extends JCli
+class jUpgradeCli extends JApplicationCli
 {
 	/**
 	* A database object for the application to use.
@@ -50,31 +50,45 @@ class jUpgradeCli extends JCli
 			)
 		);
 
-		// Picasso
-		$body = <<<EOD
+		// Print a Picasso
+		$this->out();
+		$this->out('                                       /;    ;\              ');
+		$this->out('         jUpgradeCLi v2.5.0        __  \\____//              ');
+		$this->out('                                  /{_\_/   ` \____           ');
+		$this->out('                                  \___   (o)  (o) }          ');
+		$this->out('       _____________________________/          :--]          ');
+		$this->out('   ,-,|`@@@@@@@@       @@@@@@         \_    `__\             ');
+		$this->out('  ;:(  @@@@@@@@@        @@@             \___(o.o)            ');
+		$this->out('  :: )  @@@@          @@@@@@        ,`@@(  `====`            ');
+		$this->out('  :: : @@@@@:          @@@@         `@@@:     \              ');
+		$this->out('  :: \  @@@@@:       @@@@@@@)    (  `@@@`      JLinux Rules! ');
+		$this->out('  ;; /\      /`,    @@@@@@@@@\   :@@@@@)                     ');
+		$this->out('  ::/  )    {_----------------:  :~`,~~;                     ');
+		$this->out(' ;;``; :   )                  :  / `; ;                      ');
+		$this->out(';;;; : :   ;                  :  ;  ; :                      ');
+		$this->out('```` / :  :                   :  :  : :                      ');
+		$this->out('    )_ \__;      ";"          :_ ;  \_\       `,','          ');
+		$this->out('    :__\  \    * `,`*         \  \  :  \   *  8`;`*  *       ');
+		$this->out('        `^`     \ :/           `^`  `-^-`   \ / :  \/        ');
+		$this->out();
+	}
 
-                                       /;    ;\                        
-         jUpgradeCLi v2.5.0        __  \\____//                        
-                                  /{_\_/   `'\____                     
-                                  \___   (o)  (o  }   
-       _____________________________/          :--'                   
-   ,-,'`@@@@@@@@       @@@@@@         \_    `__\                       
-  ;:(  @@@@@@@@@        @@@             \___(o'o)                      
-  :: )  @@@@          @@@@@@        ,'@@(  `===='                      
-  :: : @@@@@:          @@@@         `@@@:     \                         
-  :: \  @@@@@:       @@@@@@@)    (  '@@@'      JLinux Rules!                        
-  ;; /\      /`,    @@@@@@@@@\   :@@@@@)                              
-  ::/  )    {_----------------:  :~`,~~;                               
- ;;'`; :   )                  :  / `; ;                               
-;;;; : :   ;                  :  ;  ; :                                 
-`'`' / :  :                   :  :  : :                                
-    )_ \__;      ";"          :_ ;  \_\       `,','                    
-    :__\  \    * `,'*         \  \  :  \   *  8`;'*  *                 
-        `^'     \ :/           `^'  `-^-'   \ / :  \/
-
-EOD;
-
-		$this->out($body);
+	/**
+	 * Help
+	 *
+	 * @return	none
+	 * @since	2.5.0
+	 */
+  public function help()
+	{
+		// Print help
+		$this->out();
+		$this->out(' jUpgradeCli v2.5.0');
+		$this->out(' Usage: jUpgradeCli --from your_database.sql --to your_migrate_database.sql [ --only=users|categories|content|modules|menus ] ');
+		$this->out();
+		$this->out(' Author: Matias Aguirre (maguirre@matware.com.ar)');
+		$this->out(' License: GNU/GPL http://www.gnu.org/licenses/gpl-2.0-standalone.html');
+		$this->out();
 	}
 
 	/**
@@ -98,7 +112,7 @@ EOD;
 		}
 
 		// Import Joomla 1.7/2.5 default schema
-		$joomladump = JPATH_BASE.'/includes/joomla.sql';
+		$joomladump = JPATH_BASE.'/sql/joomla.sql';
 		// Import the sql file
 	  if (JUpgradeCliHelper::populateDatabase($this->jupgrade->db_new, $joomladump, $errors) > 0 ) {
 	  	return false;
@@ -132,9 +146,9 @@ EOD;
 
 			$this->out("[{$step->id}] Migrating {$step->name}");
 
-			if ($step->id <= 9) {
+			if ($step->id <= 10) {
 				$this->processStep($step);
-			}else if ($step->id >= 10) {
+			}else if ($step->id > 10) {
 				$this->processExtensionStep($step);
 			}
 
@@ -250,6 +264,12 @@ EOD;
 				$weblinks->upgrade();
 
 				break;
+			case 'extensions':
+				// Get jUpgradeExtensions instance
+				$extension = jUpgradeExtensions::getInstance($step);
+				$success = $extension->upgrade();
+
+				break;
 		}
 
 	} // end method
@@ -264,15 +284,7 @@ EOD;
 	{
 		// Get jUpgradeExtensions instance
 		$extension = jUpgradeExtensions::getInstance($step);
-
-		if ($step->id == 10)
-		{
-			$success = $extension->upgrade();
-		}
-		else
-		{
-			$success = $extension->upgradeExtension();
-		}
+		$success = $extension->upgradeExtension();
 
 		if ($extension->isReady())
 		{
@@ -422,5 +434,17 @@ EOD;
 	}
 
 } // end class
- 
-JCli::getInstance( 'jUpgradeCli' )->execute( );
+
+// Wrap the execution in a try statement to catch any exceptions thrown anywhere in the script.
+try
+{
+	// Instantiate the application object, passing the class name to JCli::getInstance
+	// and use chaining to execute the application.
+	JCli::getInstance('jUpgradeCli')->execute();
+}
+catch (Exception $e)
+{
+	// An exception has been caught, just echo the message.
+	fwrite(STDOUT, $e->getMessage() . "\n");
+	exit($e->getCode());
+}
