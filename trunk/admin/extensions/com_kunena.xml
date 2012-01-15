@@ -1,47 +1,50 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<name>Kunena for Joomla 1.7</name>
-
-	<collection>http://update.kunena.org/1.6/update.xml</collection>
-
-	<!-- The tables to copy to the new site. -->
-	<tables>
-		<table>kunena_announcement</table>
-		<table>kunena_attachments</table>
-		<table>kunena_categories</table>
-		<table>kunena_config</table>
-		<table>kunena_favorites</table>
-		<table>kunena_groups</table>
-		<table>kunena_messages</table>
-		<table>kunena_messages_text</table>
-		<table>kunena_moderation</table>
-		<table>kunena_polls</table>
-		<table>kunena_polls_options</table>
-		<table>kunena_polls_users</table>
-		<table>kunena_ranks</table>
-		<table>kunena_sessions</table>
-		<table>kunena_smileys</table>
-		<table>kunena_subscriptions</table>
-		<table>kunena_subscriptions_categories</table>
-		<table>kunena_thankyou</table>
-		<table>kunena_users</table>
-		<table>kunena_users_banned</table>
-		<table>kunena_version</table>
-		<table>kunena_whoisonline</table>
-	</tables>
-
 	<!-- The folders to copy to the new site. -->
 	<folders>
-		<folder>media/kunena</folder>
 		<folder>administrator/components/com_kunena</folder>
 		<folder>components/com_kunena</folder>
+		<folder>media/kunena</folder>
 	</folders>
 
-	<!-- The categories to copy to the new site. -->
-	<!--
-	<categories>
-		<category section="com_kunena"></category>
-	</categories>
-	-->
+	<!-- List of Kunena extensions. -->
+	<package>
+		<extension>
+			<name>plg_system_kunena</name>
+		</extension>
+		<extension>
+			<name>mod_kunenalatest</name>
+		</extension>
+		<extension>
+			<name>mod_kunenalogin</name>
+		</extension>
+		<extension>
+			<name>mod_kunenasearch</name>
+		</extension>
+		<extension>
+			<name>mod_kunenastats</name>
+		</extension>
+		<extension>
+			<name>plg_community_kunenagroups</name>
+		</extension>
+		<extension>
+			<name>plg_community_kunenamenu</name>
+		</extension>
+		<extension>
+			<name>plg_community_mykunena</name>
+		</extension>
+		<extension>
+			<name>plg_jxfinder_kunena</name>
+		</extension>
+		<extension>
+			<name>plg_system_kunenadiscuss</name>
+		</extension>
+		<extension>
+			<name>plg_search_kunenasearch</name>
+		</extension>
+		<extension>
+			<name>com_kunenaimporter</name>
+		</extension>
+	</package>
 </jupgrade>
