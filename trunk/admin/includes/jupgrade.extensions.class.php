@@ -396,6 +396,21 @@ class jUpgradeExtensions extends jUpgrade
 	{
 		return true;
 	}
+	
+	/**
+	 * Get extension version from the Joomla! 1.5 site
+	 *
+	 * @param	string Relative path to manifest file from Joomla! 1.5 JPATH_ROOT
+	 * @return	string Version string
+	 * @since	2.5.0
+	 */
+	protected function getExtensionVersion($manifest)
+	{
+		if (!file_exists(JPATH_ROOT.'/'.$manifest)) return null;
+
+		$xml = simplexml_load_file(JPATH_ROOT.'/'.$manifest);
+		return (string) $xml->version[0];
+	}
 
 	/**
 	 * Migrate the database tables.
