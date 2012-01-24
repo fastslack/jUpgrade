@@ -58,7 +58,7 @@ class JUpgradeCliHelper
 	function splitSql($sql)
 	{
 		$sql = trim($sql);
-		$sql = preg_replace("/\n\#[^\n]*/", '', "\n".$sql);
+		$sql = preg_replace('/\n\#[^\n]*/', '', "\n".$sql);
 		$buffer = array ();
 		$ret = array ();
 		$in_string = false;
@@ -96,7 +96,7 @@ class JUpgradeCliHelper
 
 	function & getDBO($driver, $host, $user, $password, $database, $prefix, $select = true)
 	{
-		static $db;
+		static $db = null;
 
 		if ( ! $db )
 		{

@@ -30,7 +30,16 @@ defined ( '_JEXEC' ) or die ();
  * @subpackage	com_jupgrade
  * @since		1.1.0
  */
+
 class jUpgradeComponentKunena extends jUpgradeExtensions {
+	public function __construct($step = null) {
+		// Joomla 2.5 support
+		if (file_exists(JPATH_LIBRARIES.'/cms/version/version.php')) require_once JPATH_LIBRARIES.'/cms/version/version.php';
+		// Joomla 1.7 support
+		elseif (file_exists(JPATH_SITE.'/includes/version.php')) require_once JPATH_SITE.'/includes/version.php';
+
+		parent::__construct($step);
+	}
 	/**
 	 * Check if extension migration is supported.
 	 *
@@ -38,17 +47,8 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function detectExtension() {
-		$this->api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
-		if (!file_exists($this->api)) {
-			return false;
-		}
-
-		if (file_exists(JPATH_SITE.'/includes/version.php')) require_once JPATH_SITE.'/includes/version.php';
-
-		require_once $this->api;
-		if (class_exists('Kunena') && version_compare(Kunena:version(), '1.6.4', '>=')) return true;
-
-		return false;
+		$version = $this->getExtensionVersion('administrator/components/com_kunena/kunena.xml');
+		return $version && version_compare($version, '1.6.4', '>=');
 	}
 
 	/**
@@ -76,6 +76,8 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function getCopyFolders() {
+		// Using Joomla 1.5 installation
+		
 		// Replace this with your own logic if you're not using xml file:
 		return parent::getCopyFolders();
 	}
@@ -87,6 +89,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function getCopyTables() {
+		require_once JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
 		require_once KPATH_ADMIN . '/install/schema.php';
 		$schema = new KunenaModelSchema();
 		$tables = $schema->getSchemaTables('');
@@ -126,25 +129,6 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 		}
 		return empty($this->state->folders);
 		*/
-	}
-
-	/**
-	 * Migrate custom information.
-	 *
-	 * This function gets called after all folders and tables have been copied.
-	 *
-	 * If you want to split this task into smaller chunks,
-	 * please store your custom state variables into $this->state and return false.
-	 * Returning false will force jUpgrade to call this function again,
-	 * which allows you to continue import by reading $this->state before continuing.
-	 *
-	 * @return	boolean Ready (true/false)
-	 * @since	1.1.0
-	 * @throws	Exception
-	 */
-	protected function migrateExtensionCustom()
-	{
-		return $this->_fixBrokenMenu();
 	}
 
 	/**
@@ -211,11 +195,11 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * which allows you to continue import by reading $this->state before continuing.
 	 *
 	 * @return	boolean Ready (true/false)
-	 * @since	1.6.4
+	 * @since	1.1.0
 	 * @throws	Exception
 	 */
 	protected function migrateExtensionCustom() {
-		require_once $this->api;
+		require_once JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
 
 		// Need to initialize application
 		jimport ('joomla.environment.uri');
@@ -305,7 +289,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 		$installer = JInstaller::getInstance();
 		$installer->discover_install($component->extension_id);
 		// Start Kunena installer
-		require_once dirname ( __FILE__ ) . '/model.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_kunena/install/model.php';
 		$kunena = new KunenaModelInstall();
 		// Install system plugin
 		$kunena->installSystemPlugin();
