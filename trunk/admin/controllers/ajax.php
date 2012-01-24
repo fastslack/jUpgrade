@@ -282,7 +282,7 @@ class jupgradeControllerAjax extends JController
 				$zipfile = JPATH_ROOT.'/tmp/joomla25.zip';
 			}
 			if ($params->mode == 2) {
-				$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
+				$zipfile = JPATH_ROOT.'/tmp/joomla17.zip';
 			}
 		}
 		
@@ -336,7 +336,7 @@ class jupgradeControllerAjax extends JController
 				$zipfile = JPATH_ROOT.'/tmp/joomla25.zip';
 			}
 			if ($params->mode == 2) {
-				$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
+				$zipfile = JPATH_ROOT.'/tmp/joomla17.zip';
 			}
 		}		
 
@@ -372,16 +372,12 @@ class jupgradeControllerAjax extends JController
 		
 		// Define filenames
 		$sizefile = JPATH_ROOT.'/tmp/size.tmp';
-		$molajofile = JPATH_ROOT.'/tmp/molajo16.zip';
 		$joomla17file = JPATH_ROOT.'/tmp/joomla17.zip';
 		$joomla25file = JPATH_ROOT.'/tmp/joomla25.zip';
 		
 		// Cleanup
 		if (file_exists($sizefile)) {
 			unlink($sizefile);
-		}
-		if (file_exists($molajofile)) {
-			unlink($molajofile);
 		}
 		if (file_exists($joomla17file)) {
 			unlink($joomla17file);
@@ -395,8 +391,8 @@ class jupgradeControllerAjax extends JController
 			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla25.zip";
 			$zipfile = JPATH_ROOT.'/tmp/joomla25.zip';
 		}else if ($params->mode == 2) {
-			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/molajo16.zip";
-			$zipfile = JPATH_ROOT.'/tmp/molajo16.zip';
+			$url = "http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/pack/joomla17.zip";
+			$zipfile = JPATH_ROOT.'/tmp/joomla17.zip';
 		}
 		
 		/*

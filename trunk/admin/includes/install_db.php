@@ -59,14 +59,3 @@ if (!$installHelper->populateDatabase($config['dbo'], $schema) > 0) {
 	return 1;
 	exit;
 }
-
-// installing Molajo database
-if ($params->mode == 2) {
-
-	$schema = JPATH_INSTALLATION.'/sql/mysql/joomla2.sql';
-
-	if (!$installHelper->populateDatabase($config['dbo'], $schema) > 0) {
-		return 1;
-		exit;
-	}
-}

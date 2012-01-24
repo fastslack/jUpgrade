@@ -63,7 +63,7 @@
 			<language tag="hu-HU">languages/hu-HU.com_jupgrade.ini</language>
 			<language tag="zh-TW">languages/zh-TW.com_jupgrade.ini</language>
 			<language tag="sk-SK">languages/sk-SK.com_jupgrade.ini</language>
-      <language tag="zh-TW">languages/fi-FI.com_jupgrade.ini</language>
+      <language tag="fi-FI">languages/fi-FI.com_jupgrade.ini</language>
 			<language tag="th-TH">languages/th-TH.com_jupgrade.ini</language>
 			<language tag="ru-RU">languages/ru-RU.com_jupgrade.ini</language>
 			<language tag="lt-LT">languages/lt-LT.com_jupgrade.ini</language>
@@ -73,9 +73,8 @@
 	<params>
 		<param type="spacer" default="&lt;b&gt;Global&lt;/b&gt;" />
 		<param name="mode" type="list" default="1" label="Distribution" description="">
-			<option value="0">Joomla 1.6</option>
-			<option value="1">Joomla 1.7</option>
-			<option value="2">Molajo</option>
+			<option value="1">Joomla 2.5</option>
+			<option value="2">Joomla 1.7</option>
 		</param>
 		<param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20" />
 		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20" />
