@@ -95,6 +95,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function getCopyTables() {
+		require_once $this->api;
 		require_once KPATH_ADMIN . '/install/schema.php';
 		$schema = new KunenaModelSchema();
 		$tables = $schema->getSchemaTables('');
