@@ -33,8 +33,6 @@ defined ( '_JEXEC' ) or die ();
 
 class jUpgradeComponentKunena extends jUpgradeExtensions {
 	public function __construct($step = null) {
-		$this->api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
-		
 		// Joomla 2.5 support
 		if (file_exists(JPATH_LIBRARIES.'/cms/version/version.php')) require_once JPATH_LIBRARIES.'/cms/version/version.php';
 		// Joomla 1.7 support
@@ -49,14 +47,8 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function detectExtension() {
-		if (!file_exists($this->api)) {
-			return false;
-		}
-
-		require_once $this->api;
-		if (class_exists('Kunena') && version_compare(Kunena::version(), '1.6.4', '>=')) return true;
-
-		return false;
+		$version = $this->getExtensionVersion('administrator/components/com_kunena/kunena.xml');
+		return $version && version_compare($version, '1.6.4', '>=');
 	}
 
 	/**
@@ -84,6 +76,8 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function getCopyFolders() {
+		// Using Joomla 1.5 installation
+		
 		// Replace this with your own logic if you're not using xml file:
 		return parent::getCopyFolders();
 	}
@@ -95,7 +89,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function getCopyTables() {
-		require_once $this->api;
+		require_once JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
 		require_once KPATH_ADMIN . '/install/schema.php';
 		$schema = new KunenaModelSchema();
 		$tables = $schema->getSchemaTables('');
@@ -205,7 +199,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @throws	Exception
 	 */
 	protected function migrateExtensionCustom() {
-		require_once $this->api;
+		require_once JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
 
 		// Need to initialize application
 		jimport ('joomla.environment.uri');
