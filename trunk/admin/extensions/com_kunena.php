@@ -46,7 +46,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 		if (file_exists(JPATH_SITE.'/includes/version.php')) require_once JPATH_SITE.'/includes/version.php';
 
 		require_once $this->api;
-		if (class_exists('Kunena') && version_compare(Kunena:version(), '1.6.4', '>=')) return true;
+		if (class_exists('Kunena') && version_compare(Kunena::version(), '1.6.4', '>=')) return true;
 
 		return false;
 	}
@@ -129,25 +129,6 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	}
 
 	/**
-	 * Migrate custom information.
-	 *
-	 * This function gets called after all folders and tables have been copied.
-	 *
-	 * If you want to split this task into smaller chunks,
-	 * please store your custom state variables into $this->state and return false.
-	 * Returning false will force jUpgrade to call this function again,
-	 * which allows you to continue import by reading $this->state before continuing.
-	 *
-	 * @return	boolean Ready (true/false)
-	 * @since	1.1.0
-	 * @throws	Exception
-	 */
-	protected function migrateExtensionCustom()
-	{
-		return $this->_fixBrokenMenu();
-	}
-
-	/**
 	 * Copy kunena_categories table from old site to new site.
 	 *
 	 * You can create custom copy functions for all your tables.
@@ -211,7 +192,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * which allows you to continue import by reading $this->state before continuing.
 	 *
 	 * @return	boolean Ready (true/false)
-	 * @since	1.6.4
+	 * @since	1.1.0
 	 * @throws	Exception
 	 */
 	protected function migrateExtensionCustom() {
