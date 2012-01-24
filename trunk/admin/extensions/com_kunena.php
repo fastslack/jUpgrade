@@ -30,7 +30,18 @@ defined ( '_JEXEC' ) or die ();
  * @subpackage	com_jupgrade
  * @since		1.1.0
  */
+
 class jUpgradeComponentKunena extends jUpgradeExtensions {
+	public function __construct($step = null) {
+		$this->api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
+		
+		// Joomla 2.5 support
+		if (file_exists(JPATH_LIBRARIES.'/cms/version/version.php')) require_once JPATH_LIBRARIES.'/cms/version/version.php';
+		// Joomla 1.7 support
+		elseif (file_exists(JPATH_SITE.'/includes/version.php')) require_once JPATH_SITE.'/includes/version.php';
+
+		parent::__construct($step);
+	}
 	/**
 	 * Check if extension migration is supported.
 	 *
@@ -38,12 +49,9 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	protected function detectExtension() {
-		$this->api = JPATH_ADMINISTRATOR . '/components/com_kunena/api.php';
 		if (!file_exists($this->api)) {
 			return false;
 		}
-
-		if (file_exists(JPATH_SITE.'/includes/version.php')) require_once JPATH_SITE.'/includes/version.php';
 
 		require_once $this->api;
 		if (class_exists('Kunena') && version_compare(Kunena::version(), '1.6.4', '>=')) return true;
