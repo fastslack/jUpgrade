@@ -294,7 +294,7 @@ class jUpgradeComponentKunena extends jUpgradeExtensions {
 		$installer = JInstaller::getInstance();
 		$installer->discover_install($component->extension_id);
 		// Start Kunena installer
-		require_once dirname ( __FILE__ ) . '/model.php';
+		require_once JPATH_ADMINISTRATOR . '/components/com_kunena/install/model.php';
 		$kunena = new KunenaModelInstall();
 		// Install system plugin
 		$kunena->installSystemPlugin();
