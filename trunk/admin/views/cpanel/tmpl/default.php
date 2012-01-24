@@ -153,10 +153,9 @@ window.addEvent('domready', function() {
 							Licensed as <a href="http://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><i>GNU General Public License v2</i></a><br />
 						</p>
 						<p>
-							<a href="http://matware.com.ar/joomla-projects/jupgrade.html">Project Site</a> /
-							<a href="http://matware.com.ar/forum/listcat/categories.html">Project Community</a> /
-							<a href="http://matware.com.ar/forum/projects/jupgrade/jupgrade-f-a-q.html">FAQ</a> /
-							<a href="http://www.matware.com.ar/people-who-support-this-project.html">Supporters</a><br />
+							<a href="http://redcomponent.com/jupgrade">Project Site</a> /
+							<a href="http://redcomponent.com/forum/92-jupgrade">Project Community</a> /
+							<a href="http://redcomponent.com/forum/92-jupgrade/102880-jupgrade-faq">FAQ</a><br />
 						</p>
 					</div>
 				</div>
