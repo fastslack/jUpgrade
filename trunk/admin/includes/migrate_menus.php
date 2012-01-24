@@ -166,9 +166,6 @@ class jUpgradeMenu extends jUpgrade
 	 */
 	protected function setDestinationData()
 	{
-		// Truncate jupgrade_menus table
-		$clean = $this->cleanDestinationData('jupgrade_menus');
-
 		// Get the source data.
 		$rows	= $this->getSourceData();
 		$table	= empty($this->destination) ? $this->source : $this->destination;

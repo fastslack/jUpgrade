@@ -209,36 +209,21 @@ class jUpgradeModulesMenu extends jUpgrade
 	 */
 	protected function &getSourceData()
 	{
-		// Getting the map id's for modules and menus
-		$modules = $this->getMapList('modules');
-		$menus = $this->getMapList('menus');
-
-		// Getting the menus keys to prevent 'Notice: Undefined index'
-		$modules_keys = array_keys($modules);
-		$menus_keys = array_keys($menus);
-
+		// Creating the query
 		$where = "m.moduleid NOT IN (1,2,3,4,8,13,14,15)";
+
+		$join = array();
+		$join[] = "INNER JOIN jupgrade_modules AS map ON  map.old = m.moduleid";
+		$join[] = "LEFT JOIN jupgrade_menus AS men ON  men.old = m.menuid";
 
 		// Getting the data
 		$rows = parent::getSourceData(
-			'*',
-		  null,
+			'map.new AS moduleid, men.new AS menuid',
+		  $join,
 			$where,
 			'm.moduleid'
 		);
 
-		$i = 0;
-		$newrows = array();
-
-		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
-		{	
-			$newrows[$i]['moduleid'] = isset($modules[$row['moduleid']]->new) ? $modules[$row['moduleid']]->new : $row['moduleid'] + 90000000;	
-			$newrows[$i]['menuid'] = isset($menus[$row['menuid']]->new) ? $menus[$row['menuid']]->new : 0;
-
-			$i++;
-		}
-
-		return $newrows;
+		return $rows;
 	}
 }

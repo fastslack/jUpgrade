@@ -254,6 +254,18 @@ class jupgradeControllerAjax extends JController
 				}
 			}
 		}
+
+		// Insert needed value
+		$query = "INSERT INTO `jupgrade_menus` ( `old`, `new`) VALUES ( 0, 0)";
+		$jupgrade->db_new->setQuery($query);
+		$jupgrade->db_new->query();
+
+		// Check for query error.
+		$error = $jupgrade->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
 	}
 
 	/**

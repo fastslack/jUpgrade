@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS `jupgrade_menus` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
+-- Dumping data for table `jupgrade_menus`
+--
+
+INSERT INTO `jupgrade_menus` VALUES(0, 0);
+
+--
 -- Table structure for table `jupgrade_steps`
 --
 
