@@ -214,7 +214,7 @@ class jUpgradeModulesMenu extends jUpgrade
 
 		$join = array();
 		$join[] = "INNER JOIN jupgrade_modules AS map ON  map.old = m.moduleid";
-		$join[] = "LEFT JOIN jupgrade_menus AS men ON  men.old = m.menuid";
+		$join[] = "INNER JOIN jupgrade_menus AS men ON  men.old = m.menuid";
 
 		// Getting the data
 		$rows = parent::getSourceData(
