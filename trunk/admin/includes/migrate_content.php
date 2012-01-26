@@ -115,31 +115,48 @@ class jUpgradeContent extends jUpgrade
 		$rows	= $this->getSourceData();
 		$table	= empty($this->destination) ? $this->source : $this->destination;
 
+		// Initialize values
+		$aliases = array();
+		$unique_alias_suffix = 1;
+
 		// Insert content data
 		foreach ($rows as $row)
 		{
-			// Convert the array into an object.
-			$row = (object) $row;
+      // The Joomla 2.5 database structure does not allow duplicate aliases
+      if (in_array($row['alias'], $aliases, true)) {
+        $row['alias'] .= $unique_alias_suffix;
+        $unique_alias_suffix++;
+      }
+      $aliases[] = $row['alias'];
 
 			//Cleanup
-			unset($row->extension);
+			unset($row['id']);
 
-			if (!$this->db_new->insertObject($table, $row)) {
-				throw new Exception($this->db_new->getErrorMsg());
+			// Getting the asset table
+			$content = JTable::getInstance('Content', 'JTable', array('dbo' => $this->db_new));
+
+			// Bind data to save content
+			if (!$content->bind($row)) {
+				echo JError::raiseError(500, $content->getError());
 			}
 
-			// set section value to identify asset
-			$row->extension = 'article';
+			// Check the content
+			if (!$content->check()) {
+				echo JError::raiseError(500, $content->getError());
+			}
 
-			if (!$this->insertAsset($row)) {
-				throw new Exception('JUPGRADE_ERROR_INSERTING_ASSET');
+			// Insert the content
+			if (!$content->store()) {
+				echo JError::raiseError(500, $content->getError());
 			}
 
 		}
 
 		$params = $this->getParams();
 
-		// Update the featured column with records from content_frontpage
+		/*
+		 * Update the featured column with records from content_frontpage
+		 */
 		$query = "UPDATE `{$params->prefix_new}content`, `{$this->config_old['prefix']}content_frontpage`"
 		." SET `{$params->prefix_new}content`.featured = 1 WHERE `{$params->prefix_new}content`.id = `{$this->config_old['prefix']}content_frontpage`.content_id";
 		$this->db_new->setQuery($query);

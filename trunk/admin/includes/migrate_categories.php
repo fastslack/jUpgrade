@@ -100,38 +100,33 @@ class jUpgradeCategories extends jUpgrade
 		//
 		foreach ($rows as $row)
 		{
-			// Convert the array into an object.
-			$row = (object) $row;
-
+			// Inserting the category
 			$this->insertCategory($row);
-			$this->insertAsset($row);
 
 			 // Childen categories
 			$query = "SELECT `id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`"
 			." FROM {$this->config_old['prefix']}categories"
-			." WHERE section = {$row->sid}"
+			." WHERE section = {$row['sid']}"
 			." ORDER BY id ASC";
 			$this->db_old->setQuery($query);
-			$categories = $this->db_old->loadObjectList();
+			$categories = $this->db_old->loadAssocList();
 
 			for($y=0;$y<count($categories);$y++){
 
 				// Correct some values
-				$categories[$y]->params = $this->convertParams($categories[$y]->params);
-				$categories[$y]->title = str_replace("'", "&#39;", $categories[$y]->title);
-				$categories[$y]->description = str_replace("'", "&#39;", $categories[$y]->description);
-				$categories[$y]->access = $categories[$y]->access+1;
-				$categories[$y]->language = '*';
+				$categories[$y]['params'] = $this->convertParams($categories[$y]['params']);
+				$categories[$y]['title'] = str_replace("'", "&#39;", $categories[$y]['title']);
+				$categories[$y]['description'] = str_replace("'", "&#39;", $categories[$y]['description']);
+				$categories[$y]['access'] = $categories[$y]['access']+1;
+				$categories[$y]['language'] = '*';
 
 				// Correct alias
-				if ($categories[$y]->alias == "") {
-					$categories[$y]->alias = JFilterOutput::stringURLSafe($categories[$y]->title);
+				if ($categories[$y]['alias'] == "") {
+					$categories[$y]['alias'] = JFilterOutput::stringURLSafe($categories[$y]['title']);
 				}
 
 				// Inserting category and asset
-				$this->insertCategory($categories[$y], $row->title);
-				$this->insertAsset($categories[$y], $row->title);
-
+				$this->insertCategory($categories[$y], $row['title']);
 			}
 
 		}

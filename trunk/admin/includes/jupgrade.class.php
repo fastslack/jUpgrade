@@ -484,31 +484,35 @@ class jUpgrade
 	 */
 	public function insertCategory($object, $parent = false)
 	{
+		// Getting the asset table
+		$category = JTable::getInstance('Category', 'JTable', array('dbo' => $this->db_new));
+
 		// Get old id
 		$oldlist = new stdClass();
-		$oldlist->section = $object->extension;
-		$oldlist->old = $object->sid;
-		unset($object->sid);
+		$oldlist->section = $object['extension'];
+		$oldlist->old = $object['sid'];
+		unset($object['sid']);
 
 		// Correct extension
-		if ($object->extension == "com_banner") {
-			$object->extension = "com_banners";
+		if ($object['extension'] == "com_banner") {
+			$object['extension'] = "com_banners";
 		}
 
-		if (is_numeric($object->extension) || $object->extension == "" || $object->extension == "category") {
-			$object->extension = "com_content";
+		if (is_numeric($object['extension']) || $object['extension'] == "" || $object['extension'] == "category") {
+			$object['extension'] = "com_content";
 		}
 
 		// If has parent made $path and get parent id
 		if ($parent !== false) {
-			$object->path = JFilterOutput::stringURLSafe($parent)."/".$object->alias;
+
+			$object['path'] = JFilterOutput::stringURLSafe($parent)."/".$object['alias'];
 
 			// Fixing title quote
 			$parent = str_replace("'", "&#39;", $parent);
 
 			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
 			$this->db_new->setQuery($query);
-			$object->parent_id = $this->db_new->loadResult();
+			$object['parent_id'] = $this->db_new->loadResult();
 
 			// Check for query error.
 			$error = $this->db_new->getErrorMsg();
@@ -517,27 +521,36 @@ class jUpgrade
 				throw new Exception($error);
 			}
 
+			// Setting the location of the new category
+			$category->setLocation($object['parent_id'], 'last-child');
 		}
 		else {
-			$object->parent_id = 1;
-			$object->path = $object->alias;
+			$object['path'] = $object['alias'];
+
+			// Setting the location of the new category
+			$category->setLocation(1, 'last-child');
 
 			// Fixing extension name if it's section
-			if ($object->extension == 'com_section') {
-				$object->extension = "com_content";
+			if ($object['extension'] == 'com_section') {
+				$object['extension'] = "com_content";
 			}
 		}
 
-		// Insert the row
-		if (!$this->db_new->insertObject('#__categories', $object)) {
-			throw new Exception($this->db_new->getErrorMsg());
+		// Bind data to save category
+		if (!$category->bind($object)) {
+			echo JError::raiseError(500, $category->getError());
+		}
+
+		// Insert the category
+		if (!$category->store()) {
+			echo JError::raiseError(500, $category->getError());
 		}
 
 		// Returning sid needed by insertAsset()
-		$object->sid = $oldlist->old;
+		$object['sid'] = $oldlist->old;
 
 		// Get new id
-		$oldlist->new = $this->db_new->insertid();
+		$oldlist->new = $category->id;
 
 		// Save old and new id
 		if (!$this->db_new->insertObject('jupgrade_categories', $oldlist)) {
@@ -545,104 +558,6 @@ class jUpgrade
 		}
 
 	 	return true;
-	}
-
-	/**
-	 * Inserts asset
-	 *
-	 * @access  public
-	 * @param   object  An object whose properties match table fields
-	 * @param   string  The parent title
-	 * @since	0.4.
-	 */
-	public function insertAsset($object, $parent = false)
-	{
-		// Getting the asset table
-		$table = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->db_new));
-
-		// Getting the categories id's
-		$categories = $this->getMapList();
-
-		//
-		// Correct extension
-		//
-		if ($object->extension != 'article') {
-			$sid = isset($object->sid) ? $object->sid : $object->id ;
-			$id = $categories[$sid]->new;
-			$updatetable = '#__categories';
-
-			if ($object->extension == "com_banners") {
-				$table->name = "com_banners.category.{$id}";
-				$table->parent_id = 3;
-			}
-			else if ($object->extension == "com_contact_details") {
-				$table->name = "com_contact.category.{$id}";
-				$table->parent_id = 7;
-			}
-			else if ($object->extension == "com_newsfeeds") {
-				$table->name = "com_newsfeeds.category.{$id}";
-				$table->parent_id = 19;
-			}
-			else if ($object->extension == "com_weblinks") {
-				$table->name = "com_weblinks.category.{$id}";
-				$table->parent_id = 25;
-				$table->level = 2;
-			}
-			else if (is_numeric($object->extension) || $object->extension == 'com_content') {
-				$table->name = "com_content.category.{$id}";
-
-				// Get parent and level
-				if ($parent !== false) {
-					// Fixing title quote
-					$parent = str_replace("'", "&#39;", $parent);
-
-					$query = "SELECT id FROM #__assets WHERE title = '{$parent}' LIMIT 1";
-					$this->db_new->setQuery($query);
-					$table->parent_id = $this->db_new->loadResult();
-					$table->level = 3;
-				}
-				else {
-					$table->level = 2;
-					$table->parent_id = 8;
-				}
-			}
-
-		}
-		else if ($object->extension == "article") {
-			$updatetable = '#__content';
-			$id = $object->id;
-			$table->name = "com_content.article.{$id}";
-			$table->parent_id = 8;
-			$table->level = 2;
-		}
-
-		// Setting rules values
-		$table->rules = '{"core.create":[],"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
-		$table->title = mysql_real_escape_string($object->title);
-
-		// Insert the asset
-		if (!$table->store()) {
-			echo JError::raiseError(500, $table->getError());
-		}
-
-		// Returning sid needed by childen categories
-		$object->sid = isset($sid) ? $sid : $object->id ;
-
-		// updating the category asset_id;
-		$query = "UPDATE {$updatetable} SET asset_id = {$table->id}"
-		." WHERE id = {$id}";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
-
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
