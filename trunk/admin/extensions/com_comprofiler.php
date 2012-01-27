@@ -47,33 +47,6 @@ class jUpgradeComponentComprofiler extends jUpgradeExtensions {
 	}
 
 	/**
-	 * Get folders to be migrated.
-	 *
-	 * @return	array	List of tables without prefix
-	 * @since	1.1.0
-	 */
-	protected function getCopyFolders() {
-		$folders		=	array(	'administrator/components/com_comprofiler',
-									'components/com_comprofiler',
-									'images/comprofiler'
-								);
-
-		if ( file_exists( $this->getJRoot() . '/modules/mod_cblogin' ) ) {
-			$folders[]	=	'modules/mod_cblogin';
-		}
-
-		if ( file_exists( $this->getJRoot() . '/modules/mod_comprofilermoderator' ) ) {
-			$folders[]	=	'modules/mod_comprofilermoderator';
-		}
-
-		if ( file_exists( $this->getJRoot() . '/modules/mod_comprofileronline' ) ) {
-			$folders[]	=	'modules/mod_comprofileronline';
-		}
-
-		return $folders;
-	}
-
-	/**
 	 * Get tables to be migrated
 	 *
 	 * @return	array	List of tables without prefix
@@ -82,11 +55,13 @@ class jUpgradeComponentComprofiler extends jUpgradeExtensions {
 	protected function getCopyTables() {
 		$db											=	$this->db_old;
 
+		// Get CB Plugins:
 		$query										=	'SELECT *'
 													.	"\n FROM " . $db->NameQuote( '#__comprofiler_plugin' );
 		$db->setQuery( $query );
 		$plugins									=	$db->loadObjectList();
 
+		// CB Core Tables:
 		$tables										=	array(	'comprofiler',
 																'comprofiler_fields',
 																'comprofiler_field_values',
@@ -99,6 +74,7 @@ class jUpgradeComponentComprofiler extends jUpgradeExtensions {
 																'comprofiler_views'
 															);
 
+		// CB Plugin Tables:
 		if ( $plugins ) foreach ( $plugins as $plugin ) {
 			$xmlPath								=	$this->getJRoot() . '/components/com_comprofiler/plugin/' . $plugin->type . '/' . $plugin->folder . '/' . $plugin->element . '.xml';
 
@@ -243,37 +219,171 @@ class jUpgradeComponentComprofiler extends jUpgradeExtensions {
 	 * @since	1.1.0
 	 */
 	public function migrateExtensionCustom() {
-		$db						=	$this->db_new;
-		$option					=	$this->name;
+		$db			=	$this->db_new;
+		$option		=	$this->name;
 
 		JFactory::getApplication( 'administrator' );
+		jimport( 'joomla.installer.installer' );
 
-		$component				=	JTable::getInstance( 'extension', 'JTable', array( 'dbo' => $db ) );
+		// Remove J1.5 XML in root:
+		if ( file_exists( JPATH_SITE . '/components/com_comprofiler/comprofiler.xml' ) ) {
+			@unlink( JPATH_SITE . '/components/com_comprofiler/comprofiler.xml' );
+		}
 
-		$component->load( array( 'type' => 'component', 'element' => $option ) );
+		// Get CB component object:
+		$component	=	$this->discoverExtension( 'component', $option, 1 );
 
-		$query					=	'UPDATE ' . $db->NameQuote( '#__menu' )
-								.	"\n SET " . $db->NameQuote( 'component_id' ) . " = " . (int) $component->extension_id
-								.	"\n WHERE " . $db->NameQuote( 'type' ) . " = " . $db->Quote( 'component' )
-								.	"\n AND " . $db->NameQuote( 'link' ) . " LIKE " . $db->Quote( '%' . $db->getEscaped( $option, true ) . '%', false );
+		// Fix CB menu links:
+		$query		=	'UPDATE ' . $db->NameQuote( '#__menu' )
+					.	"\n SET " . $db->NameQuote( 'component_id' ) . " = " . (int) $component->extension_id
+					.	"\n WHERE " . $db->NameQuote( 'type' ) . " = " . $db->Quote( 'component' )
+					.	"\n AND " . $db->NameQuote( 'link' ) . " LIKE " . $db->Quote( '%' . $db->getEscaped( $option, true ) . '%', false );
 		$db->setQuery( $query );
 		$db->query();
 
-		if ( file_exists( JPATH_ROOT . '/components/com_comprofiler/comprofiler.xml' ) ) {
-			@unlink( JPATH_ROOT . '/components/com_comprofiler/comprofiler.xml' );
+		// CB Core Modules:
+		if ( file_exists( JPATH_SITE . '/modules/mod_cblogin' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_cblogin/mod_cblogin.xml' );
+			$this->discoverExtension( 'module', 'mod_cblogin' );
 		}
 
-		$component->client_id	=	1;
-		$component->state		=	-1;
+		if ( file_exists( JPATH_SITE . '/modules/mod_comprofilermoderator' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_comprofilermoderator/mod_comprofilermoderator.xml' );
+			$this->discoverExtension( 'module', 'mod_comprofilermoderator' );
+		}
 
-		$component->store();
+		if ( file_exists( JPATH_SITE . '/modules/mod_comprofileronline' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_comprofileronline/mod_comprofileronline.xml' );
+			$this->discoverExtension( 'module', 'mod_comprofileronline' );
+		}
 
-		jimport( 'joomla.installer.installer' );
+		// CB Content:
+		if ( file_exists( JPATH_SITE . '/modules/mod_cbcontent' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_cbcontent/mod_cbcontent.xml' );
+			$this->discoverExtension( 'module', 'mod_cbcontent' );
+		}
 
-		$installer				=	JInstaller::getInstance();
+		// CB GroupJive:
+		if ( file_exists( JPATH_SITE . '/modules/mod_cbgroupjive' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_cbgroupjive/mod_cbgroupjive.xml' );
+			$this->discoverExtension( 'module', 'mod_cbgroupjive' );
+		}
 
-		$installer->discover_install( (int) $component->extension_id );
+		// CB ProfileBook:
+		if ( file_exists( JPATH_SITE . '/modules/mod_cblatestposts' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_cblatestposts/mod_cblatestposts.xml' );
+			$this->discoverExtension( 'module', 'mod_cblatestposts' );
+		}
+
+		// CB ProfileGallery:
+		if ( file_exists( JPATH_SITE . '/modules/mod_cbgallery' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_cbgallery/mod_cbgallery.xml' );
+			$this->discoverExtension( 'module', 'mod_cbgallery' );
+		}
+
+		// CB Admin Nav:
+		if ( file_exists( JPATH_SITE . '/administrator/modules/mod_cb_adminnav' ) ) {
+			$this->migrateXML( JPATH_SITE . '/administrator/modules/mod_cb_adminnav/mod_cb_adminnav.xml' );
+			$this->discoverExtension( 'module', 'mod_cb_adminnav', 1 );
+		}
+
+		// CBSubs:
+		if ( file_exists( JPATH_SITE . '/modules/mod_cbsubscriptions' ) ) {
+			$this->migrateXML( JPATH_SITE . '/modules/mod_cbsubscriptions/mod_cbsubscriptions.xml' );
+			$this->discoverExtension( 'module', 'mod_cbsubscriptions' );
+		}
+
+		// CBSubs Content Bot:
+		if ( file_exists( JPATH_ROOT . '/plugins/system/cbpaidsubsbot.xml' ) ) {
+			$this->migratePlugin( 'system', 'cbpaidsubsbot' );
+		}
+
+		// CB Content Bot:
+		if ( file_exists( JPATH_ROOT . '/plugins/content/cbcontentbot.xml' ) ) {
+			$this->migratePlugin( 'content', 'cbcontentbot' );
+		}
 
 		return true;
+	}
+
+	private function migratePlugin( $type, $plugin ) {
+		if ( $type && $plugin && file_exists( JPATH_ROOT . "/plugins/$type/$plugin.xml" ) ) {
+			$oldmask	=	@umask( 0 );
+
+			if ( @mkdir( JPATH_SITE . "/plugins/$type/$plugin", 0755, true ) ) {
+				@umask( $oldmask );
+
+				@copy( JPATH_ROOT . "/plugins/$type/index.html", JPATH_SITE . "/plugins/$type/$plugin/index.html" );
+				@chmod( JPATH_SITE . "/plugins/$type/$plugin/index.html", 0644 );
+
+				@copy( JPATH_ROOT . "/plugins/$type/$plugin.php", JPATH_SITE . "/plugins/$type/$plugin/$plugin.php" );
+				@chmod( JPATH_SITE . "/plugins/$type/$plugin/$plugin.php", 0644 );
+
+				@copy( JPATH_ROOT . "/plugins/$type/$plugin.xml", JPATH_SITE . "/plugins/$type/$plugin/$plugin.xml" );
+				@chmod( JPATH_SITE . "/plugins/$type/$plugin/$plugin.xml", 0644 );
+
+				if ( file_exists( JPATH_SITE . "/plugins/$type/$plugin" ) ) {
+					$this->migrateXML( JPATH_SITE . "/plugins/$type/$plugin/$plugin.xml" );
+					$this->discoverExtension( 'plugin', $plugin );
+				}
+			} else {
+				@umask( $oldmask );
+			}
+		}
+	}
+
+	private function migrateXML( $path ) {
+		if ( $path && file_exists( $path ) ) {
+			$xml				=	file_get_contents( $path );
+
+			if ( $xml ) {
+				if ( preg_match( '%(</?.*)(?:mosinstall)(.*>)%', $xml ) ) {
+					$xml		=	preg_replace( '%(</?.*)(?:mosinstall)(.*>)%', '\1install\2', $xml );
+				}
+
+				if ( preg_match( '%(</?)(?:params)(>)%', $xml ) && ( ! preg_match( '%(</?)(?:config)(>)%', $xml ) ) ) {
+					$xml		=	preg_replace( '%(<)(?:params)(>)%', '\1config\2 <fields name="params"> <fieldset name="basic">', $xml );
+					$xml		=	preg_replace( '%(</)(?:params)(>)%', '</fieldset> </fields> \1config\2', $xml );
+					$xml		=	preg_replace( '%(</?)(?:param)(.*>)%', '\1field\2', $xml );
+					$xml		=	preg_replace( '%<field.*type="spacer".*default="([^"]+)".*/>%', '<field name="" type="spacer" default="" label="\1" description="" />', $xml );
+					$xml		=	preg_replace( '/type="textarea"/', 'type="textarea" filter="raw"', $xml );
+				}
+
+				if ( preg_match( '/<install .*client="[\w.]+"/', $xml ) ) {
+					$xml		=	preg_replace( '/(<install.*version=)"[\w.]+"/', '\1"1.7"', $xml );
+				} else {
+					if ( preg_match( '/administrator/', $path ) ) {
+						$client	=	'administrator';
+					} else {
+						$client	=	'site';
+					}
+
+					$xml		=	preg_replace( '/(<install.*version=)"[\w.]+"/', '\1"1.7" client="' . $client . '"', $xml );
+				}
+
+				file_put_contents( $path, $xml );
+			}
+		}
+	}
+
+	private function discoverExtension( $type, $element, $client = 0 ) {
+		if ( $type && $element ) {
+			$extension					=	JTable::getInstance( 'extension', 'JTable', array( 'dbo' => $this->db_new ) );
+
+			$extension->load( array( 'type' => $type, 'element' => $element ) );
+
+			if ( $extension->extension_id ) {
+				$extension->client_id	=	(int) $client;
+				$extension->state		=	-1;
+
+				$extension->store();
+
+				$installer				=	JInstaller::getInstance();
+
+				$installer->discover_install( (int) $extension->extension_id );
+			}
+
+			return $extension;
+		}
 	}
 }

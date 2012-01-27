@@ -1,5 +1,56 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<!-- Migrate logic done in PHP -->
+	<!-- The folders to copy to the new site -->
+	<folders>
+		<folder>administrator/components/com_comprofiler</folder>
+		<folder>components/com_comprofiler</folder>
+		<folder>images/comprofiler</folder>
+		<folder>modules/mod_cblogin</folder>
+		<folder>modules/mod_comprofilermoderator</folder>
+		<folder>modules/mod_comprofileronline</folder>
+		<folder>modules/mod_cbcontent</folder>
+		<folder>modules/mod_cbgroupjive</folder>
+		<folder>modules/mod_cblatestposts</folder>
+		<folder>modules/mod_cbgallery</folder>
+		<folder>modules/mod_cbsubscriptions</folder>
+		<folder>administrator/modules/mod_cb_adminnav</folder>
+	</folders>
+
+	<!-- List of CB extensions -->
+	<package>
+		<extension>
+			<name>mod_cblogin</name>
+		</extension>
+		<extension>
+			<name>mod_comprofilermoderator</name>
+		</extension>
+		<extension>
+			<name>mod_comprofileronline</name>
+		</extension>
+		<extension>
+			<name>mod_cbcontent</name>
+		</extension>
+		<extension>
+			<name>mod_cbgroupjive</name>
+		</extension>
+		<extension>
+			<name>mod_cblatestposts</name>
+		</extension>
+		<extension>
+			<name>mod_cbgallery</name>
+		</extension>
+		<extension>
+			<name>mod_cbsubscriptions</name>
+		</extension>
+		<extension>
+			<name>mod_cb_adminnav</name>
+		</extension>
+		<extension>
+			<name>plg_system_cbpaidsubsbot</name>
+		</extension>
+		<extension>
+			<name>plg_content_cbcontentbot</name>
+		</extension>
+	</package>
 </jupgrade>
