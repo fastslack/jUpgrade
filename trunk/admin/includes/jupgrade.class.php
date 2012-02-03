@@ -166,7 +166,7 @@ class jUpgrade
 		$query = "SHOW GRANTS FOR CURRENT_USER";
 		$this->db_new->setQuery( $query );
 		$list = $this->db_new->loadRowList();
-		$grant = $list[1][0];
+		$grant = isset($list[1][0]) ? $list[1][0] : $list[0][0];
 
 		if (strpos($grant, 'DROP') == true || strpos($grant, 'ALL') == true) {
 			$this->canDrop = true;
