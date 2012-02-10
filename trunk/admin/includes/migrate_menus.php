@@ -18,6 +18,7 @@
  *
  * @since	0.4.5
  */
+
 class jUpgradeMenu extends jUpgrade
 {
 	/**
@@ -44,7 +45,7 @@ class jUpgradeMenu extends jUpgrade
 		$params = $this->getParams();
 
 		// Delete main menu
-		$query = "DELETE FROM {$this->destination} WHERE id = 101 LIMIT 1";
+		$query = "DELETE FROM {$this->destination} WHERE id > 1";
 		$this->db_new->setQuery($query);
 		$this->db_new->query();
 
@@ -58,13 +59,13 @@ class jUpgradeMenu extends jUpgrade
 		$join[] = "LEFT JOIN {$params->prefix_new}extensions AS e ON e.element = c.option";
 
 		$rows = parent::getSourceData(
-			 ' m.id AS sid, m.menutype, m.name AS title, m.alias, m.link, m.type,'
+			 ' m.id, m.menutype, m.name AS title, m.alias, m.link, m.type,'
 			.' m.published, m.parent AS parent_id, e.extension_id AS component_id,'
 			.' m.sublevel AS level, m.ordering, m.checked_out, m.checked_out_time, m.browserNav,'
 			.' m.access, m.params, m.lft, m.rgt, m.home',
 			$join,
 			null,
-			'm.id'
+			'm.id DESC'
 		);
  
 		// Initialize values
@@ -80,6 +81,10 @@ class jUpgradeMenu extends jUpgrade
 			$row['level']++;
 			// Fixing language
 			$row['language'] = '*';
+			// Fixing parent_id
+			if ($row['parent_id'] == 0) {
+				$row['parent_id'] = 1;
+			}
 
       // Fixing menus URLs
       if (strpos($row['link'], 'option=com_content') !== false) {
@@ -175,70 +180,33 @@ class jUpgradeMenu extends jUpgrade
 			// Convert the array into an object.
 			$row = (object) $row;
 
-			// Get oldlist values
-			$oldlist = new stdClass();
-			$oldlist->old = $row->sid;
-			unset($row->sid);
+			// Fixing id if == 1 (used by root)
+			if ($row->id == 1) {
+				$query = "SELECT id"
+				." FROM #__menu"
+				." ORDER BY id DESC LIMIT 1";
+				$this->db_new->setQuery($query);
+				$lastid = $this->db_new->loadResult();	
+
+				$row->id = $lastid + 1;
+			}	
 
 			// Inserting the menu
 			if (!$this->db_new->insertObject($table, $row)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
-
-			// Get new id
-			$oldlist->new = $this->db_new->insertid();
-
-			// Save old and new id
-			if (!$this->db_new->insertObject('jupgrade_menus', $oldlist)) {
-				throw new Exception($this->db_new->getErrorMsg());
-			}
-
 		}
 
-		// Updating the parent id's
-		foreach ($rows as $row)
-		{
-			// Convert the array into an object.
-			$row = (object) $row;
+		// Require the files
+		require_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jupgrade'.DS.'includes'.DS.'helper.php';
 
-			// Fix the parent id fields
-      if ($row->parent_id == 0) {
-        $row->parent_id = 1;
-      } else {
-		    $query = "SELECT new"
-		    ." FROM jupgrade_menus"
-		    ." WHERE old = {$row->parent_id}"
-		    ." LIMIT 1";
-		    $this->db_new->setQuery($query);
-		    $row->parent_id = $this->db_new->loadResult();
-      }
+		// The sql file with menus
+		$sqlfile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jupgrade'.DS.'sql'.DS.'menus.sql';
 
-			// Change the itemid in menu alias
-			if ($row->type == 'alias') {
-				$tmp = json_decode($row->params);
-
-				$query = "SELECT new"
-				." FROM jupgrade_menus"
-				." WHERE old = {$tmp->aliasoptions}"
-				." LIMIT 1";
-				$this->db_new->setQuery($query);
-				$tmp->aliasoptions = $this->db_new->loadResult();	
-
-				$row->params = json_encode($tmp);
-			}
-
-			// Add quote's to link
-			$row->link = $this->db_new->quote($row->link);
-
-			// Run Query
-			$query = "UPDATE #__menu SET parent_id='{$row->parent_id}', params = '{$row->params}' WHERE menutype='{$row->menutype}'"
-				." AND alias = '{$row->alias}' AND link = {$row->link}";
-
-			$this->db_new->setQuery($query);
-			$this->db_new->query();
-
-		}
-
+		// Import the sql file
+	  if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
+	  	return false;
+	  }
 	}
 
 	/**
