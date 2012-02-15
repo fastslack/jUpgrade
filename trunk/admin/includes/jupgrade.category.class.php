@@ -93,20 +93,7 @@ class jUpgradeCategory extends jUpgrade
 		//
 		foreach ($rows as $row)
 		{
-			$table = JTable::getInstance('Category', 'JTable', array('dbo' => $this->db_new));
-
-			// Bind the data.
-			if (!$table->bind($row)) {
-				throw new Exception($table->getError());
-				return false;
-			}
-	
-			// Store the data.
-			if (!$table->store()) {
-				throw new Exception($table->getError());
-				return false;
-			}
-
+			$this->insertCategory($row);
 		}
 	}
 
