@@ -44,14 +44,19 @@ class jUpgradeCategory extends jUpgrade
 	protected function &getSourceData()
 	{
 
-		if ($this->section == 'com_content') {
+		if ($this->section == 'com_content' && $this->source == '#__categories') {
+			$select = '`id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 			$where = "section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$'";
-		}else{
+		}else if ($this->source == '#__categories') {
+			$select = '`id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 			$where = "section = '{$this->section}'";
+		}else if ($this->source == '#__sections') {
+			$select = '`id` AS sid, `title`, `alias`, \'com_section\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
+			$where = "scope = 'content'";
 		}
 
 		$rows = parent::getSourceData(
-			'`id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
+			$select,
 		  null,
 			$where,
 			'id'

@@ -24,7 +24,7 @@ class jUpgradeCategories extends jUpgradeCategory
 	 * @var		string	The name of the source database table.
 	 * @since	0.4.5
 	 */
-	protected $source = '#__categories';
+	protected $source = '#__sections';
 
 	/**
 	 * @var		string	The name of the destination database table.
