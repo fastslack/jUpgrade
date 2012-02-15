@@ -114,8 +114,8 @@
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
-    <param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;"/>
-    <param name="delete_previous_migration" type="list" default="0" label="Delete previous migration" description="">
+    <param type="spacer" default="&lt;b&gt;Cleanup&lt;/b&gt;"/>
+    <param name="delete_previous_migration" type="list" default="1" label="Delete previous migration" description="">
       <option value="0">No</option>
       <option value="1">Yes</option>
     </param>
