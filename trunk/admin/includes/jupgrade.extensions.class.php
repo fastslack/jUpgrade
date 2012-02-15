@@ -45,7 +45,7 @@ class jUpgradeExtensions extends jUpgrade
 			if (class_exists($state->class)) {
 				$instances[$step->name] = new $state->class($step);
 			} else {
-				$instances[$step->name] = new jUpgrade($step);
+				$instances[$step->name] = new jUpgradeExtensions($step);
 			}
 		}
 		return $instances[$step->name];
