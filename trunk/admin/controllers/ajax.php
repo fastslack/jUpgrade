@@ -14,6 +14,10 @@
 // No direct access.
 defined('_JEXEC') or die;
 
+
+ini_set('display_errors', 'On');
+#error_reporting(E_ALL | E_STRICT);
+
 /**
  * Ajax Controller
  *
@@ -37,6 +41,37 @@ class jupgradeControllerAjax extends JController
 		$object = $jupgrade->getParams();
 		
 		echo json_encode($object);
+	}
+
+	/**
+	 * Deletes all tables with new-prefix and the migration folder
+	 *
+	 * @return	none
+	 * @since	1.X
+	 */
+	function deletePreviousMigration()
+	{
+		$jupgrade = new jUpgrade;
+
+		// delete all tables of previous migration
+		$prefix = $jupgrade->db_new->getPrefix();
+		$tables = $jupgrade->db_new->getTableList();
+		foreach($tables as $table) {
+			if (substr($table, 0, strlen($prefix)) === $prefix) {
+				$query = 'DROP TABLE '.$table;
+				$jupgrade->db_new->setQuery($query);
+				$jupgrade->db_new->query();
+			}
+		}
+
+		// delete previous migration directory
+		$params = $jupgrade->getParams();
+		if (isset($params->directory) && strlen($params->directory) > 0) {
+			$dir = JPATH_ROOT.DS.$params->directory;
+			if (JFolder::exists($dir)) {
+				JFolder::delete($dir);
+			}
+		}
 	}
 
 	/**
@@ -159,6 +194,14 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 
+		/**
+		 * Check if the previous migration should be deleteted
+		 */
+		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
+		if ($delete_previous_migration == 1) {
+			$this->deletePreviousMigration();
+		}
+
 		echo "OK";
 		exit;
 	}
@@ -191,7 +234,7 @@ class jupgradeControllerAjax extends JController
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
 
-    if ($jupgrade->canDrop) {
+		if ($jupgrade->canDrop) {
 			// Get the tables
 			$query = "SHOW TABLES LIKE '{$prefix}%'";
 			$jupgrade->db_new->setQuery($query);
@@ -504,4 +547,6 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 	}
+
+
 }

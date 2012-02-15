@@ -1,126 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install>
 <install type="component" version="1.5.19" method="upgrade">
-	<name>jUpgrade</name>
-	<author>Matias Aguirre</author>
-	<authorEmail>maguirre@matware.com.ar</authorEmail>
-	<authorUrl>http://www.matware.com.ar</authorUrl>
-	<copyright>Copyright 2006 - 2011 Matias Aguirre. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later.</license>
-	<creationDate>2011-02-07</creationDate>
-	<version>2.5.0</version>
-	<description></description>
-
-	<install>
-		<sql>
-			<file charset="utf8" driver="mysql">sql/install.sql</file>
-		</sql>
-	</install>
-
-	<installfile>install.php</installfile>
-
-	<files folder="site">
-		<filename>index.html</filename>
-	</files>
-
-	<administration>
-		<menu img="components/com_jupgrade/images/jupgrade.png">jUpgrade</menu>
-
-		<files folder="admin">
-			<folder>controllers</folder>
-			<folder>css</folder>
-			<folder>extensions</folder>
-			<folder>images</folder>
-			<folder>includes</folder>
-			<folder>js</folder>
-			<folder>languages</folder>
-			<folder>libraries</folder>
-			<folder>sql</folder>
-			<folder>views</folder>
-
-			<filename>admin.jupgrade.php</filename>
-			<filename>config.xml</filename>
-			<filename>controller.php</filename>
-			<filename>index.html</filename>
-			<filename>install.php</filename>
-		</files>
-
-		<languages folder="admin">
-			<language tag="es-ES">languages/es-ES.com_jupgrade.ini</language>
-			<language tag="it-IT">languages/it-IT.com_jupgrade.ini</language>
-			<language tag="pt-BR">languages/pt-BR.com_jupgrade.ini</language>
-			<language tag="en-GB">languages/en-GB.com_jupgrade.ini</language>
-			<language tag="pt-PT">languages/pt-PT.com_jupgrade.ini</language>
-			<language tag="de-DE">languages/de-DE.com_jupgrade.ini</language>
-			<language tag="nb-NO">languages/nb-NO.com_jupgrade.ini</language>
-			<language tag="sv-SE">languages/sv-SE.com_jupgrade.ini</language>
-			<language tag="el-GR">languages/el-GR.com_jupgrade.ini</language>
-			<language tag="fr-FR">languages/fr-FR.com_jupgrade.ini</language>
-			<language tag="nl-NL">languages/nl-NL.com_jupgrade.ini</language>
-			<language tag="pl-PL">languages/pl-PL.com_jupgrade.ini</language>
-			<language tag="ro-RO">languages/ro-RO.com_jupgrade.ini</language>
-			<language tag="et-EE">languages/et-EE.com_jupgrade.ini</language>
-			<language tag="hu-HU">languages/hu-HU.com_jupgrade.ini</language>
-			<language tag="zh-TW">languages/zh-TW.com_jupgrade.ini</language>
-			<language tag="sk-SK">languages/sk-SK.com_jupgrade.ini</language>
-			<language tag="fi-FI">languages/fi-FI.com_jupgrade.ini</language>
-			<language tag="th-TH">languages/th-TH.com_jupgrade.ini</language>
-			<language tag="ru-RU">languages/ru-RU.com_jupgrade.ini</language>
-			<language tag="lt-LT">languages/lt-LT.com_jupgrade.ini</language>
-		</languages>
-	</administration>
-
-	<params>
-		<param type="spacer" default="&lt;b&gt;Global&lt;/b&gt;" />
-		<param name="mode" type="list" default="1" label="Distribution" description="">
-			<option value="1">Joomla 2.5</option>
-			<option value="2">Joomla 1.7</option>
-		</param>
-		<param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20" />
-		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20" />
-		<param name="prefix_new" type="text" default="j17_" label="Prefix for new database" description="" size="20" />
-		<param name="timelimit" type="list" default="0" label="Disable set_time_limit()" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="error_reporting" type="list" default="0" label="Disable Error Reporting" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param type="spacer" default="&lt;b&gt;Skips&lt;/b&gt;" />
-		<param name="skip_checks" type="list" default="0" label="Skip checks" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="skip_download" type="list" default="0" label="Skip download" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="skip_decompress" type="list" default="0" label="Skip decompress" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="skip_templates" type="list" default="0" label="Skip templates copy" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="skip_extensions" type="list" default="0" label="Skip 3rd party extensions" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param type="spacer" default="&lt;b&gt;Templates&lt;/b&gt;" />
-		<param name="positions" type="list" default="0" label="Keep original positions?" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;" />
-		<param name="debug_php" type="list" default="0" label="Enable migration debug" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="debug_js" type="list" default="0" label="Enable Mootools version debug" description="">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-	</params>
+  <name>jUpgrade</name>
+  <author>Matias Aguirre</author>
+  <authorEmail>maguirre@matware.com.ar</authorEmail>
+  <authorUrl>http://www.matware.com.ar</authorUrl>
+  <copyright>Copyright 2006 - 2011 Matias Aguirre. All rights reserved.</copyright>
+  <license>GNU General Public License version 2 or later.</license>
+  <creationDate>2011-02-07</creationDate>
+  <version>2.5.0</version>
+  <description/>
+  <install>
+    <sql>
+      <file charset="utf8" driver="mysql">sql/install.sql</file>
+    </sql>
+  </install>
+  <installfile>install.php</installfile>
+  <files folder="site">
+    <filename>index.html</filename>
+  </files>
+  <administration>
+    <menu img="components/com_jupgrade/images/jupgrade.png">jUpgrade</menu>
+    <files folder="admin">
+      <folder>controllers</folder>
+      <folder>css</folder>
+      <folder>extensions</folder>
+      <folder>images</folder>
+      <folder>includes</folder>
+      <folder>js</folder>
+      <folder>languages</folder>
+      <folder>libraries</folder>
+      <folder>sql</folder>
+      <folder>views</folder>
+      <filename>admin.jupgrade.php</filename>
+      <filename>config.xml</filename>
+      <filename>controller.php</filename>
+      <filename>index.html</filename>
+      <filename>install.php</filename>
+    </files>
+    <languages folder="admin">
+      <language tag="es-ES">languages/es-ES.com_jupgrade.ini</language>
+      <language tag="it-IT">languages/it-IT.com_jupgrade.ini</language>
+      <language tag="pt-BR">languages/pt-BR.com_jupgrade.ini</language>
+      <language tag="en-GB">languages/en-GB.com_jupgrade.ini</language>
+      <language tag="pt-PT">languages/pt-PT.com_jupgrade.ini</language>
+      <language tag="de-DE">languages/de-DE.com_jupgrade.ini</language>
+      <language tag="nb-NO">languages/nb-NO.com_jupgrade.ini</language>
+      <language tag="sv-SE">languages/sv-SE.com_jupgrade.ini</language>
+      <language tag="el-GR">languages/el-GR.com_jupgrade.ini</language>
+      <language tag="fr-FR">languages/fr-FR.com_jupgrade.ini</language>
+      <language tag="nl-NL">languages/nl-NL.com_jupgrade.ini</language>
+      <language tag="pl-PL">languages/pl-PL.com_jupgrade.ini</language>
+      <language tag="ro-RO">languages/ro-RO.com_jupgrade.ini</language>
+      <language tag="et-EE">languages/et-EE.com_jupgrade.ini</language>
+      <language tag="hu-HU">languages/hu-HU.com_jupgrade.ini</language>
+      <language tag="zh-TW">languages/zh-TW.com_jupgrade.ini</language>
+      <language tag="sk-SK">languages/sk-SK.com_jupgrade.ini</language>
+      <language tag="fi-FI">languages/fi-FI.com_jupgrade.ini</language>
+      <language tag="th-TH">languages/th-TH.com_jupgrade.ini</language>
+      <language tag="ru-RU">languages/ru-RU.com_jupgrade.ini</language>
+      <language tag="lt-LT">languages/lt-LT.com_jupgrade.ini</language>
+    </languages>
+  </administration>
+  <params>
+    <param type="spacer" default="&lt;b&gt;Global&lt;/b&gt;"/>
+    <param name="mode" type="list" default="1" label="Distribution" description="">
+      <option value="1">Joomla 2.5</option>
+      <option value="2">Joomla 1.7</option>
+    </param>
+    <param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20"/>
+    <param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20"/>
+    <param name="prefix_new" type="text" default="j17_" label="Prefix for new database" description="" size="20"/>
+    <param name="timelimit" type="list" default="0" label="Disable set_time_limit()" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="error_reporting" type="list" default="0" label="Disable Error Reporting" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param type="spacer" default="&lt;b&gt;Skips&lt;/b&gt;"/>
+    <param name="skip_checks" type="list" default="0" label="Skip checks" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="skip_download" type="list" default="0" label="Skip download" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="skip_decompress" type="list" default="0" label="Skip decompress" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="skip_templates" type="list" default="0" label="Skip templates copy" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="skip_extensions" type="list" default="0" label="Skip 3rd party extensions" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param type="spacer" default="&lt;b&gt;Templates&lt;/b&gt;"/>
+    <param name="positions" type="list" default="0" label="Keep original positions?" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;"/>
+    <param name="debug_php" type="list" default="0" label="Enable migration debug" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param name="debug_js" type="list" default="0" label="Enable Mootools version debug" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+    <param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;"/>
+    <param name="delete_previous_migration" type="list" default="0" label="Delete previous migration" description="">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </param>
+  </params>
 </install>
