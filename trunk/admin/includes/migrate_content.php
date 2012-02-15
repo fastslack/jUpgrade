@@ -119,7 +119,23 @@ class jUpgradeContent extends jUpgrade
 		$aliases = array();
 		$unique_alias_suffix = 1;
 
+		//
+		// JTable:store() run an update if id exists so we create them first
+		//
+		foreach ($rows as $row)
+		{
+			$object = new stdClass();
+			$object->id = $row['id'];
+
+			// Inserting the menu
+			if (!$this->db_new->insertObject($table, $object)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+		}
+
+		//
 		// Insert content data
+		//
 		foreach ($rows as $row)
 		{
       // The Joomla 2.5 database structure does not allow duplicate aliases
@@ -128,9 +144,6 @@ class jUpgradeContent extends jUpgrade
         $unique_alias_suffix++;
       }
       $aliases[] = $row['alias'];
-
-			//Cleanup
-			unset($row['id']);
 
 			// Getting the asset table
 			$content = JTable::getInstance('Content', 'JTable', array('dbo' => $this->db_new));
