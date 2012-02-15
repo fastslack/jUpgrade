@@ -138,12 +138,12 @@ class jUpgradeContent extends jUpgrade
 		//
 		foreach ($rows as $row)
 		{
-      // The Joomla 2.5 database structure does not allow duplicate aliases
-      if (in_array($row['alias'], $aliases, true)) {
-        $row['alias'] .= $unique_alias_suffix;
-        $unique_alias_suffix++;
-      }
-      $aliases[] = $row['alias'];
+			// The Joomla 2.5 database structure does not allow duplicate aliases
+			if (in_array($row['alias'], $aliases, true)) {
+				$row['alias'] .= $unique_alias_suffix;
+				$unique_alias_suffix++;
+			}
+			$aliases[] = $row['alias'];
 
 			// Getting the asset table
 			$content = JTable::getInstance('Content', 'JTable', array('dbo' => $this->db_new));
