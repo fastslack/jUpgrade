@@ -18,55 +18,19 @@
  *
  * @since	0.4.5
  */
-class jUpgradeCategories extends jUpgrade
+class jUpgradeCategories extends jUpgradeCategory
 {
 	/**
 	 * @var		string	The name of the source database table.
 	 * @since	0.4.5
 	 */
-	protected $source = '#__sections';
+	protected $source = '#__categories';
 
 	/**
 	 * @var		string	The name of the destination database table.
 	 * @since	0.4.5
 	 */
 	protected $destination = '#__categories';
-
-	/**
-	 * Get the raw data for this part of the upgrade.
-	 *
-	 * @return	array	Returns a reference to the source data array.
-	 * @since	0.4.5
-	 * @throws	Exception
-	 */
-	protected function &getSourceData()
-	{
-
-		$where = "scope = 'content'";
-
-		$rows = parent::getSourceData(
-			'`id` AS sid, `title`, `alias`, \'com_section\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`',
-		  null,
-			$where,
-			'id'
-		);
-
-		// Do some custom post processing on the list.
-		foreach ($rows as &$row)
-		{
-			$row['params'] = $this->convertParams($row['params']);
-			$row['access'] = $row['access']+1;
-			$row['language'] = '*';
-
-			// Correct alias
-			if ($row['alias'] == "") {
-				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
-			}
-
-		}
-
-		return $rows;
-	}
 
 	/**
 	 * Sets the data in the destination database.
@@ -77,6 +41,9 @@ class jUpgradeCategories extends jUpgrade
 	 */
 	protected function setDestinationData()
 	{
+		// Content categories
+		$this->section = 'com_content'; 
+
 		// Get the source data.
 		$rows	= $this->getSourceData();
 
@@ -131,24 +98,4 @@ class jUpgradeCategories extends jUpgrade
 
 		}
 	}
-
-	/**
-	 * The public entry point for the class.
-	 *
-	 * @return	void
-	 * @since	0.5.5
-	 * @throws	Exception
-	 */
-	public function upgrade()
-	{
-		if (parent::upgrade()) {
-			// Rebuild the categories table
-			$table = JTable::getInstance('Category', 'JTable', array('dbo' => $this->db_new));
-
-			if (!$table->rebuild()) {
-				echo JError::raiseError(500, $table->getError());
-			}
-		}
-	}
 }
-
