@@ -61,6 +61,13 @@ class jupgradeControllerAjax extends JController
 				$query = 'DROP TABLE '.$table;
 				$jupgrade->db_new->setQuery($query);
 				$jupgrade->db_new->query();
+
+				// Check for query error.
+				$error = $jupgrade->db_new->getErrorMsg();
+
+				if ($error) {
+					throw new Exception($error);
+				}
 			}
 		}
 
@@ -194,14 +201,6 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 
-		/**
-		 * Check if the previous migration should be deleteted
-		 */
-		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
-		if ($delete_previous_migration == 1) {
-			$this->deletePreviousMigration();
-		}
-
 		echo "OK";
 		exit;
 	}
@@ -308,6 +307,15 @@ class jupgradeControllerAjax extends JController
 
 		if ($error) {
 			throw new Exception($error);
+		}
+
+
+		/**
+		 * Check if the previous migration should be deleteted
+		 */
+		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
+		if ($delete_previous_migration == 1) {
+			$this->deletePreviousMigration();
 		}
 	}
 
