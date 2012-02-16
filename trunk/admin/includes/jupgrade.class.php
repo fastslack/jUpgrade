@@ -167,6 +167,7 @@ class jUpgrade
 		$this->db_new->setQuery( $query );
 		$list = $this->db_new->loadRowList();
 		$grant = isset($list[1][0]) ? $list[1][0] : $list[0][0];
+		$grant = empty($list[1][0]) ? $list[0][0] : $list[1][0];
 
 		if (strpos($grant, 'DROP') == true || strpos($grant, 'ALL') == true) {
 			$this->canDrop = true;
@@ -718,5 +719,80 @@ class jUpgrade
 			return false;
 
 		return true;
+	}
+
+	/**
+	 *
+	 * Gets the changeset object
+	 *
+	 * @return  JSchemaChangeset
+	 */
+	public function getChangeSet()
+	{
+		$folder = JPATH_ADMINISTRATOR . '/components/com_admin/sql/updates/';
+		$changeSet = JSchemaChangeset::getInstance(JFactory::getDbo(), $folder);
+		return $changeSet;
+	}
+
+	/**
+	 * Get version from #__schemas table
+	 *
+	 * @return  mixed  the return value from the query, or null if the query fails
+	 * @throws Exception
+	 */
+
+	public function getSchemaVersion() {
+		$db = $this->db_new;
+		$query = $db->getQuery(true);
+		$query->select('version_id')->from($db->qn('#__schemas'))
+		->where('extension_id = 700');
+		$db->setQuery($query);
+		$result = $db->loadResult();
+		if ($db->getErrorNum()) {
+			throw new Exception('Database error - getSchemaVersion');
+		}
+		return $result;
+	}
+
+	/**
+	 * Fix schema version if wrong
+	 *
+	 * @param JSchemaChangeSet
+	 *
+	 * @return   mixed  string schema version if success, false if fail
+	 */
+	public function fixSchemaVersion($changeSet)
+	{
+		// Get correct schema version -- last file in array
+		$schema = $changeSet->getSchema();
+		$db = $this->db_new;
+		$result = false;
+
+		// Check value. If ok, don't do update
+		$version = $this->getSchemaVersion();
+		if ($version == $schema)
+		{
+			$result = $version;
+		}
+		else
+		{
+			// Delete old row
+			$query = $db->getQuery(true);
+			$query->delete($db->qn('#__schemas'));
+			$query->where($db->qn('extension_id') . ' = 700');
+			$db->setQuery($query);
+			$db->query();
+
+			// Add new row
+			$query = $db->getQuery(true);
+			$query->insert($db->qn('#__schemas'));
+			$query->set($db->qn('extension_id') . '= 700');
+			$query->set($db->qn('version_id') . '= ' . $db->q($schema));
+			$db->setQuery($query);
+			if ($db->query()) {
+				$result = $schema;
+			}
+		}
+		return $result;
 	}
 }

@@ -34,6 +34,9 @@ require_once JPATH_LIBRARIES.'/joomla/base/object.php';
 require_once JPATH_LIBRARIES.'/joomla/database/database.php';
 require_once JPATH_INSTALLATION.'/models/database.php';
 
+require_once JPATH_LIBRARIES.'/cms/schema/changeset.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_installer/models/database.php';
+
 // jUpgrade class
 require_once JPATH_BASE.'/jupgrade.class.php';
 
@@ -70,6 +73,10 @@ $error = $jupgrade->db_new->getErrorMsg();
 if ($error) {
 	return false;
 	exit;
-}else{
-	return true;
 }
+
+// Fixing the database schema
+$changeSet = $jupgrade->getChangeSet();
+$changeSet->fix();
+
+$jupgrade->fixSchemaVersion($changeSet);
