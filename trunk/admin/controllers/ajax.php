@@ -51,6 +51,7 @@ class jupgradeControllerAjax extends JController
 		$params = $jupgrade->getParams();
 		if (isset($params->directory) && strlen($params->directory) > 0) {
 			$dir = JPATH_ROOT.DS.$params->directory;
+
 			if (JFolder::exists($dir)) {
 				JFolder::delete($dir);
 			}
@@ -166,7 +167,6 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 
-
 		// Get original prefix for check
 		$original_prefix = $jupgrade->getPrefix();
 		// Get the prefix
@@ -177,17 +177,7 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 
-
-		/**
-		 * Check if the previous migration should be deleteted
-		 */
-		//$params = $jupgrade->getParams();
-		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
-		if ($delete_previous_migration == 1) {
-			$this->deletePreviousMigration();
-		}
-
-		echo "OK";
+		echo 1;
 		exit;
 	}
 
@@ -205,6 +195,9 @@ class jupgradeControllerAjax extends JController
 		 * Initialize jupgrade class
 		 */
 		$jupgrade = new jUpgrade;
+
+		// Getting the component parameter with global settings
+		$params = $jupgrade->getParams();
 
 		// Get the prefix
 		$prefix = $jupgrade->db_new->getPrefix();
@@ -294,6 +287,18 @@ class jupgradeControllerAjax extends JController
 		if ($error) {
 			throw new Exception($error);
 		}
+
+		/**
+		 * Check if the previous migration should be deleteted
+		 */
+		//$params = $jupgrade->getParams();
+		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
+		if ($delete_previous_migration == 1) {
+			$this->deletePreviousMigration();
+		}
+
+		echo 1;
+		exit;
 	}
 
 	/**

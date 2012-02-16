@@ -89,7 +89,7 @@ window.addEvent('domready', function() {
 				</div>
 
 				<div id="checks">
-					<p class="text"><?php echo JText::_('Checking...'); ?></p>
+					<p class="text"><?php echo JText::_('Checking and cleaning...'); ?></p>
 					<div id="pb0"></div>
 					<div><small><i><span id="checkstatus"><?php echo JText::_('Preparing for check...'); ?></span></i></small></div>
 				</div>
