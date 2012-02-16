@@ -14,10 +14,6 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-
-ini_set('display_errors', 'On');
-#error_reporting(E_ALL | E_STRICT);
-
 /**
  * Ajax Controller
  *
@@ -44,7 +40,7 @@ class jupgradeControllerAjax extends JController
 	}
 
 	/**
-	 * Deletes all tables with new-prefix and the migration folder
+	 * Deletes the previous migration folder
 	 *
 	 * @return	none
 	 * @since	1.X
@@ -52,26 +48,6 @@ class jupgradeControllerAjax extends JController
 	function deletePreviousMigration()
 	{
 		$jupgrade = new jUpgrade;
-
-		// delete all tables of previous migration
-		$prefix = $jupgrade->db_new->getPrefix();
-		$tables = $jupgrade->db_new->getTableList();
-		foreach($tables as $table) {
-			if (substr($table, 0, strlen($prefix)) === $prefix) {
-				$query = 'DROP TABLE '.$table;
-				$jupgrade->db_new->setQuery($query);
-				$jupgrade->db_new->query();
-
-				// Check for query error.
-				$error = $jupgrade->db_new->getErrorMsg();
-
-				if ($error) {
-					throw new Exception($error);
-				}
-			}
-		}
-
-		// delete previous migration directory
 		$params = $jupgrade->getParams();
 		if (isset($params->directory) && strlen($params->directory) > 0) {
 			$dir = JPATH_ROOT.DS.$params->directory;
@@ -201,6 +177,16 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 
+
+		/**
+		 * Check if the previous migration should be deleteted
+		 */
+		//$params = $jupgrade->getParams();
+		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
+		if ($delete_previous_migration == 1) {
+			$this->deletePreviousMigration();
+		}
+
 		echo "OK";
 		exit;
 	}
@@ -307,15 +293,6 @@ class jupgradeControllerAjax extends JController
 
 		if ($error) {
 			throw new Exception($error);
-		}
-
-
-		/**
-		 * Check if the previous migration should be deleteted
-		 */
-		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
-		if ($delete_previous_migration == 1) {
-			$this->deletePreviousMigration();
 		}
 	}
 
