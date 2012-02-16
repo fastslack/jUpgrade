@@ -179,6 +179,10 @@ class jUpgradeMenu extends jUpgrade
 			// Convert the array into an object.
 			$row = (object) $row;
 
+			// Get oldlist values
+			$oldlist = new stdClass();
+			$oldlist->old = $row->id;
+
 			// Fixing id if == 1 (used by root)
 			if ($row->id == 1) {
 				$query = "SELECT id"
@@ -192,6 +196,14 @@ class jUpgradeMenu extends jUpgrade
 
 			// Inserting the menu
 			if (!$this->db_new->insertObject($table, $row)) {
+				throw new Exception($this->db_new->getErrorMsg());
+			}
+
+			// Get new id
+			$oldlist->new = $this->db_new->insertid();
+
+			// Save old and new id
+			if (!$this->db_new->insertObject('jupgrade_menus', $oldlist)) {
 				throw new Exception($this->db_new->getErrorMsg());
 			}
 		}
