@@ -66,6 +66,13 @@ class jUpgradeContent extends jUpgrade
 				$row['state'] = 2;
 			}
 
+			/*
+			 * Prevent JGLOBAL_ARTICLE_MUST_HAVE_TEXT error
+			 */
+			if (trim($row['introtext']) == '' && trim($row['fulltext']) == '')
+			{
+				$row['introtext'] = '&nbsp;';
+			}
 		}
 
 		return $rows;
