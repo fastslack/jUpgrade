@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>AcyMailing for Joomla 2.5</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>acymailing_config</table>
+		<table>acymailing_fields</table>
+		<table>acymailing_filter</table>
+		<table>acymailing_history</table>
+		<table>acymailing_list</table>
+		<table>acymailing_listcampaign</table>
+		<table>acymailing_listmail</table>
+		<table>acymailing_listsub</table>
+		<table>acymailing_mail</table>
+		<table>acymailing_queue</table>
+		<table>acymailing_rules</table>
+		<table>acymailing_stats</table>
+		<table>acymailing_subscriber</table>
+		<table>acymailing_template</table>
+		<table>acymailing_url</table>
+		<table>acymailing_urlclick</table>
+		<table>acymailing_userstats</table>
+	</tables>
+
+	<folders>
+		<folder>media/com_acymailing</folder>
+	</folders>
+
+</jupgrade>
