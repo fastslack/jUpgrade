@@ -40,6 +40,24 @@ class jupgradeControllerAjax extends JController
 	}
 
 	/**
+	 * Deletes the previous migration folder
+	 *
+	 * @return	none
+	 * @since	1.X
+	 */
+	function deletePreviousMigration()
+	{
+		$jupgrade = new jUpgrade;
+		$params = $jupgrade->getParams();
+		if (isset($params->directory) && strlen($params->directory) > 0) {
+			$dir = JPATH_ROOT.DS.$params->directory;
+			if (JFolder::exists($dir)) {
+				JFolder::delete($dir);
+			}
+		}
+	}
+
+	/**
 	 * Initial checks in jUpgrade
 	 *
 	 * @return	none
@@ -159,6 +177,16 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 
+
+		/**
+		 * Check if the previous migration should be deleteted
+		 */
+		//$params = $jupgrade->getParams();
+		$delete_previous_migration = isset($params->delete_previous_migration) ? $params->delete_previous_migration : 0;
+		if ($delete_previous_migration == 1) {
+			$this->deletePreviousMigration();
+		}
+
 		echo "OK";
 		exit;
 	}
@@ -191,7 +219,7 @@ class jupgradeControllerAjax extends JController
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
 
-    if ($jupgrade->canDrop) {
+		if ($jupgrade->canDrop) {
 			// Get the tables
 			$query = "SHOW TABLES LIKE '{$prefix}%'";
 			$jupgrade->db_new->setQuery($query);
@@ -504,4 +532,6 @@ class jupgradeControllerAjax extends JController
 			exit;
 		}
 	}
+
+
 }
