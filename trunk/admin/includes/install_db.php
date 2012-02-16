@@ -56,6 +56,20 @@ $installHelper = new JInstallationModelDatabase($config);
 $schema = JPATH_INSTALLATION.'/sql/mysql/joomla.sql';
 
 if (!$installHelper->populateDatabase($config['dbo'], $schema) > 0) {
-	return 1;
+	return false;
 	exit;
+}
+
+$query = "UPDATE #__modules SET `published` = '0' WHERE `id` IN (1,16,17)";
+$jupgrade->db_new->setQuery($query);
+$jupgrade->db_new->query();
+
+// Check for query error.
+$error = $jupgrade->db_new->getErrorMsg();
+
+if ($error) {
+	return false;
+	exit;
+}else{
+	return true;
 }
