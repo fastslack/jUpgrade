@@ -1,33 +1,32 @@
 <?php
 /**
- * jUpgrade
- *
- * @version		$Id: 
- * @package		MatWare
- * @subpackage	com_jupgrade
- * @copyright	Copyright 2006 - 2011 Matias Aguirre. All rights reserved.
- * @license		GNU General Public License version 2 or later.
- * @author		Matias Aguirre <maguirre@matware.com.ar>
- * @link		http://www.matware.com.ar
+ * @version		$Id$
+ * @package		K2
+ * @author		JoomlaWorks http://www.joomlaworks.gr
+ * @copyright	Copyright (c) 2006 - 2011 JoomlaWorks Ltd. All rights reserved.
+ * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
-// Check to ensure this file is within the rest of the framework
 defined('JPATH_BASE') or die();
 
 /**
- * jUpgrade class for K2 migration
+ * K2 migration class from Joomla 1.5 to Joomla 1.6+
  *
- * This class migrates the K2 extension
- *
- * @since		1.1.0
+ * You can also put this class into your own extension, which makes jUpgrade to use your own copy instead of this adapter class.
+ * In order to do that you should have j16upgrade.xml file somewhere in your extension path containing:
+ * 	<jupgrade>
+ * 		<!-- Adapter class location and name -->
+ * 		<installer>
+ * 			<file>administrator/components/com_k2/jupgrade/j16upgrade.php</file>
+ * 			<class>jUpgradeComponentK2</class>
+ * 		</installer>
+ * 	</jupgrade>
+ * For more information, see ./j16upgrade.xml
  */
 class jUpgradeComponentK2 extends jUpgradeExtensions
 {
 	/**
-	 * Check if extension migration is supported.
-	 *
-	 * @return	boolean
-	 * @since	1.1.0
+	 * Check if K2 migration is supported.
 	 */
 	protected function detectExtension()
 	{
@@ -35,38 +34,60 @@ class jUpgradeComponentK2 extends jUpgradeExtensions
 	}
 
 	/**
-	 * Migrate tables
+	 * Migrate custom information.
 	 *
-	 * @return	boolean
-	 * @since	1.1.0
+	 * This function gets called after all folders and tables have been copied.
+	 *
+	 * If you want to split this task into smaller chunks,
+	 * please store your custom state variables into $this->state and return false.
+	 * Returning false will force jUpgrade to call this function again,
+	 * which allows you to continue import by reading $this->state before continuing.
+	 *
+	 * @return	boolean Ready (true/false)
+	 * @since	1.6.4
+	 * @throws	Exception
 	 */
-	public function migrateExtensionCustom()
+	protected function migrateExtensionCustom()
 	{
-
-		// Fixing access
-		$query = "UPDATE #__k2_items SET access = '1' WHERE access = '0'";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
-
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
-		}
-
-		// Fixing access
-		$query = "UPDATE #__k2_categories SET access = '1' WHERE access = '0'";
-		$this->db_new->setQuery($query);
-		$this->db_new->query();
-
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
-		}
-
 		return true;
 	}
+
+	protected function copyTable_k2_categories($table) {
+		$this->source = $this->destination = "#__{$table}";
+
+		// Clone table
+		$this->cloneTable($this->source, $this->destination);
+
+		// Get data
+		$rows = parent::getSourceData('*');
+
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row) {
+			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
+			$row['params'] = $this->convertParams($row['params']);
+		}
+		$this->setDestinationData($rows);
+		return true;
+	}
+	
+	protected function copyTable_k2_items($table) {
+		$this->source = $this->destination = "#__{$table}";
+
+		// Clone table
+		$this->cloneTable($this->source, $this->destination);
+
+		// Get data
+		$rows = parent::getSourceData('*');
+
+		// Do some custom post processing on the list.
+		foreach ($rows as &$row) {
+			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
+			$row['params'] = $this->convertParams($row['params']);
+			$row['plugins'] = $this->convertParams($row['plugins']);
+		}
+		$this->setDestinationData($rows);
+		return true;
+	}
+
 }
+

@@ -1,10 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<name>K2 for Joomla 1.7</name>
-
-	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/k2/k2.collection.xml</collection>
-
+	<collection>http://getk2.org/collection.xml</collection>
+	<installer>
+		<file>administrator/components/com_k2/jupgrade/j25upgrade.php</file>
+		<class>jUpgradeComponentK2</class>
+	</installer>
 	<!-- The tables to copy to the new site. -->
 	<tables>
 		<table>k2_attachments</table>
@@ -19,16 +20,10 @@
 		<table>k2_users</table>
 		<table>k2_user_groups</table>
 	</tables>
-
 	<!-- The folders to copy to the new site. -->
 	<folders>
+		<folder>administrator/components/com_k2</folder>
+		<folder>components/com_k2</folder>
 		<folder>media/k2</folder>
 	</folders>
-
-	<!-- The categories to copy to the new site. -->
-	<!--
-	<categories>
-		<category section="com_k2"></category>
-	</categories>
-	-->
 </jupgrade>
