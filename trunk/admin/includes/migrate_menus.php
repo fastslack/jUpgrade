@@ -158,7 +158,6 @@ class jUpgradeMenu extends jUpgrade
 		}
 		if (isset($object->show_page_title)) {
 			$object->show_page_heading = $object->show_page_title;
-			unset($object->show_page_title);
 		}
 	}
 
