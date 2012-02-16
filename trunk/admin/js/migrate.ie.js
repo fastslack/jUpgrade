@@ -93,7 +93,7 @@ var jUpgrade = new Class({
 
 			var pb0 = new dwProgressBar({
 				container: $('pb0'),
-				startPercentage: 50,
+				startPercentage: 33,
 				speed: 1000,
 				boxID: 'pb0-box',
 				percentageID: 'pb0-perc',
@@ -102,7 +102,33 @@ var jUpgrade = new Class({
 			});
 
 			text = document.getElementById('checkstatus');
-			text.innerHTML = 'Checking...';
+			text.innerHTML = 'Checking and cleaning...';
+
+			//
+			// Request 1
+			//
+			var cleanup = new Request({
+				url: 'index.php?option=com_jupgrade&format=raw&controller=ajax&task=cleanup',
+				method: 'get',
+				noCache: true
+			}); // end Request		
+
+			cleanup.addEvents({
+				'complete': function(response) {
+					pb0.set(66);
+
+					if (self.options.debug_php == 1) {
+						text = document.getElementById('debug');
+						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
+					}
+
+					if (response == 1) {
+						pb0.set(100);
+						pb0.finish();
+						self.download(e);
+					}
+				}
+			});
 
 			var c = new Ajax( 'index.php?option=com_jupgrade&format=raw&controller=ajax&task=checks', {
 				method: 'get',
@@ -114,15 +140,8 @@ var jUpgrade = new Class({
 						text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[checks]</b><br><br>' +response;
 					}
 
-					if (response != 'OK') {
-						pb0.set(100);
-						pb0.finish();
-						text.innerHTML = '<span id="checktext">'+response+'</span>';
-					}else{
-						pb0.set(100);
-						pb0.finish();
-						text.innerHTML = 'Checking DONE';
-						self.download(e);
+					if (response == 1) {
+						cleanup.send();
 					}
 				}
 			}).request();
@@ -381,37 +400,13 @@ var jUpgrade = new Class({
 					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[install_config]</b><br><br>' +response;
 				}
 	
-				// Next step				
-				request1.send();
-
-			}
-		});
-
-		var data = 'directory=' + self.options.directory + '&prefix_new=' + self.options.prefix_new;
-
-		//
-		// Request 1
-		//
-		var request1 = new Request({
-			url: 'index.php?option=com_jupgrade&format=raw&controller=ajax&task=cleanup',
-			method: 'get',
-			noCache: true
-		}); // end Request		
-
-		request1.addEvents({
-			'complete': function(response) {
-				pb3.set(66);
-
-				if (self.options.debug_php == 1) {
-					text = document.getElementById('debug');
-					text.innerHTML = text.innerHTML + '<br><br>==========<br><b>[cleanup]</b><br><br>' +response;
-				}
-				
 				// Next step
 				var data2 = 'directory=' + self.options.directory;
 				request2.send(data2);
 			}
 		});
+
+		var data = 'directory=' + self.options.directory + '&prefix_new=' + self.options.prefix_new;
 
 		//
 		// Request 2
