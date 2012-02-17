@@ -287,8 +287,15 @@ class jUpgradeMenuTypes extends jUpgrade
 		// Truncate jupgrade_menus table
 		$this->cleanDestinationData();
 
-		if (parent::setDestinationData()) {
-			echo JError::raiseError(500, $table->getError());
+		try
+		{
+			parent::setDestinationData();
+		}
+		catch (Exception $e)
+		{
+			echo JError::raiseError(500, $e->getMessage());
+
+			return false;
 		}
 	}
 }
