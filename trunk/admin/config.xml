@@ -9,7 +9,7 @@
 		</param>
 		<param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20" />
 		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20" />
-		<param name="prefix_new" type="text" default="j17_" label="Prefix for new database" description="" size="20" />
+		<param name="prefix_new" type="text" default="j25_" label="Prefix for new database" description="" size="20" />
 		<param name="timelimit" type="list" default="0" label="Disable set_time_limit()" description="">
 			<option value="0">No</option>
 			<option value="1">Yes</option>
