@@ -37,7 +37,7 @@ require_once JPATH_INSTALLATION.'/models/configuration.php';
 require JPATH_ROOT.'/configuration.php';
 
 $jconfig = new JConfig();
-$jconfig->db_type   = 'mysql';
+$jconfig->db_type   = 'mysqli';
 $jconfig->db_host	= $jconfig->host;
 $jconfig->db_user	= $jconfig->user;
 $jconfig->db_pass	= $jconfig->password;
