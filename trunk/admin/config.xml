@@ -40,39 +40,39 @@
 			<option value="0">No</option>
 		</param>
 		<param type="spacer" default="&lt;b&gt;Core skips&lt;/b&gt;" />
-		<param name="skip_core_users" type="radio" default="1" label="Skip users" description="">
+		<param name="skip_core_users" type="radio" default="0" label="Skip users" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_categories" type="radio" default="1" label="Skip categories" description="">
+		<param name="skip_core_categories" type="radio" default="0" label="Skip categories" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_content" type="radio" default="1" label="Skip content" description="">
+		<param name="skip_core_content" type="radio" default="0" label="Skip content" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_menus" type="radio" default="1" label="Skip menus" description="">
+		<param name="skip_core_menus" type="radio" default="0" label="Skip menus" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_modules" type="radio" default="1" label="Skip modules" description="">
+		<param name="skip_core_modules" type="radio" default="0" label="Skip modules" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_banners" type="radio" default="1" label="Skip banners" description="">
+		<param name="skip_core_banners" type="radio" default="0" label="Skip banners" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_contact" type="radio" default="1" label="Skip contact" description="">
+		<param name="skip_core_contact" type="radio" default="0" label="Skip contact" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_newsfeeds" type="radio" default="1" label="Skip newsfeeds" description="">
+		<param name="skip_core_newsfeeds" type="radio" default="0" label="Skip newsfeeds" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_weblinks" type="radio" default="1" label="Skip weblinks" description="">
+		<param name="skip_core_weblinks" type="radio" default="0" label="Skip weblinks" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>

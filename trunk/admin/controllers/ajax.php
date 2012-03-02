@@ -216,7 +216,7 @@ class jupgradeControllerAjax extends JController
 			$name = substr($k, 10, 15);
 
 			if ($core == "skip_core") {
-				if ($v == 0) {
+				if ($v == 1) {
 					// Set all status to 0 and clear state
 					$query = "UPDATE jupgrade_steps SET status = 1 WHERE name = '{$name}'";
 					$jupgrade->db_new->setQuery($query);
