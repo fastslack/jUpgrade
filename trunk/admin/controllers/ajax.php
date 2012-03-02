@@ -190,7 +190,7 @@ class jupgradeControllerAjax extends JController
 	function cleanup()
 	{
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/includes/jupgrade.class.php';
-		
+
 		/**
 		 * Initialize jupgrade class
 		 */
@@ -206,6 +206,24 @@ class jupgradeControllerAjax extends JController
 		$query = "UPDATE jupgrade_steps SET status = 0, state = ''";
 		$jupgrade->db_new->setQuery($query);
 		$jupgrade->db_new->query();
+
+		// Convert the params to array
+		$core_skips = (array) $params;
+
+		// Skiping the steps setted by user
+		foreach ($core_skips as $k => $v) {
+			$core = substr($k, 0, 9);
+			$name = substr($k, 10, 15);
+
+			if ($core == "skip_core") {
+				if ($v == 0) {
+					// Set all status to 0 and clear state
+					$query = "UPDATE jupgrade_steps SET status = 1 WHERE name = '{$name}'";
+					$jupgrade->db_new->setQuery($query);
+					$jupgrade->db_new->query();				
+				}
+			}
+		}
 
 		// Cleanup 3rd extensions
 		$query = "DELETE FROM jupgrade_steps WHERE id > 10";
