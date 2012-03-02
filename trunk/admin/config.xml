@@ -64,7 +64,7 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
-		<param name="skip_core_contact" type="radio" default="0" label="Skip contact" description="">
+		<param name="skip_core_contacts" type="radio" default="0" label="Skip contacts" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
