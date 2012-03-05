@@ -8,7 +8,7 @@
 	<copyright>Copyright 2006 - 2011 Matias Aguirre. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later.</license>
 	<creationDate>2011-02-07</creationDate>
-	<version>2.5.0</version>
+	<version>2.5.1</version>
 	<description></description>
 
 	<install>
@@ -79,49 +79,90 @@
 		<param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20" />
 		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20" />
 		<param name="prefix_new" type="text" default="j25_" label="Prefix for new database" description="" size="20" />
-		<param name="timelimit" type="list" default="0" label="Disable set_time_limit()" description="">
-			<option value="0">No</option>
+		<param name="timelimit" type="radio" default="0" label="Disable set_time_limit()" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="error_reporting" type="radio" default="0" label="Disable Error Reporting" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
 		<param type="spacer" default="&lt;b&gt;Skips&lt;/b&gt;" />
-		<param name="skip_checks" type="list" default="0" label="Skip checks" description="">
-			<option value="0">No</option>
+		<param name="skip_checks" type="radio" default="0" label="Skip checks" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
-		<param name="skip_download" type="list" default="0" label="Skip download" description="">
-			<option value="0">No</option>
+		<param name="skip_download" type="radio" default="0" label="Skip download" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
-		<param name="skip_decompress" type="list" default="0" label="Skip decompress" description="">
-			<option value="0">No</option>
+		<param name="skip_decompress" type="radio" default="0" label="Skip decompress" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
-		<param name="skip_templates" type="list" default="0" label="Skip templates copy" description="">
-			<option value="0">No</option>
+		<param name="skip_templates" type="radio" default="0" label="Skip templates copy" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
-		<param name="skip_extensions" type="list" default="0" label="Skip 3rd party extensions" description="">
-			<option value="0">No</option>
+		<param name="skip_extensions" type="radio" default="0" label="Skip 3rd party extensions" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param type="spacer" default="&lt;b&gt;Core skips&lt;/b&gt;" />
+		<param name="skip_core_users" type="radio" default="0" label="Skip users" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_categories" type="radio" default="0" label="Skip categories" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_content" type="radio" default="0" label="Skip content" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_menus" type="radio" default="0" label="Skip menus" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_modules" type="radio" default="0" label="Skip modules" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_banners" type="radio" default="0" label="Skip banners" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_contacts" type="radio" default="0" label="Skip contacts" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_newsfeeds" type="radio" default="0" label="Skip newsfeeds" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+		<param name="skip_core_weblinks" type="radio" default="0" label="Skip weblinks" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
 		<param type="spacer" default="&lt;b&gt;Templates&lt;/b&gt;" />
-		<param name="positions" type="list" default="0" label="Keep original positions?" description="">
-			<option value="0">No</option>
+		<param name="positions" type="radio" default="0" label="Keep original positions?" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
 		<param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;" />
-		<param name="debug_php" type="list" default="0" label="Enable migration debug" description="">
-			<option value="0">No</option>
+		<param name="debug_php" type="radio" default="0" label="Enable migration debug" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
-		<param name="debug_js" type="list" default="0" label="Enable Mootools version debug" description="">
-			<option value="0">No</option>
+		<param name="debug_js" type="radio" default="0" label="Enable Mootools version debug" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
 		<param type="spacer" default="&lt;b&gt;Cleanup&lt;/b&gt;"/>
-		<param name="delete_previous_migration" type="list" default="1" label="Delete previous migration" description="">
-			<option value="0">No</option>
+		<param name="delete_previous_migration" type="radio" default="1" label="Delete previous migration" description="">
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
 	</params>
 </install>

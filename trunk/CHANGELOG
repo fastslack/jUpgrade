@@ -27,6 +27,55 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+Mar 02, 2012 Matias Aguirre
+ ^ Keeping the categories id's
+
+Mar 02, 2012 Matias Aguirre
+ + Skip core migration added to configuration
+
+Feb 27, 2012 Matias Aguirre
+ # Always use mysqli on new installation
+ # Update prefix
+
+Feb 17, 2012 Matias Aguirre
+ + Better error handler
+
+Feb 16, 2012
+ # Using the same js file in all browsers
+ # Prevent JGLOBAL_ARTICLE_MUST_HAVE_TEXT error
+ + Updating K2 migration
+ + Adding Acyba Mailing support
+ # Fixing the database schema
+ # Revert back the menu ids mapping
+ # Disable default modules
+ # Parameter show_page_title still on new Joomla
+ ^ Running checks and cleanup together
+
+Feb 16, 2012 Kriechi
+ # Updated release-script
+ # Fixed space-tab conversion in config-files.
+ - Removed DROP of previous migration tables
+
+Feb 15, 2012 Kriechi
+ # Moved deletePreviousMigration to cleanup-section
+ # Fixed wrong spacer-text
+ # Parameter to delete previous migration 
+
+Feb 14, 2012 Matias Aguirre
+ # Small fixes on jUpgradeExtensions class
+ + Cleanup categories migration
+ # JTable:store() run an update if id exists so we create them first
+
+Feb 12, 2012 Kriechi
+ # Fix imageurl in banner-migration
+ # Fix for com_banners-categories not correctly added with index-offset
+
+Feb 09, 2012 Matias Aguirre
+ # Keeping id on menus 
+
+Feb 03, 2012 Matias Aguirre
+ + Check if the grant values are returned 
+
 13-Dec-2011 Matias Aguirre
  ^ Fix options save as initial
 

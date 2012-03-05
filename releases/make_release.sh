@@ -9,7 +9,7 @@
 # 
 
 PROJECT="jupgrade"
-VERSION="1.2.5beta"
+VERSION="2.5.1"
 
 DIR="com_$PROJECT"
 PACKAGE="com_$PROJECT-$VERSION.zip"
