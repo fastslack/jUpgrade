@@ -22,7 +22,7 @@ require_once JPATH_BASE.'/jupgrade.category.class.php';
 $jupgrade = new jUpgrade;
 
 // Select the steps
-$query = "SELECT * FROM jupgrade_steps AS s WHERE s.status != 1 ORDER BY s.id ASC LIMIT 1";
+$query = "SELECT * FROM jupgrade_steps AS s WHERE s.status != 1 AND s.extension = 0 ORDER BY s.id ASC LIMIT 1";
 $jupgrade->db_new->setQuery($query);
 $step = $jupgrade->db_new->loadObject();
 
@@ -31,7 +31,7 @@ $error = $jupgrade->db_new->getErrorMsg();
 
 // Check if steps is an object
 if (!is_object($step)) {
-	echo $error;
+	echo ";|;9;|;end";
 	exit;
 }
 

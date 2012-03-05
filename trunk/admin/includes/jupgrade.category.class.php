@@ -45,10 +45,10 @@ class jUpgradeCategory extends jUpgrade
 	{
 
 		if ($this->section == 'com_content' && $this->source == '#__categories') {
-			$select = '`id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
+			$select = '`id`, `id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 			$where = "section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$'";
 		}else if ($this->source == '#__categories') {
-			$select = '`id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
+			$select = '`id`, `id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 			$where = "section = '{$this->section}'";
 		}else if ($this->source == '#__sections') {
 			$select = '`id` AS sid, `title`, `alias`, \'com_section\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
@@ -62,11 +62,17 @@ class jUpgradeCategory extends jUpgrade
 			'id'
 		);
 
+		// Initialize values
+		$aliases = array();
+		$unique_alias_suffix = 1;
+
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
 			$row['params'] = $this->convertParams($row['params']);
 			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
+			$row['title'] = str_replace("'", "&#39;", $row['title']);
+			$row['description'] = str_replace("'", "&#39;", $row['description']);
 			$row['language'] = '*';
 
 			if ($row['extension'] == 'com_banner') {
@@ -79,6 +85,13 @@ class jUpgradeCategory extends jUpgrade
 			if ($row['alias'] == "") {
 				$row['alias'] = JFilterOutput::stringURLSafe($row['title']);
 			}
+
+			// The Joomla 1.6 database structure does not allow duplicate aliases
+			if (in_array($row['alias'], $aliases, true)) {
+				$row['alias'] .= $unique_alias_suffix;
+				$unique_alias_suffix++;
+			}
+			$aliases[] = $row['alias'];
 		}
 
 		return $rows;
@@ -134,56 +147,34 @@ class jUpgradeCategory extends jUpgrade
 	 */
 	public function insertCategory($object, $parent = false)
 	{
-		// Getting the asset table
+		// Getting the category table
 		$category = JTable::getInstance('Category', 'JTable', array('dbo' => $this->db_new));
 
 		// Get old id
 		$oldlist = new stdClass();
-		$oldlist->section = $object['extension'];
-		$oldlist->old = $object['sid'];
+		$oldlist->section = isset($object['extension']) ? $object['extension'] : '';
+		$oldlist->old = isset($object['sid']) ? $object['sid'] : $object['id'];
 		unset($object['sid']);
 
 		// Correct extension
-		if ($object['extension'] == "com_banner") {
-			$object['extension'] = "com_banners";
-		}
-
-		if (is_numeric($object['extension']) || $object['extension'] == "" || $object['extension'] == "category") {
-			$object['extension'] = "com_content";
-		}
-
-		// If has parent made $path and get parent id
-		if ($parent !== false) {
-
-			$object['path'] = JFilterOutput::stringURLSafe($parent)."/".$object['alias'];
-
-			// Fixing title quote
-			$parent = str_replace("'", "&#39;", $parent);
-
-			$query = "SELECT id FROM #__categories WHERE title = '{$parent}' LIMIT 1";
-			$this->db_new->setQuery($query);
-			$object['parent_id'] = $this->db_new->loadResult();
-
-			// Check for query error.
-			$error = $this->db_new->getErrorMsg();
-
-			if ($error) {
-				throw new Exception($error);
+		if (isset($object['extension'])) {
+			if (is_numeric($object['extension']) || $object['extension'] == "" || $object['extension'] == "category") {
+				$object['extension'] = "com_content";
 			}
-
-			// Setting the location of the new category
-			$category->setLocation($object['parent_id'], 'last-child');
-		}
-		else {
-			$object['path'] = $object['alias'];
-
-			// Setting the location of the new category
-			$category->setLocation(1, 'last-child');
 
 			// Fixing extension name if it's section
 			if ($object['extension'] == 'com_section') {
 				$object['extension'] = "com_content";
+
+				$category->setLocation(1, 'last-child');
 			}
+		}
+
+		// @@ TODO: maybe $parent flag is unused
+		// If has parent made $path and get parent id
+		if ($parent !== false) {
+			// Setting the location of the new category
+			$category->setLocation($parent, 'last-child');
 		}
 
 		// Bind data to save category
@@ -195,9 +186,6 @@ class jUpgradeCategory extends jUpgrade
 		if (!$category->store()) {
 			echo JError::raiseError(500, $category->getError());
 		}
-
-		// Returning sid needed by insertAsset()
-		$object['sid'] = $oldlist->old;
 
 		// Get new id
 		$oldlist->new = $category->id;

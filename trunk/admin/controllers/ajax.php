@@ -306,6 +306,18 @@ class jupgradeControllerAjax extends JController
 			throw new Exception($error);
 		}
 
+		// Insert uncategorized id
+		$query = "INSERT INTO `jupgrade_categories` (`old`, `new`) VALUES (0, 2)";
+		$jupgrade->db_new->setQuery($query);
+		$jupgrade->db_new->query();
+
+		// Check for query error.
+		$error = $jupgrade->db_new->getErrorMsg();
+
+		if ($error) {
+			throw new Exception($error);
+		}
+
 		/**
 		 * Check if the previous migration should be deleteted
 		 */
