@@ -96,7 +96,7 @@ class jUpgradeCategories extends jUpgradeCategory
 		foreach ($categories as $category)
 		{
 			$category['asset_id'] = null;
-			$category['parent_id'] = $catmap[$category['extension']]->new;
+			$category['parent_id'] = isset($catmap[$category['extension']]->new) ? $catmap[$category['extension']]->new : 1;
 			$category['lft'] = null;
 			$category['rgt'] = null;
 			$category['level'] = null;

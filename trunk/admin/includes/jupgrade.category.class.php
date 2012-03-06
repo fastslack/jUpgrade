@@ -108,14 +108,18 @@ class jUpgradeCategory extends jUpgrade
 	protected function setDestinationData()
 	{
 		// Get the source data.
-		$rows	= $this->getSourceData();
+		$categories	= $this->getSourceData();
 
-		//
-		// Insert the categories
-		//
-		foreach ($rows as $row)
+		// Remove id
+		foreach ($categories as $category)
 		{
-			$this->insertCategory($row);
+			unset($category->id);
+		}
+
+		// Insert the categories
+		foreach ($categories as $category)
+		{
+			$this->insertCategory($category);
 		}
 	}
 
