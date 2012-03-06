@@ -150,17 +150,17 @@
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
+		<param type="spacer" default="&lt;b&gt;Cleanup&lt;/b&gt;"/>
+		<param name="delete_previous_migration" type="radio" default="0" label="Delete previous migration" description="">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
 		<param type="spacer" default="&lt;b&gt;Debug&lt;/b&gt;" />
 		<param name="debug_php" type="radio" default="0" label="Enable migration debug" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		<param name="debug_js" type="radio" default="0" label="Enable Mootools version debug" description="">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param type="spacer" default="&lt;b&gt;Cleanup&lt;/b&gt;"/>
-		<param name="delete_previous_migration" type="radio" default="1" label="Delete previous migration" description="">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
