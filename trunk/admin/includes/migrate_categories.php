@@ -55,12 +55,26 @@ class jUpgradeCategories extends jUpgradeCategory
 		$this->section = 'com_content'; 
 		// Get the source data.
 		$categories	= $this->getSourceData();
+		// rootidmap
+		$rootidmap = 0;
 
 		// JTable:store() run an update if id exists so we create them first
 		foreach ($categories as $category)
 		{
 			$object = new stdClass();
-			$object->id = $category['id'];
+
+			if ($category['id'] == 1) {
+				$query = "SELECT id"
+				." FROM #__categories"
+				." ORDER BY id DESC LIMIT 1";
+				$this->db_new->setQuery($query);
+				$lastid = $this->db_new->loadResult();	
+
+				$object->id = $lastid + 1;
+				$rootidmap = $object->id;
+			}else{
+				$object->id = $category['id'];
+			}
 
 			// Inserting the menu
 			if (!$this->db_new->insertObject($this->destination, $object)) {
@@ -95,6 +109,10 @@ class jUpgradeCategories extends jUpgradeCategory
 		// Insert the categories
 		foreach ($categories as $category)
 		{
+			if ($category['id'] == 1) {
+				$category['id'] = $rootidmap;
+			}
+
 			$category['asset_id'] = null;
 			$category['parent_id'] = isset($catmap[$category['extension']]->new) ? $catmap[$category['extension']]->new : 1;
 			$category['lft'] = null;

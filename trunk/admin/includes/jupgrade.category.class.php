@@ -47,19 +47,22 @@ class jUpgradeCategory extends jUpgrade
 		if ($this->section == 'com_content' && $this->source == '#__categories') {
 			$select = '`id`, `id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 			$where = "section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$'";
+			$order = 'id DESC';
 		}else if ($this->source == '#__categories') {
 			$select = '`id`, `id` AS sid, `title`, `alias`, `section` AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 			$where = "section = '{$this->section}'";
+			$order = 'id';
 		}else if ($this->source == '#__sections') {
 			$select = '`id` AS sid, `title`, `alias`, \'com_section\' AS extension, `description`, `published`, `checked_out`, `checked_out_time`, `access`, `params`';
 			$where = "scope = 'content'";
+			$order = 'id';
 		}
 
 		$rows = parent::getSourceData(
 			$select,
 		  null,
 			$where,
-			'id'
+			$order
 		);
 
 		// Initialize values
