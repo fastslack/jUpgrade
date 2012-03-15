@@ -156,9 +156,7 @@ class jUpgradeMenu extends jUpgrade
 				$object->menu_image = '';
 			}
 		}
-		if (isset($object->show_page_title)) {
-			$object->show_page_heading = $object->show_page_title;
-		}
+		$object->show_page_heading = (isset($object->show_page_title) && !empty($object->page_title)) ? $object->show_page_title : 0;
 	}
 
 	/**
