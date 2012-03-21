@@ -210,7 +210,7 @@ class jUpgradeModulesMenu extends jUpgrade
 	protected function &getSourceData()
 	{
 		// Creating the query
-		$where = "m.moduleid NOT IN (1,2,3,4,8,13,14,15)";
+		$where = "m.moduleid NOT IN (2,3,4,8,13,14,15)";
 
 		$join = array();
 		$join[] = "INNER JOIN jupgrade_modules AS map ON  map.old = m.moduleid";
