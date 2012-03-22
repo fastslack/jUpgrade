@@ -64,14 +64,13 @@ class jUpgradeCategories extends jUpgradeCategory
 			$object = new stdClass();
 
 			if ($category['id'] == 1) {
-				$query = "SELECT id"
+				$query = "SELECT id+1"
 				." FROM #__categories"
 				." ORDER BY id DESC LIMIT 1";
-				$this->db_new->setQuery($query);
-				$lastid = $this->db_new->loadResult();	
+				$this->db_old->setQuery($query);
+				$rootidmap = $this->db_old->loadResult();
 
-				$object->id = $lastid + 1;
-				$rootidmap = $object->id;
+				$object->id = $rootidmap;
 			}else{
 				$object->id = $category['id'];
 			}
