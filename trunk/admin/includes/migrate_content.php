@@ -45,15 +45,25 @@ class jUpgradeContent extends jUpgrade
 
 		$rows = parent::getSourceData(
 			'`id`, `title`, `alias`, `title_alias`, `introtext`, `fulltext`, `state`, '
-		 .'`mask`, o.new AS catid, `created`, `created_by`, `created_by_alias`, '
-		 .'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
-		 .'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
-     .'`access`, `hits` ',
-		 'LEFT JOIN jupgrade_categories AS o ON o.old = c.catid',
-		 $where,
+			.'`mask`, `catid`, `created`, `created_by`, `created_by_alias`, '
+			.'`modified`, `modified_by`, `checked_out`, `checked_out_time`, `publish_up`, `publish_down`, '
+			.'`images`, `urls`, `attribs`, `version`, `parentid`, `ordering`, `metakey`, `metadesc`, '
+			.'`access`, `hits` ',
+			null,
+			null,
 			'id'
 		);
 
+		// Get category mapping
+		$query = "SELECT * FROM jupgrade_categories WHERE section REGEXP '^[\\-\\+]?[[:digit:]]*\\.?[[:digit:]]*$' AND old>0";
+		$this->db_new->setQuery($query);
+		$catidmap = $this->db_new->loadObjectList('old');
+		
+		// Find uncategorised category id
+		$query = "SELECT id FROM #__categories WHERE extension='com_content' AND path='uncategorised' LIMIT 1";
+		$this->db_new->setQuery($query);
+		$defaultId = $this->db_new->loadResult();
+		
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
@@ -65,6 +75,9 @@ class jUpgradeContent extends jUpgrade
 			if ($row['state'] == -1) {
 				$row['state'] = 2;
 			}
+			
+			// Map catid
+			$row['catid'] = isset($catidmap[$row['catid']]) ? $catidmap[$row['catid']]->new : $defaultId;
 
 			/*
 			 * Prevent JGLOBAL_ARTICLE_MUST_HAVE_TEXT error
