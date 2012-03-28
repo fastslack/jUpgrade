@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>FLEXIcontent for Joomla 2.5</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>flexicontent_cats_item_relations</table>
+		<table>flexicontent_favourites</table>
+		<table>flexicontent_fields</table>
+		<table>flexicontent_fields_item_relations</table>
+		<table>flexicontent_fields_type_relations</table>
+		<table>flexicontent_files</table>
+		<table>flexicontent_items_ext</table>
+		<table>flexicontent_items_extravote</table>
+		<table>flexicontent_items_versions</table>
+		<table>flexicontent_tags</table>
+		<table>flexicontent_tags_item_relations</table>
+		<table>flexicontent_templates</table>
+		<table>flexicontent_types</table>
+		<table>flexicontent_versions</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>components/com_flexicontent/uploads</folder>
+		<folder>components/com_flexicontent/medias</folder>
+		<folder>components/com_flexicontent/templates</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section=""></category>
+	</categories>
+	-->
+</jupgrade>
