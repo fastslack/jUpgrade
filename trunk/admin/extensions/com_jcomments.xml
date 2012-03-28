@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>JComments for Joomla 2.5</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>jcomments</table>
+		<table>jcomments_custom_bbcodes</table>
+		<table>jcomments_reports</table>
+		<table>jcomments_settings</table>
+		<table>jcomments_subscriptions</table>
+		<table>jcomments_version</table>
+		<table>jcomments_votes</table>
+	</tables>
+
+</jupgrade>
