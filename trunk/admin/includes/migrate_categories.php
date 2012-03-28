@@ -64,14 +64,13 @@ class jUpgradeCategories extends jUpgradeCategory
 			$object = new stdClass();
 
 			if ($category['id'] == 1) {
-				$query = "SELECT id"
+				$query = "SELECT id+1"
 				." FROM #__categories"
 				." ORDER BY id DESC LIMIT 1";
-				$this->db_new->setQuery($query);
-				$lastid = $this->db_new->loadResult();	
+				$this->db_old->setQuery($query);
+				$rootidmap = $this->db_old->loadResult();
 
-				$object->id = $lastid + 1;
-				$rootidmap = $object->id;
+				$object->id = $rootidmap;
 			}else{
 				$object->id = $category['id'];
 			}
@@ -107,7 +106,7 @@ class jUpgradeCategories extends jUpgradeCategory
 		$catmap = $this->getMapList('categories', 'com_section');
 
 		// Insert the categories
-		foreach ($categories as $category)
+		foreach ($categories as $i=>$category)
 		{
 			if ($category['id'] == 1) {
 				$category['id'] = $rootidmap;
@@ -115,12 +114,12 @@ class jUpgradeCategories extends jUpgradeCategory
 
 			$category['asset_id'] = null;
 			$category['parent_id'] = isset($catmap[$category['extension']]->new) ? $catmap[$category['extension']]->new : 1;
-			$category['lft'] = null;
+			$category['lft'] = $i;
 			$category['rgt'] = null;
 			$category['level'] = null;
 
 			// Inserting the category
-			$this->insertCategory($category);			
+			$this->insertCategory($category);
 		}
 
 		// Require the files
