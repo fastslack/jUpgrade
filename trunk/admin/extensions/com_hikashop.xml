@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>HikaShop for Joomla 2.5</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>acymailing_config</table>
+		<table>hikashop_address</table>
+		<table>hikashop_banner</table>
+		<table>hikashop_cart</table>
+		<table>hikashop_cart_product</table>
+		<table>hikashop_category</table>
+		<table>hikashop_characteristic</table>
+		<table>hikashop_click</table>
+		<table>hikashop_config</table>
+		<table>hikashop_currency</table>
+		<table>hikashop_discount</table>
+		<table>hikashop_download</table>
+		<table>hikashop_entry</table>
+		<table>hikashop_field</table>
+		<table>hikashop_file</table>
+		<table>hikashop_filter</table>
+		<table>hikashop_geolocation</table>
+		<table>hikashop_history</table>
+		<table>hikashop_limit</table>
+		<table>hikashop_order</table>
+		<table>hikashop_order_product</table>
+		<table>hikashop_payment</table>
+		<table>hikashop_price</table>
+		<table>hikashop_product</table>
+		<table>hikashop_product_category</table>
+		<table>hikashop_product_related</table>
+		<table>hikashop_shipping</table>
+		<table>hikashop_tax</table>
+		<table>hikashop_taxation</table>
+		<table>hikashop_user</table>
+		<table>hikashop_variant</table>
+		<table>hikashop_waitlist</table>
+		<table>hikashop_widget</table>
+		<table>hikashop_zone</table>
+		<table>hikashop_zone_link</table>
+	</tables>
+
+	<folders>
+		<folder>media/com_hikashop</folder>
+	</folders>
+
+</jupgrade>
