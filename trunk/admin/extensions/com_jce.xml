@@ -1,10 +1,16 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<name>JCE for Joomla 1.7</name>
+	<name>JCE for Joomla 2.5</name>
 
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>wf_profiles</table>
+	</tables>
+	
 	<!-- The folders to copy to the new site. -->
 	<folders>
+		<folder>components/com_jce/editor/tiny_mce</folder>
 		<folder>media/jce</folder>
 	</folders>
 
