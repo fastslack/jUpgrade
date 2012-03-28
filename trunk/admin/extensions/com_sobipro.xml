@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+    <collection>https://xml.sigsiu.net/SobiPro/collection.xml</collection>
+    <installer>
+        <file>/components/com_sobipro/jupgrade/adapter.php</file>
+        <class>jUpgradeComponentSobiPro</class>
+    </installer>
+    <folders>
+        <folder>administrator/components/com_sobipro</folder>
+        <folder>components/com_sobipro</folder>
+        <folder>images/sobipro</folder>
+        <folder>media/sobipro</folder>
+    </folders>
+    <package>
+        <extension>
+            <name>mod_sobipro_entries</name>
+        </extension>
+        <extension>
+            <name>mod_sobipro_geomap</name>
+        </extension>
+        <extension>
+            <name>mod_spmenu</name>
+        </extension>
+    </package>
+</jupgrade>
