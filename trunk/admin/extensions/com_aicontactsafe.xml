@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>aiContactSafe for Joomla 2.5</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>aicontactsafe_config</table>
+		<table>aicontactsafe_contactinformations</table>
+		<table>aicontactsafe_fields</table>
+		<table>aicontactsafe_fieldvalues</table>
+		<table>aicontactsafe_messagefiles</table>
+		<table>aicontactsafe_messages</table>
+		<table>aicontactsafe_profiles</table>
+		<table>aicontactsafe_statuses</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<folders>
+		<folder>media/aicontactsafe</folder>
+	</folders>
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section=""></category>
+	</categories>
+	-->
+</jupgrade>
