@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+   <name>AllEvents</name>
+   <updateservers>
+      <!--<server type="extension" priority="1" name="AllEvents Update Site">http://avonture.be/allevents/update.xml</server>-->
+      <!--<server type="extension" priority="1" name="AllEvents Update Site">http://avonture.be/allevents/phocadownload/versions_alpha/com_allevents_full_j2.5_v1.2.zip</server>-->
+   </updateservers>
+   <installer>
+      <file>administrator/components/com_allevents/jupgrade.php</file>
+      <class>jUpgradeComponentAllEvents</class>
+   </installer>   
+   <tables>
+      <table>allevents_activities</table>
+      <table>allevents_agenda</table>
+      <table>allevents_albums</table>
+      <table>allevents_categories</table>
+      <table>allevents_countries</table>
+      <table>allevents_enrolments</table>
+      <table>allevents_events</table>
+      <table>allevents_forms</table>
+      <table>allevents_formsfields</table>
+      <table>allevents_formsfieldstype</table>
+      <table>allevents_groups</table>
+      <table>allevents_links</table>
+      <table>allevents_pictures</table>
+      <table>allevents_places</table>
+      <table>allevents_public</table>
+      <table>allevents_ressources</table>
+      <table>allevents_sections</table>
+      <table>allevents_settings</table>
+      <table>allevents_users</table>
+   </tables>
+   <folders>
+      <!--<folder>administrator/components/com_allevents</folder>
+      <folder>components/com_allevents</folder>-->
+      <folder>media/com_allevents</folder>
+   </folders>
+</jupgrade>
+
