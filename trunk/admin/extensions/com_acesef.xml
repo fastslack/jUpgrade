@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>AceSEF for Joomla 2.5</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>acesef_bookmarks</table>
+		<table>acesef_bookmarks_backup</table>
+		<table>acesef_extensions</table>
+		<table>acesef_extensions_backup</table>
+		<table>acesef_ilinks</table>
+		<table>acesef_ilinks_backup</table>
+		<table>acesef_metadata</table>
+		<table>acesef_metadata_backup</table>
+		<table>acesef_sitemap</table>
+		<table>acesef_sitemap_backup</table>
+		<table>acesef_tags</table>
+		<table>acesef_tags_backup</table>
+		<table>acesef_tags_map</table>
+		<table>acesef_tags_map_backup</table>
+		<table>acesef_urls</table>
+		<table>acesef_urls_backup</table>
+		<table>acesef_urls_moved</table>
+		<table>acesef_urls_moved_backup</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. 
+	<folders>
+		<folder>media/</folder>
+	</folders>
+	-->
+
+	<!-- The categories to copy to the new site. 
+	<categories>
+		<category section=""></category>
+	</categories>
+	-->
+
+</jupgrade>
