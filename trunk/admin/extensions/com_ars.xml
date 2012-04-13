@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<name>Akeeba Release System for Joomla 1.7</name>
+	<name>Akeeba Release System for Joomla 1.7+</name>
 
 	<!-- The tables to copy to the new site. -->
 	<tables>
