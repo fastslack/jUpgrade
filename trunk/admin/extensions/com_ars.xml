@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>Akeeba Release System for Joomla 1.7+</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>ars_autoitemdesc</table>
+		<table>ars_categories</table>
+		<table>ars_environments</table>
+		<table>ars_items</table>
+		<table>ars_log</table>
+		<table>ars_releases</table>
+		<table>ars_updatestreams</table>
+		<table>ars_vgroups</table>
+	</tables>
+
+	<!-- The folders to copy to the new site. -->
+	<!-- folders>
+		<folder></folder>
+	</folders-->
+
+	<!-- The categories to copy to the new site. -->
+	<!--
+	<categories>
+		<category section="com_ars"></category>
+	</categories>
+	-->
+</jupgrade>
