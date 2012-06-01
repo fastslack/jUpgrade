@@ -83,7 +83,9 @@ class jUpgrade
 		if (file_exists(JPATH_LIBRARIES.'/joomla/log/log.php')) {
 			require_once JPATH_LIBRARIES.'/joomla/log/log.php';
 		}
-		require_once JPATH_LIBRARIES.'/joomla/methods.php';
+		if (file_exists(JPATH_LIBRARIES.'/joomla/methods.php')) {
+			require_once JPATH_LIBRARIES.'/joomla/methods.php';
+		}
 		require_once JPATH_LIBRARIES.'/joomla/factory.php';
 		require_once JPATH_SITE.'/configuration.php';
 
@@ -122,7 +124,7 @@ class jUpgrade
 		jimport('joomla.environment.uri');
 
 		// Echo all errors, otherwise things go really bad.
-		JError::setErrorHandling(E_ALL, 'echo');
+		//JError::setErrorHandling(E_ALL, 'echo');
 
 		// Manually
 		//JTable::addIncludePath(JPATH_LIBRARIES.'/joomla/database/table');
@@ -342,9 +344,7 @@ class jUpgrade
 		}
 		catch (Exception $e)
 		{
-			echo JError::raiseError(500, $e->getMessage());
-
-			return false;
+			throw new Exception($e->getMessage());
 		}
 
 		return true;
@@ -545,7 +545,7 @@ class jUpgrade
 	public function getPrefix()
 	{
 		// configuration.php path
-		$filename = JPATH_ROOT.DS.'configuration.php';
+		$filename = JPATH_ROOT.'/configuration.php';
 
 		// read the file
 		$handle = fopen($filename, "r");
