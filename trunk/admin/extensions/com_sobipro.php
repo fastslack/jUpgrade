@@ -24,4 +24,3 @@ class jUpgradeComponentSobipro extends jUpgradeExtensions
 		return true;
 	}
 }
-

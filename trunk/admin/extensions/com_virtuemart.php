@@ -35,39 +35,57 @@ class jUpgradeComponentVirtuemart extends jUpgradeExtensions
 	}
 
 	/**
-	 * Migrate tables
+	 * Migrate custom information.
 	 *
-	 * @return	boolean
-	 * @since	1.2.0
+	 * This function gets called after all folders and tables have been copied.
+	 *
+	 * If you want to split this task into smaller chunks,
+	 * please store your custom state variables into $this->state and return false.
+	 * Returning false will force jUpgrade to call this function again,
+	 * which allows you to continue import by reading $this->state before continuing.
+	 *
+	 * @return	boolean Ready (true/false)
+	 * @since	1.1.0
+	 * @throws	Exception
 	 */
-	public function migrateExtensionCustom()
-	{
+	protected function migrateExtensionCustom() {
+		$app = JFactory::getApplication('administrator');
 
-/*
-		// name -> title
-		$query = "ALTER TABLE `#__adminpraise_menu` CHANGE `name` `title` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
+		// Get component object
+		$component = JTable::getInstance ( 'extension', 'JTable', array('dbo'=>$this->db_new) );
+		$component->load(array('type'=>'component', 'element'=>$this->name));
+
+		// Mark Virtuemart as discovered and install it
+		$component->client_id = 1;
+		$component->state = -1;
+		$component->store();
+		jimport('joomla.installer.installer');
+		$installer = JInstaller::getInstance();
+		$installer->discover_install($component->extension_id);
+
+		$query = "INSERT INTO #__update_sites_extensions
+			SELECT update_site_id, '{$component->extension_id}' FROM #__update_sites WHERE name='Virtuemart'
+		";
 		$this->db_new->setQuery($query);
-		//$this->db_new->query();
+		$this->db_new->query();
 
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
-		}
-
-		// parent -> parent_id
-		$query = "ALTER TABLE `#__adminpraise_menu` CHANGE `parent` `parent_id` INT( 11 ) UNSIGNED NOT NULL DEFAULT '0'";
-		$this->db_new->setQuery($query);
-		//$this->db_new->query();
-
-		// Check for query error.
-		$error = $this->db_new->getErrorMsg();
-
-		if ($error) {
-			throw new Exception($error);
-		}
-*/
+		// Update Virtuemart 
+		//~ jimport('joomla.updater.update');
+		//~ $updater = JUpdater::getInstance();
+		//~ $updater->findUpdates($component->extension_id);
+		//~ $update = JTable::getInstance ( 'update', 'JTable', array('dbo'=>$this->db_new) );
+		//~ $update
+			//~ ->load(
+			//~ array(
+				//~ 'element' => 'com_virtuemart', 'type' => 'component',
+				//~ 'client_id' => '1',
+				//~ 'folder' => ''
+			//~ )
+		//~ );
+		//~ if ($update->uid) {
+			//~ $updater->update($update->uid);
+			//~ echo "Virtuemart successfully upgraded to version 1.2";
+		//~ }
 		return true;
 	}
 }

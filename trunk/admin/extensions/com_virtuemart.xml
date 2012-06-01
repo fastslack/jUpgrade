@@ -1,10 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<name>Virtuemart for Joomla 1.7</name>
-
-	<collection>http://anonymous:@joomlacode.org/svn/joomla/development/branches/jupgrade/extensions/virtuemart/virtuemart.collection.xml</collection>
-
+	<name>Virtuemart</name>
+	<collection>http://www.expertcms.net/update/virtuemart-collection.xml</collection>
+	<updateservers>
+		<server type="extension" priority="1" name="Virtuemart 1.2 Update Site" url="http://www.expertcms.net/update/virtuemart-update.xml" />
+	</updateservers>
 	<!-- The tables to copy to the new site. -->
 	<tables>
 		<table>vm_auth_group</table>
@@ -61,12 +62,11 @@
 		<table>vm_zone_shipping</table>
 	</tables>
 
-	<!-- The folders to copy to the new site. 
+	<!-- The folders to copy to the new site. -->
 	<folders>
-		<folder>media/kunena</folder>
-		<folder>administrator/components/com_kunena</folder>
-		<folder>components/com_kunena</folder>
-	</folders>-->
+		<folder>administrator/components/com_virtuemart</folder>
+		<folder>components/com_virtuemart</folder>
+	</folders>
 
 	<!-- The categories to copy to the new site. -->
 	<!--
