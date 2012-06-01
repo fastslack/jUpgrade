@@ -4,8 +4,12 @@
 	<params>
 		<param type="spacer" default="&lt;b&gt;Global&lt;/b&gt;" />
 		<param name="mode" type="list" default="1" label="Distribution" description="">
-			<option value="1">Joomla 2.5</option>
-			<option value="2">Joomla 1.7</option>
+			<option value="1"> Joomla 2.5 </option>
+		</param>
+		<param name="driver" type="list" default="0" label="SQL Driver" description="">
+			<option value="0"> Default </option>
+			<option value="mysql"> MySQL </option>
+			<option value="mysqli"> MySQLi </option>
 		</param>
 		<param name="directory" type="text" default="jupgrade" label="Target Directory" description="" size="20" />
 		<param name="prefix_old" type="text" default="jos_" label="Prefix for old database" description="" size="20" />
