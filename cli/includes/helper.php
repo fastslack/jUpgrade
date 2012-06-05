@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
  * @package		jUpgrade
  * @subpackage	jUpgradeCli
  */
-class JUpgradeCliHelper
+class JUpgradeHelper
 {
 	/**
 	 * populateDatabase
@@ -28,9 +28,9 @@ class JUpgradeCliHelper
 			return -1;
 		}
 
-		$queries = JUpgradeCliHelper::splitSql($buffer);
-
 		echo "Importing {$sqlfile}\n";
+
+		$queries = JUpgradeHelper::splitSql($buffer);
 
 		foreach ($queries as $query)
 		{
@@ -42,7 +42,7 @@ class JUpgradeCliHelper
 				echo ".";
 				$db->query() or die($db->getErrorMsg());
 
-				JUpgradeCliHelper::getDBErrors($errors, $db );
+				JUpgradeHelper::getDBErrors($errors, $db );
 			}
 		}
 
