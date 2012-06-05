@@ -109,7 +109,7 @@ class jUpgradeUsergroups extends jUpgrade
 			// Our assumption is the core groups have not been tampered with (if they were, Joomla would not run well).
 			'*',
 			null,
-			$this->db_old->nameQuote('id').' > 30'
+			$this->db_old->quoteName('id').' > 30'
 		);
 
 		// Set up the mapping table for the old groups to the new groups.

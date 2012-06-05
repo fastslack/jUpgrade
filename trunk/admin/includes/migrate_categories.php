@@ -50,7 +50,6 @@ class jUpgradeCategories extends jUpgradeCategory
 		 * Inserting the categories
 		 * @since	2.5.1
 		 */
-
 		// Content categories
 		$this->section = 'com_content'; 
 		// Get the source data.
@@ -122,15 +121,25 @@ class jUpgradeCategories extends jUpgradeCategory
 			$this->insertCategory($category);
 		}
 
+		// Check if Cli is enabled
+		$jconfig = new JConfig();
+
+		if (!empty($jconfig->cli) && $jconfig->cli == 1) {
+			$helperpath = JPATH_BASE;
+		}else{
+			$helperpath = JPATH_BASE.'/administrator/components/com_jupgrade';
+		}
+
 		// Require the files
-		require_once JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jupgrade'.DS.'includes'.DS.'helper.php';
+		require_once $helperpath.'/includes/helper.php';
 
 		// The sql file with menus
-		$sqlfile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jupgrade'.DS.'sql'.DS.'categories.sql';
+		$sqlfile = $helperpath.'/sql/categories.sql';
 
 		// Import the sql file
 	  if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
 	  	return false;
 	  }
-	}
-}
+
+	} // end method
+} // end class
