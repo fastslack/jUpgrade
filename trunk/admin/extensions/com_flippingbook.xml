@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<!DOCTYPE jupgrade>
+<jupgrade>
+	<name>FlippingBook for Joomla 2.5</name>
+
+	<!-- The tables to copy to the new site. -->
+	<tables>
+		<table>flippingbook_books</table>
+		<table>flippingbook_categories</table>
+		<table>flippingbook_config</table>
+		<table>flippingbook_pages</table>
+	</tables>
+
+</jupgrade>
