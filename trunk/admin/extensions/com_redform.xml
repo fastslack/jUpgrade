@@ -1,16 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE jupgrade>
 <jupgrade>
-	<name>redFORM for Joomla 1.7</name>
+	<name>redFORM for Joomla 2.5</name>
 
 	<!-- The tables to copy to the new site. -->
 	<tables>
-		<table>rwf_configuration</table>
-		<table>rwf_fields</table>
-		<table>rwf_forms%</table>
-		<table>rwf_mailinglists</table>
-		<table>rwf_submitters</table>
-		<table>rwf_values</table>
+		<table>rwf_%</table>
 	</tables>
 
 	<!-- The folders to copy to the new site. -->
@@ -18,10 +13,4 @@
 		<folder>media/com_redform</folder>
 	</folders>
 
-	<!-- The categories to copy to the new site. -->
-	<!--
-	<categories>
-		<category section="com_redform"></category>
-	</categories>
-	-->
 </jupgrade>
