@@ -21,6 +21,9 @@ if (file_exists(JPATH_LIBRARIES.'/joomla/import.php')) {
 }else if (file_exists(JPATH_LIBRARIES.'/import.php')) {
 	require_once JPATH_LIBRARIES.'/import.php';
 }
+if (file_exists(JPATH_LIBRARIES.'/cms/model/legacy.php')) {
+	require_once JPATH_LIBRARIES.'/cms/model/legacy.php';
+}
 require_once JPATH_LIBRARIES.'/joomla/methods.php';
 require_once JPATH_LIBRARIES.'/joomla/factory.php';
 require_once JPATH_LIBRARIES.'/joomla/error/error.php';
