@@ -215,9 +215,10 @@ class jUpgradeMenu extends jUpgrade
 		$sqlfile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jupgrade'.DS.'sql'.DS.'menus.sql';
 
 		// Import the sql file
-	  if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
-	  	return false;
-	  }
+		$errors = array();
+		if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
+			return false;
+		}
 	}
 
 	/**

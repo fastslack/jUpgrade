@@ -137,9 +137,10 @@ class jUpgradeCategories extends jUpgradeCategory
 		$sqlfile = $helperpath.'/sql/categories.sql';
 
 		// Import the sql file
-	  if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
-	  	return false;
-	  }
+		$errors = array();
+		if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
+			return false;
+		}
 
 	} // end method
 } // end class
