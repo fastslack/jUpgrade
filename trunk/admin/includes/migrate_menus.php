@@ -70,7 +70,6 @@ class jUpgradeMenu extends jUpgrade
  
 		// Initialize values
 		$aliases = array();
-		$unique_alias_suffix = 1;
  
 		// Do some custom post processing on the list.
 		foreach ($rows as $key => &$row) {
@@ -131,12 +130,14 @@ class jUpgradeMenu extends jUpgrade
       // Converting params to JSON
       $row['params'] = $this->convertParams($row['params']);
 
-      // The Joomla 1.6 database structure does not allow duplicate aliases
-      if (in_array($row['alias'], $aliases, true)) {
-        $row['alias'] .= $unique_alias_suffix;
-        $unique_alias_suffix++;
+      // The Joomla 2.5 database structure does not allow duplicate aliases
+      $key = $row['parent_id'].' '.$row['alias'].' '.$row['language'];
+      if (isset($aliases[$key])) {
+      	// Change alias and key
+        $row['alias'] .= '-'.$row['id'];
+        $key = $row['parent_id'].' '.$row['alias'].' '.$row['language'];
       }
-      $aliases[] = $row['alias'];
+      $aliases[$key] = 1;
     }
 
 		return $rows;
