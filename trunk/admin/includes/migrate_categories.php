@@ -127,7 +127,7 @@ class jUpgradeCategories extends jUpgradeCategory
 		if (!empty($jconfig->cli) && $jconfig->cli == 1) {
 			$helperpath = JPATH_BASE;
 		}else{
-			$helperpath = JPATH_BASE.'/administrator/components/com_jupgrade';
+			$helperpath = JPATH_ROOT.'/administrator/components/com_jupgrade';
 		}
 
 		// Require the files
