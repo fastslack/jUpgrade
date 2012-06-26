@@ -74,7 +74,9 @@ class jUpgradeMenu extends jUpgrade
  
 		// Do some custom post processing on the list.
 		foreach ($rows as $key => &$row) {
- 
+			// Convert HTML entities to UTF-8 on escaped entries
+			$row['title'] = $this->entities2Utf8($row['title']);
+
 			// Fixing access
 			$row['access']++;
 			// Fixing level

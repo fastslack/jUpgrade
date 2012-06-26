@@ -74,7 +74,9 @@ class jUpgradeCategory extends jUpgrade
 		{
 			$row['params'] = $this->convertParams($row['params']);
 			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
-			$row['title'] = str_replace("'", "&#39;", $row['title']);
+
+			// Convert HTML entities to UTF-8 on escaped entries
+			$row['title'] = $this->entities2Utf8($row['title']);
 			$row['description'] = str_replace("'", "&#39;", $row['description']);
 			$row['language'] = '*';
 

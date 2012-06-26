@@ -534,7 +534,17 @@ class jUpgrade
 		echo str_replace("=>","&#8658;",str_replace("Array","<font color=\"red\"><b>Array</b></font>",nl2br(str_replace(" "," &nbsp; ",print_r($subject,true)))));
 	}
 
-
+	/**
+	 * Internal function to convert numeric html entities to UTF-8.
+	 *
+	 * @return	string
+	 * @since	2.5.2
+	 */
+	public function entities2Utf8($input)
+	{
+		return html_entity_decode($input, ENT_QUOTES, 'UTF-8');
+	}
+	
 	/**
 	 * Internal function to get original database prefix
 	 *
