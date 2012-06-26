@@ -54,6 +54,9 @@ class jUpgradeBanners extends jUpgrade
 	        // Do some custom post processing on the list.
 	        foreach ($rows as $index => &$row)
 	        {    
+	        		// Convert HTML entities to UTF-8 on escaped entries
+	        		$row['name'] = $this->entities2Utf8($row['name']);
+	        	
 	                $row['params'] = $this->convertParams($row['params']);                        
 
 	                $cid = $row['catid'];
