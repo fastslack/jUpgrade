@@ -67,6 +67,12 @@ class jUpgradeContent extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
+			// Convert HTML entities to UTF-8 on escaped entries
+			$row['title'] = $this->entities2Utf8($row['title']);
+			$row['created_by_alias'] = $this->entities2Utf8($row['created_by_alias']);
+			$row['metakey'] = $this->entities2Utf8($row['metakey']);
+			$row['metadesc'] = $this->entities2Utf8($row['metadesc']);
+			
 			$row['attribs'] = $this->convertParams($row['attribs']);
 			$row['access'] = $row['access'] == 0 ? 1 : $row['access'] + 1;
 			$row['language'] = '*';

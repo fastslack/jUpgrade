@@ -70,11 +70,12 @@ class jUpgradeMenu extends jUpgrade
  
 		// Initialize values
 		$aliases = array();
-		$unique_alias_suffix = 1;
  
 		// Do some custom post processing on the list.
 		foreach ($rows as $key => &$row) {
- 
+			// Convert HTML entities to UTF-8 on escaped entries
+			$row['title'] = $this->entities2Utf8($row['title']);
+
 			// Fixing access
 			$row['access']++;
 			// Fixing level
@@ -129,12 +130,14 @@ class jUpgradeMenu extends jUpgrade
       // Converting params to JSON
       $row['params'] = $this->convertParams($row['params']);
 
-      // The Joomla 1.6 database structure does not allow duplicate aliases
-      if (in_array($row['alias'], $aliases, true)) {
-        $row['alias'] .= $unique_alias_suffix;
-        $unique_alias_suffix++;
+      // The Joomla 2.5 database structure does not allow duplicate aliases
+      $key = $row['parent_id'].' '.$row['alias'].' '.$row['language'];
+      if (isset($aliases[$key])) {
+      	// Change alias and key
+        $row['alias'] .= '-'.$row['id'];
+        $key = $row['parent_id'].' '.$row['alias'].' '.$row['language'];
       }
-      $aliases[] = $row['alias'];
+      $aliases[$key] = 1;
     }
 
 		return $rows;
@@ -213,9 +216,10 @@ class jUpgradeMenu extends jUpgrade
 		$sqlfile = JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_jupgrade'.DS.'sql'.DS.'menus.sql';
 
 		// Import the sql file
-	  if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
-	  	return false;
-	  }
+		$errors = array();
+		if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
+			return false;
+		}
 	}
 
 	/**

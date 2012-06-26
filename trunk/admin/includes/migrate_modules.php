@@ -98,6 +98,9 @@ class jUpgradeModules extends jUpgrade
 		// Do some custom post processing on the list.
 		foreach ($rows as &$row)
 		{
+			// Convert HTML entities to UTF-8 on escaped entries
+			$row['title'] = $this->entities2Utf8($row['title']);
+
 			$row['params'] = $this->convertParams($row['params']);
 
 			## Fix access

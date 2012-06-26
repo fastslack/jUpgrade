@@ -127,7 +127,7 @@ class jUpgradeCategories extends jUpgradeCategory
 		if (!empty($jconfig->cli) && $jconfig->cli == 1) {
 			$helperpath = JPATH_BASE;
 		}else{
-			$helperpath = JPATH_BASE.'/administrator/components/com_jupgrade';
+			$helperpath = JPATH_ROOT.'/administrator/components/com_jupgrade';
 		}
 
 		// Require the files
@@ -137,9 +137,10 @@ class jUpgradeCategories extends jUpgradeCategory
 		$sqlfile = $helperpath.'/sql/categories.sql';
 
 		// Import the sql file
-	  if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
-	  	return false;
-	  }
+		$errors = array();
+		if (JUpgradeHelper::populateDatabase($this->db_new, $sqlfile, $errors) > 0 ) {
+			return false;
+		}
 
 	} // end method
 } // end class
