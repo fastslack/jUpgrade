@@ -99,6 +99,14 @@ switch ($step->name) {
 		$banners = new jUpgradeBanners($step);
 		$banners->upgrade();
 
+		// Migrate the banners.
+		$clients = new jUpgradeBannersClients($step);
+		$clients->upgrade();
+
+		// Migrate the banners.
+		$tracks = new jUpgradeBannersTracks($step);
+		$tracks->upgrade();
+
 		break;
 	case 'contacts':
 		// Migrate the categories of contacts.
