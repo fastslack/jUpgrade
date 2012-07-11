@@ -27,6 +27,74 @@ $ -> Language fix or change
 - -> Removed
 ! -> Note
 
+Jul 11, 2012 Matias Aguirre
+ + Adding Banners clients and tracks migration
+
+Jul 01, 2012 Matias Aguirre
+ + Adding Adsmanager plugin
+ + Adding Avreloaded plugin
+ + Adding CsvImproved plugin
+ + Adding Docman plugin
+ + Adding redTextLibrary plugin
+ + Adding XMap plugin
+
+Jun 26, 2012 Matias Griese
+ ^ Fix menu aliases generation where there was no reason to rename alias
+ ^ Improve code readability on error handling (category, menu migration)
+ ^ Fix fatal error when migrating categories (component only)
+ ^ Fix htmlencoded strings which are escaped in J!2.5
+
+Jun 25, 2012 Matias Aguirre
+ ^ Fix legacy mode on new Joomla versions
+
+Jun 18, 2012 Matias Aguirre
+ ^ Updating redComponents plugins
+
+Jun 12, 2012 Matias Aguirre
+ + Adding FlippingBook plugin
+
+Jun 04, 2012 Matias Aguirre
+ ^ Updating joomla sql file to v2.5.4
+
+Jun 01, 2012 Matias Aguirre
+ ^ Updating some 3rd party extensions plugin
+ + Adding database driver to configuration
+ ^ Better compatibility with joomla-platform 12.1
+
+Apr 13, 2012 Matias Aguirre
+ + Adding Akeeba Release System
+
+Mar 28, 2012 Matias Aguirre
+ + Adding SobiPro plugin
+ + Adding HikaShop plugin
+ + Adding Highslide JS plugin
+ + Adding FLEXIcontent plugin
+ + Adding JComment plugin
+ + Adding Ambra Suscriptions plugin
+ + Adding AllEvents plugin
+ + Adding aiContactSafe plugin
+ + Adding AdminTools plugin
+ + Adding AceSEF plugin
+ ^ Fixing JCE migration
+
+Mar 22, 2012 Matias Aguirre
+ ^ Fix #31: Category ID=1 gets lost during migration …
+
+Mar 21, 2012 Matias Aguirre
+ ^ Fix #29 Uncategorized items (no category) get moved into wrong category …
+ ^ Fix category ordering to be the same as in Joomla 1.5 
+ ^ Fix #23 Main Menu module looses its menu assigments
+
+Mar 09, 2012 Matias Aguirre
+ ^ Fix a bug in menus where page header was shown when show_page_heading=0
+ ^ Fix creating uncategorized categories if database prefix changed
+
+Mar 05, 2012 Matias Aguirre
+ ^ Fixing root id on categories
+ ^ Fixing broken categories
+ + Adding uncategorized categories
+ ^ Config formating 
+
 Mar 02, 2012 Matias Aguirre
  ^ Keeping the categories id's
 
