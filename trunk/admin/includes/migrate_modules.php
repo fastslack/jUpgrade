@@ -61,6 +61,15 @@ class jUpgradeModules extends jUpgrade
 	protected function convertParamsHook(&$object)
 	{
 		if (isset($object->startLevel)) $object->startLevel++;
+
+		if (isset($object->layout)) {
+			if((string)$object->layout == 'vert'){
+				$object->layout = '_:vertical';
+			}
+			if((string)$object->layout == 'horiz'){
+				$object->layout = '_:horizontal';
+			}
+		}
 	}
 
 	/**
